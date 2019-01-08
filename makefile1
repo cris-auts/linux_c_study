@@ -1,6 +1,0 @@
-target: main.c stack.c
-	cc -o main main.c stack.c
-
-
-clean:
-	rm main
