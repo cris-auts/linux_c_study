@@ -353,7 +353,7 @@ int main(int argc, char **argv)
 			{  
 				printf("no data received!\r\n");  
 			}  
-			sleep(2);  
+			sleep(3);  
 		}              
 		UART0_Close(fd);   
 	}  

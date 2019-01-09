@@ -4,12 +4,12 @@
 CC = gcc
 RM = rm
 
-TARGET = uart_test_app
+TARGET = test_c_pub
 INCS = $(wildcard *.h)
 SRCS = $(wildcard *.c)
 OBJS = $(patsubst %.c,%.o,$(SRCS))
 
-LIBS    := -lpaho-mqtt3c
+LIBS    := -lpaho-mqtt3a
 
 $(TARGET) : $(OBJS) $(INCS)
 	$(CC) -o $@ $(OBJS) $(LIBS)
