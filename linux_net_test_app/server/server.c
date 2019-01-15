@@ -46,7 +46,7 @@ void rcv_proc(int sfd)
 	char buf[512] ={};
 	while (size = read(sfd,buf,sizeof(buf)))
 	{
-		printf("Client %d say:%s",sfd,buf);
+		printf("Client %d say:%s\r\n",sfd,buf);
 		if (write (sfd,buf,strlen(buf)+1))
 		{
 			printf("Write fail");
