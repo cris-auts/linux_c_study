@@ -30,12 +30,13 @@ int main(int argc, char **argv)
     else
         lisnum = 2;
  
+	printf("ipv6 server start.....\r\n");
     /* if ((sockfd = socket(PF_INET, SOCK_STREAM, 0)) == -1) { */ // IPv4
     if ((sockfd = socket(PF_INET6, SOCK_STREAM, 0)) == -1) { // IPv6
         perror("socket");
         exit(1);
     } else
-        printf("socket created/n");
+        printf("socket created\r\n");
  
     bzero(&my_addr, sizeof(my_addr));
     /* my_addr.sin_family = PF_INET; */ // IPv4
@@ -50,28 +51,31 @@ int main(int argc, char **argv)
         my_addr.sin6_addr = in6addr_any;            // IPv6
  
     /* if (bind(sockfd, (struct sockaddr *) &my_addr, sizeof(struct sockaddr)) */ // IPv4
-    if (bind(sockfd, (struct sockaddr *) &my_addr, sizeof(struct sockaddr_in6))  // IPv6
-        == -1) {
-        perror("bind");
+    int optval = 1;
+    // setting address and port reusable
+    setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval));
+    if (bind(sockfd, (struct sockaddr *) &my_addr, sizeof(struct sockaddr_in6)) == -1) //ipv6
+    {
+        printf("bind fail\r\n");
         exit(1);
     } else
-        printf("binded/n");
+        printf("bind success\r\n");
  
     if (listen(sockfd, lisnum) == -1) {
-        perror("listen");
+        printf("listen fail \r\n");
         exit(1);
     } else
-        printf("begin listen/n");
+        printf("listen success\r\n");
  
     while (1) {
         len = sizeof(struct sockaddr);
         if ((new_fd =
              accept(sockfd, (struct sockaddr *) &their_addr,
                     &len)) == -1) {
-            perror("accept");
+            printf("accept fail \r\n");
             exit(errno);
         } else
-            printf("server: got connection from %s, port %d, socket %d/n",
+            printf("server: got connection from %s, port %d, socket %d\r\n",
                    /* inet_ntoa(their_addr.sin_addr), */ // IPv4
                    inet_ntop(AF_INET6, &their_addr.sin6_addr, buf, sizeof(buf)), // IPv6
                    /* ntohs(their_addr.sin_port), new_fd); */ // IPv4
@@ -85,21 +89,21 @@ int main(int argc, char **argv)
         len = send(new_fd, buf, strlen(buf), 0);
         if (len < 0) {
             printf
-                ("消息'%s'发送失败！错误代码是%d，错误信息是'%s'/n",
+                ("消息'%s'发送失败！错误代码是%d，错误信息是'%s'\r\n",
                  buf, errno, strerror(errno));
         } else
-            printf("消息'%s'发送成功，共发送了%d个字节！/n",
+            printf("消息'%s'发送成功，共发送了%d个字节！\r\n",
                    buf, len);
  
         bzero(buf, MAXBUF + 1);
         /* 接收客户端的消息 */
         len = recv(new_fd, buf, MAXBUF, 0);
         if (len > 0)
-            printf("接收消息成功:'%s'，共%d个字节的数据/n",
+            printf("接收消息成功:'%s'，共%d个字节的数据\r\n",
                    buf, len);
         else
             printf
-                ("消息接收失败！错误代码是%d，错误信息是'%s'/n",
+                ("消息接收失败！错误代码是%d，错误信息是'%s'\r\n",
                  errno, strerror(errno));
         /* 处理每个新连接上的数据收发结束 */
     }
