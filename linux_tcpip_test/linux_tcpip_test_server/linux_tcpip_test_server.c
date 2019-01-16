@@ -52,6 +52,7 @@ int main(int argc, char *argv[])
     }
 
     char buf[1024];
+	printf("Has connect to client:%d",clnt_sock);
     printf("connected with ip: %s and port: %d\n",
            inet_ntop(AF_INET, &clnt_addr.sin_addr, buf, 1024),
            ntohs(clnt_addr.sin_port));
