@@ -4,7 +4,7 @@
 CC = gcc
 RM = rm
 
-TARGET = linux_tcpip_ipv6_client
+TARGET = linux_tcpip_ipv6_unicast_recv
 INCS = $(wildcard *.h)
 SRCS = $(wildcard *.c)
 OBJS = $(patsubst %.c,%.o,$(SRCS))
