@@ -37,7 +37,7 @@ int main(int argc,char **argv)
 	char* app_name=argv[0];
     char* listen_ip = argv[1]; 
     int listen_port = atoi(argv[2]);
-
+	int msg_cnt=0;
 
     if(argc != 3)  
 	{  
@@ -67,12 +67,12 @@ int main(int argc,char **argv)
 	}
 
 	signal(SIGINT, signal_exit_handler);
+	printf("Ready to recevie msg!\r\n");
 	while(1)
 	{
-	    printf("Ready to recevie data!\r\n");
 	    ret = recvfrom(socket_fd,rcv_buf,RCV_BUF_SIZE-1,0,(struct sockaddr *)&addr,&len);
 	    rcv_buf[ret] = '\0';
-	    printf("recevice new data:\r\n%s\r\n",rcv_buf);
+	    printf("Recevice new msg(%d):\r\n%s\r\n",msg_cnt++,rcv_buf);
 	}
     return 0;
 }
