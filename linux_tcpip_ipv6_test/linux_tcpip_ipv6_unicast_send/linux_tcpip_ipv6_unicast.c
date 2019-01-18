@@ -29,8 +29,8 @@ int main(int argc, char **argv)
 	addr_len=sizeof(struct sockaddr_in6);
 	memset(&addr,0,sizeof(addr));
 	addr.sin6_family=AF_INET6;
-	addr.sin6_port=htons(7838);
-	inet_pton(AF_INET6,"fe80::20c:29ff:fe95:6ffc",&addr.sin6_addr);
+	addr.sin6_port=htons(2345);
+	inet_pton(AF_INET6,"fc00:0:0:0:0200:c0ff:fea8:0456",&addr.sin6_addr);
 	if(sendto(mysocket, buf, strlen(buf), 0, (struct sockaddr*)&addr, addr_len)<0)
 	{
 		printf("send error!\r\n");

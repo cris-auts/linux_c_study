@@ -1,7 +1,7 @@
 .PHONY: clean
 
-#CC = /usr/bin/arm-linux-gnueabi-gcc
-CC = gcc
+CC = /usr/bin/arm-linux-gnueabi-gcc
+#CC = gcc
 RM = rm
 
 TARGET = linux_tcpip_ipv6_client

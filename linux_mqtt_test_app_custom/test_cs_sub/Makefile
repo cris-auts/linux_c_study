@@ -1,10 +1,10 @@
 .PHONY: clean
 
-#CC = /usr/bin/arm-linux-gnueabi-gcc
-CC = gcc
+CC = /usr/bin/arm-linux-gnueabi-gcc
+#CC = gcc
 RM = rm
 
-TARGET = uart_test_app
+TARGET = test_cs_sub
 INCS = $(wildcard *.h)
 SRCS = $(wildcard *.c)
 OBJS = $(patsubst %.c,%.o,$(SRCS))

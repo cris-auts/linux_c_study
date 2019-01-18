@@ -30,7 +30,7 @@ int main(int argc,char **argv)
     address.sin6_family = AF_INET6;
     inet_pton(AF_INET6,ip,&address.sin6_addr);
     address.sin6_port = htons(port);
-    client_fd = socket(PF_INET6,SOCK_DGRAM,0);
+    client_fd = socket(PF_INET6,SOCK_DGRAM,IPPROTO_UDP);
     assert(client_fd >= 0);
 
 
