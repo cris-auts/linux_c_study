@@ -4,7 +4,7 @@ CC = /usr/bin/arm-linux-gnueabi-gcc
 #CC = gcc
 RM = rm
 
-TARGET = linux_tcpip_ipv6_unicast_recv
+TARGET = linux_tcpip_ipv6_unicast_rcv
 INCS = $(wildcard *.h)
 SRCS = $(wildcard *.c)
 OBJS = $(patsubst %.c,%.o,$(SRCS))
