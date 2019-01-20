@@ -55,9 +55,9 @@ pic_mode=default
 fast_install=yes
 
 # The host system.
-host_alias=
-host=x86_64-unknown-linux-gnu
-host_os=linux-gnu
+host_alias=arm-linux-gnueabi
+host=arm-unknown-linux-gnueabi
+host_os=linux-gnueabi
 
 # The build system.
 build_alias=
@@ -80,7 +80,7 @@ EGREP="/bin/grep -E"
 FGREP="/bin/grep -F"
 
 # A BSD- or MS-compatible name lister.
-NM="/usr/bin/nm -B"
+NM="/usr/bin/arm-linux-gnueabi-nm -B"
 
 # Whether we need soft or hard links.
 LN_S="ln -s"
@@ -108,7 +108,7 @@ reload_flag=" -r"
 reload_cmds="\$LD\$reload_flag -o \$output\$reload_objs"
 
 # An object symbol dumper.
-OBJDUMP="objdump"
+OBJDUMP="arm-linux-gnueabi-objdump"
 
 # Method to check whether dependent libraries are shared objects.
 deplibs_check_method="pass_all"
@@ -117,19 +117,19 @@ deplibs_check_method="pass_all"
 file_magic_cmd="\$MAGIC_CMD"
 
 # The archiver.
-AR="ar"
+AR="arm-linux-gnueabi-ar"
 AR_FLAGS="cru"
 
 # A symbol stripping program.
-STRIP="strip"
+STRIP="arm-linux-gnueabi-strip"
 
 # Commands used to install an old-style archive.
-RANLIB="ranlib"
+RANLIB="arm-linux-gnueabi-ranlib"
 old_postinstall_cmds="chmod 644 \$oldlib~\$RANLIB \$oldlib"
 old_postuninstall_cmds=""
 
 # A C compiler.
-LTCC="gcc"
+LTCC="arm-linux-gnueabi-gcc"
 
 # LTCC compiler flags.
 LTCFLAGS=" -g -O2 -DSQLITE_OS_UNIX=1"
@@ -234,7 +234,7 @@ finish_eval=""
 hardcode_into_libs=yes
 
 # Compile-time system search path for libraries.
-sys_lib_search_path_spec="/usr/lib/gcc/x86_64-linux-gnu/4.8 /usr/lib/x86_64-linux-gnu /usr/lib /lib/x86_64-linux-gnu /lib"
+sys_lib_search_path_spec="/usr/arm-linux-gnueabi/lib /lib /usr/lib /usr/lib/gcc-cross/arm-linux-gnueabi/4.7"
 
 # Run-time system search path for libraries.
 sys_lib_dlsearch_path_spec="/lib /usr/lib /usr/lib/x86_64-linux-gnu/libfakeroot /usr/local/lib /usr/lib/vmware-tools/lib32/libvmGuestLib.so /usr/lib/vmware-tools/lib64/libvmGuestLib.so /usr/lib/vmware-tools/lib32/libvmGuestLibJava.so /usr/lib/vmware-tools/lib64/libvmGuestLibJava.so /usr/lib/vmware-tools/lib32/libDeployPkg.so /usr/lib/vmware-tools/lib64/libDeployPkg.so /lib/x86_64-linux-gnu /usr/lib/x86_64-linux-gnu /usr/lib/x86_64-linux-gnu/mesa-egl /usr/lib/x86_64-linux-gnu/mesa "
@@ -249,18 +249,18 @@ dlopen_self=unknown
 dlopen_self_static=unknown
 
 # Commands to strip libraries.
-old_striplib="strip --strip-debug"
-striplib="strip --strip-unneeded"
+old_striplib="arm-linux-gnueabi-strip --strip-debug"
+striplib="arm-linux-gnueabi-strip --strip-unneeded"
 
 
 # The linker used to build libraries.
-LD="/usr/bin/ld -m elf_x86_64"
+LD="/usr/arm-linux-gnueabi/bin/ld"
 
 # Commands used to build an old-style archive.
 old_archive_cmds="\$AR \$AR_FLAGS \$oldlib\$oldobjs~\$RANLIB \$oldlib"
 
 # A language specific compiler.
-CC="gcc"
+CC="arm-linux-gnueabi-gcc"
 
 # Is the compiler the GNU compiler?
 with_gcc=yes
