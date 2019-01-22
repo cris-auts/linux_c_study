@@ -1,0 +1,1 @@
+gcc -o sqlite_c_test_create sqlite_c_test_create.c -I /home/cris/My_Projects/linux_c_study/linux_sqlite_test/installed_x86tmp/include/ -L /home/cris/My_Projects/linux_c_study/linux_sqlite_test/installed_x86tmp/lib/ -lsqlite3
