@@ -84,6 +84,7 @@
 #define    __SYS_DBASE_SUPPORT__                     	(1)	//Added By Cris@20190218
 #define    __SYS_MODBUS_SUPPORT__                       (1)	//Added By Cris@20190218
 #define    __SYS_DLT645_SUPPORT__                       (1)	//Added By Cris@20190218
+#define    __SYS_METER_SUPPORT__                       	(1)	//Added By Cris@20190218
 
 
 
@@ -113,9 +114,15 @@
 #endif
 
 #if __SYS_DLT645_SUPPORT__
-#define    __SYS_DLT645_ENABLE__                		(1)	//Added By Cris@20190218
-#define    __SYS_DLT645_LOG_ENABLE__                	(1)	//Added By Cris@20190218
+#define    __SYS_DLT645_ENABLE__                		(0)	//Added By Cris@20190218
+#define    __SYS_DLT645_LOG_ENABLE__                	(0)	//Added By Cris@20190218
 #endif
+
+#if __SYS_METER_SUPPORT__
+#define    __SYS_METER_ENABLE__                			(0)	//Added By Cris@20190218
+#define    __SYS_METER_LOG_ENABLE__                		(0)	//Added By Cris@20190218
+#endif
+
 
 /*************************************************************************************************/
 #endif//#ifndef __STD_CONFIG_H__

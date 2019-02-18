@@ -107,12 +107,9 @@ void DEBUG_Print(char * format,...)
     static unsigned int print_len=0;
     va_list args;
     va_start(args, format);
-	#if 0
     print_len = vsprintf((char*)print_buf, format, args);
-	#else
-    print_len = printf(format, args);
-	#endif
     va_end(args);
+	printf("%s",print_buf);
     DRV_Print(print_buf,print_len);
 }
 

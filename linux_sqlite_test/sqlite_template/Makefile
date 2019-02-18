@@ -14,7 +14,7 @@ TARGET  := executable_file
 #编译参数
 CC      := gcc
 LIBS    := -L ../installed_x86tmp/lib/
-LDFLAGS := -l sqlite3
+LDFLAGS := -l sqlite3 -l pthread
 DEFINES :=
 INCLUDE := -I ../installed_x86tmp/include/
 CFLAGS  := -g -Wall -O3 $(DEFINES) $(INCLUDE)

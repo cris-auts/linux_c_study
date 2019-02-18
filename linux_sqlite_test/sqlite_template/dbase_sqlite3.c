@@ -10,7 +10,7 @@
 *
 *********************************************************************************************************
 *
-* File name: db.c
+* File name: db_sqlite3.c
 * -------------------------------------
 *
 * Module: xxx
@@ -22,7 +22,7 @@
 * Version: V1.0
 * -------------------------------------
 *
-* Description:  database wrapper api defines.
+* Description:  xxxxxxxxxxxxxxxxxxxxxxxx
 *
 * ------------------------------------------------------------------------
 *
@@ -44,27 +44,17 @@
 ********************************************************************************************************/
 /*-----------------------公共头文件---------------------------*/
 #include "std_globals.h"
-#if __SYS_DBASE_ENABLE__
 #if __DBASE_SQLITE3_ENABLE__
-#include "db_sqlite3.h"
-#endif
-
 
 /*-----------------------接口头文件---------------------------*/
 //#include "xxx_xxx.h"
 
 /*----------------------本模块头文件--------------------------*/
-//#include "xxx_xxx.h"
+#include "dbase_sqlite3.h"
 
 /*----------------------模块内宏定义--------------------------*/
 //#define    xxxxxx                (xxxxxxxx)
 
-#if __XXXX_XXXX_DEBUG_ENABLE__
-#define XXXX_PrintLog(format,...) \
-LOG_Print("XXXX[%s:%d]:"format"\r\n",__FUNCTION__, __LINE__,##__VA_ARGS__)
-#else
-#define XXXX_PrintLog(format,...)
-#endif
 
 
 
@@ -85,13 +75,12 @@ LOG_Print("XXXX[%s:%d]:"format"\r\n",__FUNCTION__, __LINE__,##__VA_ARGS__)
 /*****************************************************************************/
 
 /******************************************************************************
-* Function:    DB_OpenDataBase
-* Input:       db_name:
-* Output:      pp_db:返回一个用于其他 SQLite 程序的数据库连接对象
+* Function:    XXX_XxxXxx
+* Input:       xxx
+* Output:      xxx
 * Return:      xxx
 * Description: xxxxx
-*db_name:	数据库文件名称
-*pp_db:		返回一个用于其他 SQLite 程序的数据库连接对象
+*
 * Others:
 *
 * -------------------------------------------------------------------
@@ -101,36 +90,66 @@ LOG_Print("XXXX[%s:%d]:"format"\r\n",__FUNCTION__, __LINE__,##__VA_ARGS__)
 *
 *
 ******************************************************************************/
-int DB_OpenDataBase(char *db_name, sqlite3 **pp_db)
+/******************************************************************************
+* Function:    SQLITE3_OpenDataBase
+* Input:	   db_name:
+* Output:	   pp_db:返回一个用于其他 SQLite 程序的数据库连接对象
+* Return:	   xxx
+* Description: xxxxx
+*db_name:	数据库文件名称
+*pp_db: 	返回一个用于其他 SQLite 程序的数据库连接对象
+* Others:
+*
+* -------------------------------------------------------------------
+* History:
+*	  Date		   Author	  Change Id 	Release Description Of Change
+* 2012-12-15	Cris		  1st					 created
+*
+*
+******************************************************************************/
+int SQLITE3_OpenDataBase(char *db_name, sqlite3 **pp_db)
 {
-	return SQLITE3_OpenDataBase(db_name,pp_db);
+	int rc = sqlite3_open(db_name,pp_db); //打开数据库
+	if(rc != SQLITE_OK)
+	{
+		printf("sqlite3_open failed!\r\n");
+		return 1;
+	}
+	else
+		return 0;
 }
+
 
 
 /******************************************************************************
-* Function:    DB_CloseDataBase
-* Input:       
-* Output:      
-* Return:      xxx
+* Function:    SQLITE3_CloseDataBase
+* Input:	   
+* Output:	  
+* Return:	   xxx
 * Description: xxxxx
-*
+* 
 * Others:
 *
 * -------------------------------------------------------------------
 * History:
-*     Date         Author     Change Id     Release Description Of Change
-* 2012-12-15    Cris          1st                    created
+*	  Date		   Author	  Change Id 	Release Description Of Change
+* 2012-12-15	Cris		  1st					 created
 *
 *
 ******************************************************************************/
-int DB_CloseDataBase(sqlite3 *p_db)
+int SQLITE3_CloseDataBase(sqlite3 *p_db)
 {
-	return SQLITE3_CloseDataBase(p_db);
+	int rc = sqlite3_close(p_db); //打开数据库
+	if(rc != SQLITE_OK)
+	{
+		printf("sqlite3_close failed!\r\n");
+		return 1;
+	}
+	else
+		return 0;
 }
 
 
 
-
-#endif//#if __SYS_DBASE_ENABLE__
-
+#endif//#if __DBASE_SQLITE3_ENABLE__
 

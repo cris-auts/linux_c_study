@@ -52,7 +52,7 @@ extern "C" {
 
 /*---------------------------------Ä£¿éºê¶¨Òå--------------------------------*/
 #if __SYS_DEBUG_LOG_ENABLE__
-#define MyPrintLog(format,args...) 	DEBUG_Print("[cris-log][%s:%d]:"format"\r\n",__FUNCTION__, __LINE__,##args)
+#define MyPrintLog(format,args...) 	DEBUG_Print("[cris-log][%s]%d:"format"\r\n",__FUNCTION__, __LINE__,##args)
 #define PrintLog(format,args...)	DEBUG_Print(format,##args)
 #define PrintHex(pdat,len)			DEBUG_PrintHex(pdat,len)
 #define PrintChar(pdat,len)			DEBUG_PrintChar(pdat,len)
@@ -67,7 +67,7 @@ extern "C" {
 #if __SYS_FUNCS_LOG_ENABLE__
 #define FUNCS_PrintLog(fmt,arg...)          do{\
 	if(g_dev_prm.debug_log_st.funcs_log)\
-	PrintLog("[FUNCS][%s:%d]"fmt"\r\n",__func__, __LINE__, ##arg);\
+	PrintLog("[FUNCS]:"fmt"\r\n", ##arg);\
 }while(0)
 #define FUNCS_PrintHex(pdat,dat_len)          do{\
 	if(g_dev_prm.debug_log_st.funcs_log)\
@@ -87,7 +87,7 @@ extern "C" {
 #if __SYS_DBASE_LOG_ENABLE__
 #define DBASE_PrintLog(fmt,arg...)          do{\
 	if(g_dev_prm.debug_log_st.dbase_log)\
-	PrintLog("[DBASE][%s:%d]"fmt"\r\n",__func__, __LINE__, ##arg);\
+	PrintLog("[DBASE]:"fmt, ##arg);\
 }while(0)
 #define DBASE_PrintHex(pdat,dat_len)          do{\
 	if(g_dev_prm.debug_log_st.dbase_log)\
@@ -107,7 +107,7 @@ extern "C" {
 #if __SYS_MODBUS_LOG_ENABLE__
 #define MODBUS_PrintLog(fmt,arg...)          do{\
 	if(g_dev_prm.debug_log_st.modbus_log)\
-	PrintLog("[MODBUS][%s:%d]"fmt"\r\n",__func__, __LINE__, ##arg);\
+	PrintLog("[MODBUS]:"fmt,##arg);\
 }while(0)
 #define MODBUS_PrintHex(pdat,dat_len)          do{\
 	if(g_dev_prm.debug_log_st.modbus_log)\
@@ -129,7 +129,7 @@ extern "C" {
 #if __SYS_DLT645_LOG_ENABLE__
 #define DLT645_PrintLog(fmt,arg...)          do{\
 	if(g_dev_prm.debug_log_st.dlt645_log)\
-	PrintLog("[DLT645][%s:%d]"fmt"\r\n",__func__, __LINE__, ##arg);\
+	PrintLog("[DLT645]:"fmt,##arg);\
 }while(0)
 #define DLT645_PrintHex(pdat,dat_len)          do{\
 	if(g_dev_prm.debug_log_st.dlt645_log)\
