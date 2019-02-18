@@ -52,22 +52,13 @@
 
 
 /*--------------------------------变量常量定义-------------------------------*/
-#if __SYS_PRINT_ENABLE__
-#if __DRV_PRINT_ENABLE__
-int drv_print_enable = TRUE;
-#endif
 
-#if __APP_PRINT_ENABLE__
-int app_print_enable = TRUE;
-#endif
-#endif
-
-DEV_PRM_T dev_prm;
-DEV_DAT_T dev_dat;
-USR_PRM_T usr_prm;
-USR_DAT_T usr_dat;
-RUN_PRM_T run_prm;
-RUN_DAT_T run_dat;
+DEV_PRM_T g_dev_prm;
+DEV_DAT_T g_dev_dat;
+USR_PRM_T g_usr_prm;
+USR_DAT_T g_usr_dat;
+RUN_PRM_T g_run_prm;
+RUN_DAT_T g_run_dat;
 
 /*--------------------------------静态函数声明--------------------------------*/
 
@@ -126,43 +117,6 @@ UINT16_T GetDatKeyCheckSum(UINT16_T cs_key,UINT8_T* pdat,UINT16_T len)
 	}
 	return(cs_key);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

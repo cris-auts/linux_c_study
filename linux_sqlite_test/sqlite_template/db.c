@@ -43,8 +43,8 @@
 *
 ********************************************************************************************************/
 /*-----------------------公共头文件---------------------------*/
-#if __DB_ENABLE__
-
+#include "std_globals.h"
+#if __SYS_DB_ENABLE__
 #if __DB_SQLITE3_ENABLE__
 #include "db_sqlite3.h"
 #endif
@@ -103,14 +103,34 @@ LOG_Print("XXXX[%s:%d]:"format"\r\n",__FUNCTION__, __LINE__,##__VA_ARGS__)
 ******************************************************************************/
 int DB_OpenDataBase(char *db_name, sqlite3 **pp_db)
 {
-	return DB_Sqlite3OpenDataBase(db_name,pp_db);
+	return SQLITE3_OpenDataBase(db_name,pp_db);
+}
+
+
+/******************************************************************************
+* Function:    DB_CloseDataBase
+* Input:       
+* Output:      
+* Return:      xxx
+* Description: xxxxx
+*
+* Others:
+*
+* -------------------------------------------------------------------
+* History:
+*     Date         Author     Change Id     Release Description Of Change
+* 2012-12-15    Cris          1st                    created
+*
+*
+******************************************************************************/
+int DB_CloseDataBase(sqlite3 *p_db)
+{
+	return SQLITE3_CloseDataBase(p_db);
 }
 
 
 
 
-
-
-#endif//#if __DB_ENABLE__
+#endif//#if __SYS_DB_ENABLE__
 
 

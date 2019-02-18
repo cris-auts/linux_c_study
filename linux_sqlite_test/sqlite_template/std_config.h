@@ -42,10 +42,9 @@
 
 
 //-----------------------------------------------------------------------------
-#define    __DEBUG_STM32_IN_MDK__                       (1)
+#define    __DEBUG_IN_32BIT_SYSTEM__                       (1)
 
 //-----------------------------------------------------------------------------
-#define    __STM32F103X__                               (1)
 
 /****************************************************************************************
                                                  System  Info 
@@ -73,88 +72,44 @@
 /****************************************************************************************
                                    System Feature Control
 ****************************************************************************************/
-#define    __SYS_DEBUG_SUPPORT__                        (1)
-#define    __SYS_OS_SUPPORT__                           (1)
-#define    __SYS_HAL_SUPPORT__                          (1)
-#define    __SYS_LED_SUPPORT__                          (1)
-#define    __SYS_BEEP_SUPPORT__                         (1)
-#define    __SYS_KEY_SUPPORT__                          (1)
-#define    __SYS_RTC_SUPPORT__                          (1)
-#define    __SYS_NVRAM_SUPPORT__                        (1)
-#define    __SYS_FS_SUPPORT__                           (1)
-#define    __SYS_USB_SUPPORT__                          (1)
-#define    __SYS_GPRS_SUPPORT__                         (1)
-#define    __SYS_ETH_SUPPORT__                          (1)
-#define    __SYS_MAINT_SUPPORT__                        (1)
-#define    __SYS_DLT645_SUPPORT__                       (1)
-#define    __SYS_GB101_SUPPORT__                        (1)
+#define    __SYS_DEBUG_SUPPORT__                        (0)
+#define    __SYS_DATABASE_SUPPORT__                     (1)
+#define    __SYS_HAL_SUPPORT__                          (0)
+#define    __SYS_LED_SUPPORT__                          (0)
+#define    __SYS_BEEP_SUPPORT__                         (0)
+#define    __SYS_KEY_SUPPORT__                          (0)
+#define    __SYS_RTC_SUPPORT__                          (0)
+#define    __SYS_NVRAM_SUPPORT__                        (0)
+#define    __SYS_FS_SUPPORT__                           (0)
+#define    __SYS_USB_SUPPORT__                          (0)
+#define    __SYS_GPRS_SUPPORT__                         (0)
+#define    __SYS_ETH_SUPPORT__                          (0)
+#define    __SYS_MAINT_SUPPORT__                        (0)
+#define    __SYS_DLT645_SUPPORT__                       (0)
+#define    __SYS_GB101_SUPPORT__                        (0)
 
 /****************************************************************************************
                                 System  SubFeature Control
 ****************************************************************************************/
 
 
-#if __SYS_DEBUG_SUPPORT__
-	#define    __SYS_PRINT_ENABLE__                         (1)
-	#define    __SYS_PRINT_UART1__                          (1)
-#endif
-
-#if __SYS_OS_SUPPORT__
-	#define    __SYS_POS_ENABLE__						   	(1)
-	//#define    __SYS_uCOSII_ENABLE__							(1)
-	//#define    __SYS_uCOSIII_ENABLE__							(1)
-	
-	#define    __APP_SYS_TASK_ENABLE__                      (1)
-	#define    __APP_SYS_TASK_LOG_ENABLE__					(1)
-#endif
-
-
-
-#if __SYS_NVRAM_SUPPORT__
-#define    __NVRAM_LOG_ENABLE__                         (1)
-#endif
-
-#if __SYS_FS_SUPPORT__
-#define    __FS_LOG_ENABLE__                            (1)
-#endif
-
-#if __SYS_USB_SUPPORT__
-#define    __USB_LOG_ENABLE__                           (1)
-#endif
-
-#if __SYS_LED_SUPPORT__
-#define    __SYS_LED_FLICKER_CYC_500MS__                (1)	//Added By Cris@20181115
-#endif
-
 /****************************************************************************************
                                    App Feature Control
 ****************************************************************************************/
-//APP START TASK---------------------------------------------------------------
 
-#if (__SYS_LED_SUPPORT__||__SYS_BEEP_SUPPORT__||__SYS_KEY_SUPPORT__||__SYS_RTC_SUPPORT__)
-#define    __APP_MISC_TASK_ENABLE__                     (0)
-#define    __APP_MISC_TASK_LOG_ENABLE__                 (0)
-#endif
 
-#define    __APP_MAINT_TASK_ENABLE__                    (0)
-#define    __APP_COMM_TASK_ENABLE__                     (0)
 
 
 
 /****************************************************************************************
                                Middleware Feature  Control
 ****************************************************************************************/
-
-#if __SYS_NVRAM_SUPPORT__
-#define    __MDW_NVRAM_ENABLE__                         (1)
-#define    __MDW_NVRAM_SPI_FLASH__                      (1)
+#if __SYS_DATABASE_SUPPORT__
+#define    __SYS_DB_ENABLE__                			(1)	//Added By Cris@20190214
+#define    __DB_SQLITE3_ENABLE__                		(1)	//Added By Cris@20190214
 #endif
 
-#if __SYS_FS_SUPPORT__
-#define    __MDW_FATFS_ENABLE__                         (1)
-#define    __MDW_FATFS_DEBUG_ENABLE__                   (1)
-#define    __MDW_FATFS_SPIFLASH_ENABLE__                (1)
-#endif
+
 
 
 /****************************************************************************************

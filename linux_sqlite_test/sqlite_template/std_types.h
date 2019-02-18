@@ -40,7 +40,7 @@
 #ifndef __STD_TYPES_H__
 #define __STD_TYPES_H__
 
-#if (__DEBUG_STM32_IN_MDK__)
+#if (__DEBUG_IN_32BIT_SYSTEM__)
 typedef int                        SINT_T;                /* Signed  int         */
 typedef unsigned int               UINT_T;                /* Unsigned int       */
 
@@ -166,60 +166,6 @@ typedef enum demo_enum_t {
     DEMO_ENUM1,
 } DEMO_ENUM_T; 
 
-
-
-typedef struct demo_x_type_t {
-    unsigned int demo_value;
-    union {
-        struct {
-            unsigned RP0R:6;
-            unsigned :2;
-            unsigned RP1R:6;
-        } RP0RP1_BITS;
-
-        struct {
-            unsigned RP0R0:1;
-            unsigned RP0R1:1;
-            unsigned RP0R2:1;
-            unsigned RP0R3:1;
-            unsigned RP0R4:1;
-            unsigned RP0R5:1;
-            unsigned :2;
-            unsigned RP1R0:1;
-            unsigned RP1R1:1;
-            unsigned RP1R2:1;
-            unsigned RP1R3:1;
-            unsigned RP1R4:1;
-            unsigned RP1R5:1;
-        } RP0RP1_BIT;
-    }RP0RP1;
-} DEMO_X_TYPE_T;
-
-
-typedef union demo_y_type_t {
-    unsigned int demo_value;
-    struct {
-            unsigned RP0R:6;
-            unsigned :2;
-            unsigned RP1R:6;
-    }RP0RP1_BITS;
-
-    struct {
-        unsigned RP0R0:1;
-        unsigned RP0R1:1;
-        unsigned RP0R2:1;
-        unsigned RP0R3:1;
-        unsigned RP0R4:1;
-        unsigned RP0R5:1;
-        unsigned :2;
-        unsigned RP1R0:1;
-        unsigned RP1R1:1;
-        unsigned RP1R2:1;
-        unsigned RP1R3:1;
-        unsigned RP1R4:1;
-        unsigned RP1R5:1;
-    }RP0RP1_BIT;
-} DEMO_Y_TYPE_T;
 
 #endif//#ifndef __STD_TYPES_H__
 

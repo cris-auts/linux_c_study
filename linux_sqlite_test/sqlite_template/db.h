@@ -50,7 +50,12 @@ extern "C" {
 
 
 /*----------------------公共头文件----------------------------*/
-#if 1//__DB_ENABLE__
+#include "std_globals.h"
+#if __SYS_DB_ENABLE__
+
+#if __DB_SQLITE3_ENABLE__
+#include "db_sqlite3.h"
+#endif
 
 
 /*----------------------接口头文件----------------------------*/
@@ -71,8 +76,9 @@ extern "C" {
 /*-----------------模块对外接口函数声明-----------------------*/
 //extern    xxxxx;
 extern int DB_OpenDataBase(char *db_name, sqlite3 **pp_db);
+extern int DB_CloseDataBase(sqlite3 *p_db);
 
-#endif//#if __DB_ENABLE__
+#endif//#if __SYS_DB_ENABLE__
 #ifdef __cplusplus
 }
 #endif

@@ -16,7 +16,7 @@ CC      := gcc
 LIBS    := -L ../installed_x86tmp/lib/
 LDFLAGS := -l sqlite3
 DEFINES :=
-INCLUDE := -I ../installed_x86tmp/include/ 
+INCLUDE := -I ../installed_x86tmp/include/
 CFLAGS  := -g -Wall -O3 $(DEFINES) $(INCLUDE)
 CXXFLAGS:= $(CFLAGS) -DHAVE_CONFIG_H
   

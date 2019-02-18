@@ -1,14 +1,9 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sqlite3.h>
+#include"std_globals.h"
 #include "db.h"
  
-#define PRINTERROR(str)	\
-	do{	\
-		perror(str);\
-		exit(EXIT_FAILURE);	\
-	}while(0)
+#define PRINTERROR(str)	
+
+
  
 const char *createSQL = "create table if not exists T_Students\
 (S_id integer PRIMARY KEY NOT NULL,\
@@ -33,6 +28,7 @@ int main()
 	if(ret != SQLITE_OK)
 		PRINTERROR(sqlite3_errmsg(conn));
 	//create table
+	#if 0
 	ret = executeNoQuery(conn,createSQL);
 	if(ret == -1)
 		PRINTERROR(sqlite3_errmsg(conn));
@@ -59,7 +55,7 @@ int main()
 	
 	if(conn != NULL)
 		sqlite3_close(conn);
- 
+ 	#endif
 	return 0;
 }
  
