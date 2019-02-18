@@ -62,7 +62,11 @@
 
 
 /*----------------------公共宏定义----------------------------*/
-
+#define SYS_HANDLE_OK					(0x00)
+#define SYS_VERIFY_ERR					(0x01)
+#define SYS_INVAILD_ERR					(0x02)
+#define SYS_OVERTIME_ERR				(0x03)
+#define SYS_UNKNOWN_ERR					(0x04)
 
 /*----------------------公共类定义----------------------------*/
 
@@ -70,6 +74,7 @@
 //----------------------------------------------------
 typedef struct dev_prm_t
 {
+	DEBUG_LOG_ST_T debug_log_st;
 }DEV_PRM_T;
 typedef struct dev_dat_t
 {
@@ -100,8 +105,6 @@ extern RUN_DAT_T g_run_dat;
 
 /*------------------模块对外接口函数声明-----------------------*/
 //extern    xxxxx;
-extern UINT16_T GetDatCheckSum(UINT8_T* pdat,UINT16_T len);
-extern UINT16_T GetDatKeyCheckSum(UINT16_T cs_key,UINT8_T* pdat,UINT16_T len);
 
 
 

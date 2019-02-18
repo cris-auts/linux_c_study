@@ -23,7 +23,8 @@ int main()
 	sqlite3 *conn = NULL;
 	int i,ret,ncol;char sql[1024]={0}; 
 	char **array;
- 
+
+	PrintLog("Hello,World!\r\n");
 	ret = DB_OpenDataBase("stu.sqlite",&conn);
 	if(ret != SQLITE_OK)
 		PRINTERROR(sqlite3_errmsg(conn));

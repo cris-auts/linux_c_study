@@ -44,103 +44,118 @@ extern "C" {
 #endif
 
 #include "std_globals.h"
-#if __SYS_DEBUG_SUPPORT__
+#if __STD_DEBUG_ENABLE__
 /*---------------------------------接口头文件--------------------------------*/
 //#include "xxx_xxx.h"
 
-#define SYS_HANDLE_OK					(0x00)
-#define SYS_VERIFY_ERR					(0x01)
-#define SYS_INVAILD_ERR					(0x02)
-#define SYS_OVERTIME_ERR				(0x03)
-#define SYS_UNKNOWN_ERR					(0x04)
 
 
 /*---------------------------------模块宏定义--------------------------------*/
-#if __SYS_PRINT_ENABLE__
+#if __SYS_DEBUG_LOG_ENABLE__
 #define MyPrintLog(format,args...) 	DEBUG_Print("[cris-log][%s:%d]:"format"\r\n",__FUNCTION__, __LINE__,##args)
 #define PrintLog(format,args...)	DEBUG_Print(format,##args)
 #define PrintHex(pdat,len)			DEBUG_PrintHex(pdat,len)
 #define PrintChar(pdat,len)			DEBUG_PrintChar(pdat,len)
-#define DRV_PrintLog(fmt,arg...)          do{\
-	if(drv_print_enable)\
-	PrintLog("[DRV][%s:%d]"fmt"\r\n",__func__, __LINE__, ##arg);\
-}while(0)
-#define APP_PrintLog(fmt,arg...)          do{\
-			if(drv_print_enable)\
-			PrintLog("[APP][%s:%d]"fmt"\r\n",__func__, __LINE__, ##arg);\
-		}while(0)
 #else
 #define MyPrintLog(format,...)
 #define PrintLog(format,...)
 #define PrintHex(pdat,len)
 #define PrintChar(pdat,len)
-#define DRV_DEBUG(fmt,arg...)
-#define APP_DEBUG(fmt,arg...)
 #endif
 
 
-#if __NVRAM_LOG_ENABLE__
-#define NVRAM_PrintLog(fmt,arg...)          do{\
-	if(__NVRAM_LOG_ENABLE__)\
-	PrintLog("[NVRAM][%s:%d]"fmt"\r\n",__func__, __LINE__, ##arg);\
+#if __SYS_FUNCS_LOG_ENABLE__
+#define FUNCS_PrintLog(fmt,arg...)          do{\
+	if(g_dev_prm.debug_log_st.funcs_log)\
+	PrintLog("[FUNCS][%s:%d]"fmt"\r\n",__func__, __LINE__, ##arg);\
 }while(0)
-#define NVRAM_PrintHex(pdat,dat_len)          do{\
-			if(__NVRAM_LOG_ENABLE__)\
-				{DEBUG_Print("[NVRAM]:HEX:");DEBUG_PrintHex(pdat,dat_len);}\
+#define FUNCS_PrintHex(pdat,dat_len)          do{\
+	if(g_dev_prm.debug_log_st.funcs_log)\
+				{DEBUG_Print("[FUNCS]:HEX:");DEBUG_PrintHex(pdat,dat_len);}\
 		}while(0)
 		
-#define NVRAM_PrintChar(pdat,dat_len)          do{\
-			if(__NVRAM_LOG_ENABLE__)\
-				{DEBUG_Print("[NVRAM]:CHAR:");DEBUG_PrintChar(pdat,dat_len);}\
+#define FUNCS_PrintChar(pdat,dat_len)          do{\
+	if(g_dev_prm.debug_log_st.funcs_log)\
+				{DEBUG_Print("[FUNCS]:CHAR:");DEBUG_PrintChar(pdat,dat_len);}\
 		}while(0)
 #else
-#define NVRAM_PrintLog(fmt,arg...)
-#define NVRAM_PrintHex(pdat,dat_len)
-#define NVRAM_PrintChar(pdat,dat_len)
+#define FUNCS_PrintLog(fmt,arg...)
+#define FUNCS_PrintHex(pdat,dat_len)
+#define FUNCS_PrintChar(pdat,dat_len)
 #endif
 
-#if __FS_LOG_ENABLE__
-#define FS_PrintLog(fmt,arg...)          do{\
-	if(__FS_LOG_ENABLE__)\
-	PrintLog("[FS][%s:%d]"fmt"\r\n",__func__, __LINE__, ##arg);\
+#if __SYS_DBASE_LOG_ENABLE__
+#define DBASE_PrintLog(fmt,arg...)          do{\
+	if(g_dev_prm.debug_log_st.dbase_log)\
+	PrintLog("[DBASE][%s:%d]"fmt"\r\n",__func__, __LINE__, ##arg);\
 }while(0)
-#define FS_PrintHex(pdat,dat_len)          do{\
-			if(__FS_LOG_ENABLE__)\
-				{DEBUG_Print("[FS]:HEX:");DEBUG_PrintHex(pdat,dat_len);}\
+#define DBASE_PrintHex(pdat,dat_len)          do{\
+	if(g_dev_prm.debug_log_st.dbase_log)\
+				{DEBUG_Print("[DBASE]:HEX:");DEBUG_PrintHex(pdat,dat_len);}\
 		}while(0)
 		
-#define FS_PrintChar(pdat,dat_len)          do{\
-			if(__FS_LOG_ENABLE__)\
-				{DEBUG_Print("[FS]:CHAR:");DEBUG_PrintChar(pdat,dat_len);}\
+#define DBASE_PrintChar(pdat,dat_len)          do{\
+	if(g_dev_prm.debug_log_st.dbase_log)\
+				{DEBUG_Print("[DBASE]:CHAR:");DEBUG_PrintChar(pdat,dat_len);}\
 		}while(0)
 #else
-#define FS_PrintLog(fmt,arg...)
-#define FS_PrintHex(pdat,dat_len)
-#define FS_PrintChar(pdat,dat_len)
+#define DBASE_PrintLog(fmt,arg...)
+#define DBASE_PrintHex(pdat,dat_len)
+#define DBASE_PrintChar(pdat,dat_len)
 #endif
 
-#if __USB_LOG_ENABLE__
-#define USB_PrintLog(fmt,arg...)          do{\
-	if(__USB_LOG_ENABLE__)\
-	PrintLog("[USB][%s:%d]"fmt"\r\n",__func__, __LINE__, ##arg);\
+#if __SYS_MODBUS_LOG_ENABLE__
+#define MODBUS_PrintLog(fmt,arg...)          do{\
+	if(g_dev_prm.debug_log_st.modbus_log)\
+	PrintLog("[MODBUS][%s:%d]"fmt"\r\n",__func__, __LINE__, ##arg);\
 }while(0)
-#define USB_PrintHex(pdat,dat_len)          do{\
-			if(__USB_LOG_ENABLE__)\
-				{DEBUG_Print("[USB]:HEX:");DEBUG_PrintHex(pdat,dat_len);}\
+#define MODBUS_PrintHex(pdat,dat_len)          do{\
+	if(g_dev_prm.debug_log_st.modbus_log)\
+				{DEBUG_Print("[MODBUS]:HEX:");DEBUG_PrintHex(pdat,dat_len);}\
 		}while(0)
 		
-#define USB_PrintChar(pdat,dat_len)          do{\
-			if(__USB_LOG_ENABLE__)\
-				{DEBUG_Print("[USB]:CHAR:");DEBUG_PrintChar(pdat,dat_len);}\
+#define MODBUS_PrintChar(pdat,dat_len)          do{\
+	if(g_dev_prm.debug_log_st.modbus_log)\
+				{DEBUG_Print("[MODBUS]:CHAR:");DEBUG_PrintChar(pdat,dat_len);}\
 		}while(0)
 #else
-#define USB_PrintLog(fmt,arg...)
-#define USB_PrintHex(pdat,dat_len)
-#define USB_PrintChar(pdat,dat_len)
+#define MODBUS_PrintLog(fmt,arg...)
+#define MODBUS_PrintHex(pdat,dat_len)
+#define MODBUS_PrintChar(pdat,dat_len)
 #endif
+
+
+
+#if __SYS_DLT645_LOG_ENABLE__
+#define DLT645_PrintLog(fmt,arg...)          do{\
+	if(g_dev_prm.debug_log_st.dlt645_log)\
+	PrintLog("[DLT645][%s:%d]"fmt"\r\n",__func__, __LINE__, ##arg);\
+}while(0)
+#define DLT645_PrintHex(pdat,dat_len)          do{\
+	if(g_dev_prm.debug_log_st.dlt645_log)\
+				{DEBUG_Print("[DLT645]:HEX:");DEBUG_PrintHex(pdat,dat_len);}\
+		}while(0)
+		
+#define DLT645_PrintChar(pdat,dat_len)          do{\
+	if(g_dev_prm.debug_log_st.dlt645_log)\
+				{DEBUG_Print("[DLT645]:CHAR:");DEBUG_PrintChar(pdat,dat_len);}\
+		}while(0)
+#else
+#define DLT645_PrintLog(fmt,arg...)
+#define DLT645_PrintHex(pdat,dat_len)
+#define DLT645_PrintChar(pdat,dat_len)
+#endif
+
 
 
 /*---------------------------------模块类定义--------------------------------*/
+typedef struct debug_log_st_t{
+	UINT8_T debug_log;
+	UINT8_T funcs_log;
+	UINT8_T dbase_log;
+	UINT8_T modbus_log;
+	UINT8_T dlt645_log;
+}DEBUG_LOG_ST_T;
 
 
 
@@ -156,7 +171,7 @@ extern void DEBUG_PrintChar(unsigned char *pdat,unsigned int dat_len);
 
 
 
-#endif//#if __SYS_DEBUG_SUPPORT__
+#endif//#if __STD_DEBUG_ENABLE__
 
 
 #ifdef __cplusplus

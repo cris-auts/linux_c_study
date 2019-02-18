@@ -69,54 +69,6 @@ RUN_DAT_T g_run_dat;
                                    /* º¯Êý¶¨Òå */
 /*************************************************************************************************/
 
-/******************************************************************************
-* Function:    GetDatCheckSum
-* Input:       xxx
-* Output:      xxx
-* Return:      xxx
-* Description: xxxxx
-* -------------------------------------------------------------------
-* History:
-*     Date         Author     Change Id     Release Description Of Change
-* 2012-12-15    Cris          1st                    created
-*
-*
-******************************************************************************/
-UINT16_T GetDatCheckSum(UINT8_T* pdat,UINT16_T len)
-{
-	UINT16_T i;
-	UINT16_T cs=0;
-
-	for(i=0; i<len; i++)
-	{
-		cs += pdat[i];
-	}
-	return(cs);
-}
-
-/******************************************************************************
-* Function:    GetDatKeyCheckSum
-* Input:       xxx
-* Output:      xxx
-* Return:      xxx
-* Description: xxxxx
-* -------------------------------------------------------------------
-* History:
-*     Date         Author     Change Id     Release Description Of Change
-* 2012-12-15    Cris          1st                    created
-*
-*
-******************************************************************************/
-UINT16_T GetDatKeyCheckSum(UINT16_T cs_key,UINT8_T* pdat,UINT16_T len)
-{
-	UINT16_T i;
-
-	for(i=0; i<len; i++)
-	{
-		cs_key += pdat[i];
-	}
-	return(cs_key);
-}
 
 
 

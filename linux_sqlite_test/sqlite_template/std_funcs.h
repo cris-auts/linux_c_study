@@ -51,60 +51,9 @@ extern "C" {
 
 
 /*---------------------------------模块宏定义--------------------------------*/
-#if __SYS_PRINT_ENABLE__
-#define MyPrintLog(format,args...) \
-DEBUG_Print("[cris-log][%s:%d]:"format"\r\n",__FUNCTION__, __LINE__,##args)
-#else
-#define MyPrintLog(format,...)
-#endif
-
-#if __SYS_PRINT_ENABLE__
-#define PrintLog(format,args...) \
-DEBUG_Print(format,##args)
-#else
-#define PrintLog(format,...)
-#endif
-
-
-#if __SYS_PRINT_ENABLE__
-#define PrintHex(pdat,len) \
-DEBUG_PrintHex(pdat,len)
-#else
-#define PrintHex(pdat,len)
-#endif
-
-
-#if __SYS_PRINT_ENABLE__
-#define PrintChar(pdat,len) \
-DEBUG_PrintChar(pdat,Len)
-#else
-#define PrintChar(pdat,len)
-#endif
-
-
-#if __SYS_PRINT_ENABLE__
-#if __DRV_PRINT_ENABLE__
-#define DRV_Printlog(fmt,arg...)          do{\
-	if(drv_print_enable)\
-	PrintLog("[DRV][%s:%d]"fmt"\n",__func__, __LINE__, ##arg);\
-}while(0)
-#else
-#define DRV_DEBUG(fmt,arg...)
-#endif
-
-#if __APP_PRINT_ENABLE__
-#define APP_Printlog(fmt,arg...)          do{\
-	if(drv_print_enable)\
-	PrintLog("[APP][%s:%d]"fmt"\n",__func__, __LINE__, ##arg);\
-}while(0)
-#else
-#define DRV_DEBUG(fmt,arg...)
-#endif
-#endif
 
 
 /*---------------------------------模块类定义--------------------------------*/
-
 
 
 /*-------------------------------变量常量声明-------------------------------*/
@@ -113,9 +62,8 @@ DEBUG_PrintChar(pdat,Len)
 
 
 /*-------------------------------函数接口声明-------------------------------*/
-extern void DEBUG_Print(char * format,...);
-extern void DEBUG_PrintHex(unsigned char *pdat,unsigned int dat_len);
-extern void DEBUG_PrintChar(unsigned char *pdat,unsigned int dat_len);
+extern UINT16_T GetDatCheckSum(UINT8_T* pdat,UINT16_T len);
+extern UINT16_T GetDatKeyCheckSum(UINT16_T cs_key,UINT8_T* pdat,UINT16_T len);
 
 
 

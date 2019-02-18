@@ -38,7 +38,7 @@
 **************************************************************************************************/
 
 #include "std_globals.h"
-#if __SYS_DEBUG_SUPPORT__
+#if __STD_DEBUG_ENABLE__
 /*---------------------------------接口头文件--------------------------------*/
 #include "std_debug.h"
 #if __SYS_PRINT_UART1__
@@ -103,11 +103,15 @@ static void DRV_Print(unsigned char *pdat,unsigned int dat_len)
 *
 ******************************************************************************/
 void DEBUG_Print(char * format,...)
-{
+{	
     static unsigned int print_len=0;
     va_list args;
     va_start(args, format);
+	#if 0
     print_len = vsprintf((char*)print_buf, format, args);
+	#else
+    print_len = printf(format, args);
+	#endif
     va_end(args);
     DRV_Print(print_buf,print_len);
 }
@@ -159,13 +163,6 @@ void DEBUG_PrintChar(unsigned char *pdat,unsigned int dat_len)
     //DEBUG_Print("\r\n");
 }
 
-#ifdef  USE_FULL_ASSERT
-void assert_failed(uint8_t* file, uint32_t line)
-{
-	DEBUG_Print("Wrong parameters value: file %s on line %d\r\n", file, line);
-	while(1);
-}
-#endif
 
-#endif//#if __SYS_DEBUG_SUPPORT__
+#endif//#if __STD_DEBUG_ENABLE__
 

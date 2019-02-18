@@ -44,7 +44,7 @@
 ********************************************************************************************************/
 /*-----------------------公共头文件---------------------------*/
 #include "std_globals.h"
-#if __DB_SQLITE3_ENABLE__
+#if __DBASE_SQLITE3_ENABLE__
 
 /*-----------------------接口头文件---------------------------*/
 //#include "xxx_xxx.h"
@@ -151,5 +151,5 @@ int SQLITE3_CloseDataBase(sqlite3 *p_db)
 
 
 
-#endif//#if __DB_SQLITE3_ENABLE__
+#endif//#if __DBASE_SQLITE3_ENABLE__
 

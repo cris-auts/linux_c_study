@@ -49,12 +49,6 @@
 /*----------------------模块内宏定义--------------------------*/
 //#define    xxxxxx                (xxxxxxxx)
 
-#if __XXXX_XXXX_DEBUG_ENABLE__
-#define XXXX_PrintLog(format,...) \
-LOG_Print("XXXX[%s:%d]:"format"\r\n",__FUNCTION__, __LINE__,##__VA_ARGS__)
-#else
-#define XXXX_PrintLog(format,...)
-#endif
 
 
 
@@ -75,14 +69,11 @@ LOG_Print("XXXX[%s:%d]:"format"\r\n",__FUNCTION__, __LINE__,##__VA_ARGS__)
 /*****************************************************************************/
 
 /******************************************************************************
-* Function:    XXX_XxxXxx
+* Function:    GetDatCheckSum
 * Input:       xxx
 * Output:      xxx
 * Return:      xxx
 * Description: xxxxx
-*
-* Others:
-*
 * -------------------------------------------------------------------
 * History:
 *     Date         Author     Change Id     Release Description Of Change
@@ -90,6 +81,41 @@ LOG_Print("XXXX[%s:%d]:"format"\r\n",__FUNCTION__, __LINE__,##__VA_ARGS__)
 *
 *
 ******************************************************************************/
+UINT16_T GetDatCheckSum(UINT8_T* pdat,UINT16_T len)
+{
+	UINT16_T i;
+	UINT16_T cs=0;
+
+	for(i=0; i<len; i++)
+	{
+		cs += pdat[i];
+	}
+	return(cs);
+}
+
+/******************************************************************************
+* Function:    GetDatKeyCheckSum
+* Input:       xxx
+* Output:      xxx
+* Return:      xxx
+* Description: xxxxx
+* -------------------------------------------------------------------
+* History:
+*     Date         Author     Change Id     Release Description Of Change
+* 2012-12-15    Cris          1st                    created
+*
+*
+******************************************************************************/
+UINT16_T GetDatKeyCheckSum(UINT16_T cs_key,UINT8_T* pdat,UINT16_T len)
+{
+	UINT16_T i;
+
+	for(i=0; i<len; i++)
+	{
+		cs_key += pdat[i];
+	}
+	return(cs_key);
+}
 
 
 
