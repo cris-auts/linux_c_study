@@ -10,10 +10,10 @@
 *
 *********************************************************************************************************
 *
-* File name: app_modbus_task.h
+* File name: app_dlt645_task.c
 * -------------------------------------
 *
-* Module: all
+* Module: xxx
 * -------------------------------------
 *
 * Project: xxx
@@ -28,7 +28,7 @@
 *
 * History:
 *
-* Date                Author             Change Id             Release Description Of Change
+* Date                   Author             Change Id             Release Description Of Change
 * ------------------------------------------------------------------------------------------------------
 *
 *
@@ -40,56 +40,50 @@
 * Others:
 *
 ********************************************************************************************************/
-#ifndef __APP_MODBUS_TASK_H__
-#define __APP_MODBUS_TASK_H__
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-
-/*----------------------公共头文件----------------------------*/
+/*------------------------------------------------------------------*/
 #include "std_globals.h"
-#if __SYS_MODBUS_ENABLE__
-
-//#include "xxx_xxx.h"
-
-
-/*----------------------公共宏定义----------------------------*/
-//#define    xxxxxx                (xxxxxxxx)
-
-
-/*----------------------公共类定义----------------------------*/
-typedef struct modbus_nvram_t {//nvram data
-    unsigned int demo_value;
-} MODBUS_NVRAM_T;
-
-typedef struct modbus_gpram_t {//gpram data
-	pthread_t thread;
-} MODBUS_GPRAM_T;
-
-typedef struct modbus_t {
-    MODBUS_NVRAM_T nvram;
-    MODBUS_GPRAM_T gpram;
-} MODBUS_T;
-
-
-/*-----------------模块对外接口变量声明-----------------------*/
-extern    MODBUS_T modbus;
+#if __SYS_DLT645_ENABLE__
+#include "app_dlt645_task.h"
 
 
 
-/*-----------------模块对外接口函数声明-----------------------*/
-extern void* APP_ModbusThread(void *p_arg);
+/*-----------------------模块内宏定义-------------------------*/
+//#define    xxxxxx              (xxxxxxxx)
 
 
-#endif//#if __SYS_MODBUS_ENABLE__
 
-#ifdef __cplusplus
+/*----------------------模块内类定义--------------------------*/
+
+
+
+/*----------------------变量常量定义--------------------------*/
+
+DLT645_T dlt645;
+
+/*****************************************************************************/
+                         /* 函数定义 */
+/*****************************************************************************/
+
+/******************************************************************************
+* Function:    APP_Dlt645Thread
+* Input:       xxx
+* Output:      xxx
+* Return:      xxx
+* Description: xxxxx
+*
+*
+******************************************************************************/
+void* APP_Dlt645Thread(void *p_arg)
+{
+	while (1)
+	{
+		DLT645_PrintLog("Hello,APP_Dlt645Thread!\r\n");
+		sleep(1);
+	}
+	return NULL;
 }
-#endif
-#endif //#ifndef __APP_MODBUS_TASK_H__
 
+#endif//#if __SYS_DLT645_ENABLE__
 
 
 

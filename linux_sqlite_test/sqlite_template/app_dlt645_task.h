@@ -10,7 +10,7 @@
 *
 *********************************************************************************************************
 *
-* File name: app_modbus_task.h
+* File name: app_dlt645_task.h
 * -------------------------------------
 *
 * Module: all
@@ -40,8 +40,8 @@
 * Others:
 *
 ********************************************************************************************************/
-#ifndef __APP_MODBUS_TASK_H__
-#define __APP_MODBUS_TASK_H__
+#ifndef __APP_DLT645_TASK_H__
+#define __APP_DLT645_TASK_H__
 
 #ifdef __cplusplus
 extern "C" {
@@ -50,7 +50,7 @@ extern "C" {
 
 /*----------------------公共头文件----------------------------*/
 #include "std_globals.h"
-#if __SYS_MODBUS_ENABLE__
+#if __SYS_DLT645_ENABLE__
 
 //#include "xxx_xxx.h"
 
@@ -60,35 +60,34 @@ extern "C" {
 
 
 /*----------------------公共类定义----------------------------*/
-typedef struct modbus_nvram_t {//nvram data
+typedef struct dlt645_nvram_t {//nvram data
     unsigned int demo_value;
-} MODBUS_NVRAM_T;
+} DLT645_NVRAM_T;
 
-typedef struct modbus_gpram_t {//gpram data
+typedef struct dlt645_gpram_t {//gpram data
 	pthread_t thread;
-} MODBUS_GPRAM_T;
+} DLT645_GPRAM_T;
 
-typedef struct modbus_t {
-    MODBUS_NVRAM_T nvram;
-    MODBUS_GPRAM_T gpram;
-} MODBUS_T;
+typedef struct dlt645_t {
+    DLT645_NVRAM_T nvram;
+    DLT645_GPRAM_T gpram;
+} DLT645_T;
 
 
 /*-----------------模块对外接口变量声明-----------------------*/
-extern    MODBUS_T modbus;
-
+extern DLT645_T dlt645;
 
 
 /*-----------------模块对外接口函数声明-----------------------*/
-extern void* APP_ModbusThread(void *p_arg);
+extern void* APP_Dlt645Thread(void *p_arg);
 
 
-#endif//#if __SYS_MODBUS_ENABLE__
+#endif//#if __SYS_DLT645_ENABLE__
 
 #ifdef __cplusplus
 }
 #endif
-#endif //#ifndef __APP_MODBUS_TASK_H__
+#endif //#ifndef __APP_DLT645_TASK_H__
 
 
 

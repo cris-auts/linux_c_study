@@ -146,6 +146,25 @@ extern "C" {
 #define DLT645_PrintChar(pdat,dat_len)
 #endif
 
+#if __SYS_METER_LOG_ENABLE__
+#define METER_PrintLog(fmt,arg...)          do{\
+	if(g_dev_prm.debug_log_st.meter_log)\
+	PrintLog("[METER]:"fmt,##arg);\
+}while(0)
+#define METER_PrintHex(pdat,dat_len)          do{\
+	if(g_dev_prm.debug_log_st.meter_log)\
+				{DEBUG_Print("[METER]:HEX:");DEBUG_PrintHex(pdat,dat_len);}\
+		}while(0)
+		
+#define METER_PrintChar(pdat,dat_len)          do{\
+	if(g_dev_prm.debug_log_st.meter_log)\
+				{DEBUG_Print("[METER]:CHAR:");DEBUG_PrintChar(pdat,dat_len);}\
+		}while(0)
+#else
+#define METER_PrintLog(fmt,arg...)
+#define METER_PrintHex(pdat,dat_len)
+#define METER_PrintChar(pdat,dat_len)
+#endif
 
 
 /*---------------------------------模块类定义--------------------------------*/
@@ -155,6 +174,7 @@ typedef struct debug_log_st_t{
 	UINT8_T dbase_log;
 	UINT8_T modbus_log;
 	UINT8_T dlt645_log;
+	UINT8_T meter_log;
 }DEBUG_LOG_ST_T;
 
 

@@ -43,8 +43,7 @@
 /*------------------------------------------------------------------*/
 #include "std_globals.h"
 #if __SYS_MODBUS_ENABLE__
-//#include "xxx_xxx.h"
-//#include "xxx_xxx.h"
+#include "app_modbus_task.h"
 
 
 
@@ -59,6 +58,7 @@
 
 /*----------------------变量常量定义--------------------------*/
 
+MODBUS_T modbus;
 
 
 
@@ -67,7 +67,7 @@
 /*****************************************************************************/
 
 /******************************************************************************
-* Function:    XXX_XxxXxx
+* Function:    APP_ModbusTask
 * Input:       xxx
 * Output:      xxx
 * Return:      xxx
@@ -75,7 +75,7 @@
 *
 *
 ******************************************************************************/
-void* APP_ModbusTask(void *p_arg)
+void* APP_ModbusThread(void *p_arg)
 {
 	while (1)
 	{
