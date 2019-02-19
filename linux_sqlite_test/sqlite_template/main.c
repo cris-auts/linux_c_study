@@ -54,7 +54,6 @@ int main(int argc, char** argv)
 {
 	int res=0;
 	int thread_idx=0;
-	void* thrd_ret;
 	memset(&g_dev_prm.debug_log_st,1,sizeof(g_dev_prm.debug_log_st));
 
 	for(thread_idx=0;thread_idx<THREAD_MAX;thread_idx++)
@@ -64,7 +63,10 @@ int main(int argc, char** argv)
 						   thread_info[thread_idx].pthread_func,
 						   &thread_info[thread_idx]);
 		if(res != 0)
+		{
+			pthread_detach(*thread_info[thread_idx].thread);
 			PrintLog("create thread %s failed!\r\n",thread_info[thread_idx].thread_name);
+		}
 		else
 			PrintLog("Create thread %s successfully\r\n",thread_info[thread_idx].thread_name);
 	}
