@@ -47,6 +47,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdarg.h>
+#include <unistd.h>
 #include <pthread.h>
 
 /*-------------------公共头文件----------------*/

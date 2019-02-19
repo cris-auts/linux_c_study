@@ -79,8 +79,7 @@ void* APP_ModbusTask(void *p_arg)
 {
 	while (1)
 	{
-		MyPrintLog("Hello,APP_ModbusTask!\r\n");
-		//printf("%s:%d\r\n",__func__,__LINE__);
+		MODBUS_PrintLog("Hello,APP_ModbusTask!\r\n");
 		sleep(1);
 	}
 	return NULL;

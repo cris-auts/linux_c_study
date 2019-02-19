@@ -154,10 +154,12 @@ void DEBUG_PrintHex(unsigned char *pdat,unsigned int dat_len)
 ******************************************************************************/
 void DEBUG_PrintChar(unsigned char *pdat,unsigned int dat_len)
 {
-    
-    //DEBUG_Print("CHAR: ");
-    DRV_Print(pdat,dat_len);
-    //DEBUG_Print("\r\n");
+    unsigned int i;
+    //DEBUG_Print("HEX: ");
+    for (i = 0; i < dat_len; i++)
+    {
+        DEBUG_Print("%c",pdat[i]);
+    }
 }
 
 
