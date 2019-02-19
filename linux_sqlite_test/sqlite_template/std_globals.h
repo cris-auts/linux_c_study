@@ -4,9 +4,9 @@
 *  This software is protected by Copyright and the information contained
 *  herein is confidential. The software may not be copied and the information
 *  contained herein may not be used or disclosed except with the written
-*  permission of  CRIS Technologies, Inc.
+*  permission of WAN XING Tech. Co., Ltd.(C) 2020.
 * 
-*  Copyright (C), 2010-2015 CRIS Technologies, Inc.
+*  Copyright (C), 2018-2030, WAN XING Tech. Co., Ltd.
 *
 ***************************************************************************************************
 *
@@ -54,8 +54,8 @@
 #include "std_config.h"
 #include "std_macros.h"
 #include "std_types.h"
-#include "std_debug.h"
 #include "std_funcs.h"
+#include "std_debug.h"
 
 /*--------------自定义公共头文件-------------*/
 

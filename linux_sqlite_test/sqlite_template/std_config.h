@@ -4,9 +4,9 @@
 *  This software is protected by Copyright and the information contained
 *  herein is confidential. The software may not be copied and the information
 *  contained herein may not be used or disclosed except with the written
-*  permission of  CRIS Technologies, Inc.
+*  permission of WAN XING Tech. Co., Ltd.(C) 2020.
 * 
-*  Copyright (C), 2010-2015 CRIS Technologies, Inc.
+*  Copyright (C), 2018-2030, WAN XING Tech. Co., Ltd.
 *
 ***************************************************************************************************
 *
@@ -58,7 +58,7 @@
 #define SYS_HARDWARE_RELEASE_TIME                       "17:00:00"
 
 #define SYS_DEVICE_ID                                   "PD-XXX-XXX-XXX"
-#define SYS_MANUFACTURER_INFO                           "CRIS Technologies, Inc."
+#define SYS_MANUFACTURER_INFO                           "WAN XING Tech. Co., Ltd."
 
 
 /****************************************************************************************
@@ -73,7 +73,7 @@
 #define USR_HARDWARE_RELEASE_TIME                       "17:00:00"
 	
 #define USR_DEVICE_ID                                   "PD-XXX-XXX-XXX"
-#define USR_MANUFACTURER_INFO                           "CRIS Technologies, Inc."
+#define USR_MANUFACTURER_INFO                           " WAN XING Tech. Co., Ltd."
 
 
 /****************************************************************************************

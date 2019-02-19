@@ -4,7 +4,7 @@
 *  This software is protected by Copyright and the information contained
 *  herein is confidential. The software may not be copied and the information
 *  contained herein may not be used or disclosed except with the written
-*  permission of  WAN XING Tech. Co., Ltd.(C) 2012.
+*  permission of WAN XING Tech. Co., Ltd.(C) 2020.
 *
 *  Copyright (C), 2018-2030, WAN XING Tech. Co., Ltd.
 *
