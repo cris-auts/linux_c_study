@@ -1,27 +1,34 @@
+VERSION = 1.0.0
+TARGET = test_v$(VERSION)
+CROSS = 
+
+
+
+TOP_PATH = $(shell pwd)
+
+
+
+
+
 SRCS  := $(wildcard *.c) $(wildcard *.cpp)
 OBJS    := $(patsubst %.c,%.o,$(patsubst %.cpp,%.o,$(SRCS)))
-  
-TARGET  := executable_file 
-CC      := gcc
-LIBS    := 
+
+CC      := $(CROSS)gcc
+LIBS_PATH = -L./
 LDFLAGS := -l sqlite3 -l pthread -lpaho-mqtt3c
 DEFINES :=
-INCLUDE := 
-CFLAGS  := -g -Wall $(DEFINES) $(INCLUDE)
+INCLUDES := -I./ 
+CFLAGS  := -g -Wall $(DEFINES) $(INCLUDES)
 CXXFLAGS:= $(CFLAGS) -DHAVE_CONFIG_H
-  
+RM = rm -rf  
+
+
 .PHONY : objs clean rebuild
   
 all : $(TARGET)
-  
-objs : $(OBJS)
-  
-rebuild: veryclean everything
                 
 clean :
-	rm -rf *.so
-	rm -fr *.o
-	rm -fr $(TARGET)
+	$(RM) $(TARGET) *.o *.so
   
 $(TARGET) : $(OBJS)
-	$(CC) $(CXXFLAGS) -o $@ $(OBJS) $(LDFLAGS) $(LIBS)
+	$(CC) $(CXXFLAGS) -o $@ $(OBJS) $(LDFLAGS) $(LIBS_PATH)
