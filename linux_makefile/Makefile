@@ -1,34 +1,20 @@
-VERSION = 1.0.0
-TARGET = test_v$(VERSION)
-CROSS = 
+DIRS = DBASE PRTC STD USR .
+
+TARGET = test_app
 
 
 
-TOP_PATH = $(shell pwd)
+CC = gcc
+CFLAGS = -O2 
+CFLAGS += $(patsubst %,-I%,$(DIRS))
 
-
-
-
-
-SRCS  := $(wildcard *.c) $(wildcard *.cpp)
-OBJS    := $(patsubst %.c,%.o,$(patsubst %.cpp,%.o,$(SRCS)))
-
-CC      := $(CROSS)gcc
-LIBS_PATH = -L./
 LDFLAGS := -l sqlite3 -l pthread -lpaho-mqtt3c
-DEFINES :=
-INCLUDES := -I./ 
-CFLAGS  := -g -Wall $(DEFINES) $(INCLUDES)
-CXXFLAGS:= $(CFLAGS) -DHAVE_CONFIG_H
-RM = rm -rf  
 
+FILES = $(foreach dir, $(DIRS), $(wildcard $(dir)/*.c))
+OBJS = $(patsubst %.c, %.o, $(FILES))
+$(TARGET):$(OBJS)
+	$(CC) -o $(TARGET) $(OBJS) $(LDFLAGS)
 
-.PHONY : objs clean rebuild
-  
-all : $(TARGET)
-                
-clean :
-	$(RM) $(TARGET) *.o *.so
-  
-$(TARGET) : $(OBJS)
-	$(CC) $(CXXFLAGS) -o $@ $(OBJS) $(LDFLAGS) $(LIBS_PATH)
+clean:
+	-$(RM) $(TARGET)
+	-$(RM) $(OBJS)
