@@ -1,4 +1,9 @@
-DIRS = DBASE PRTC STD USR .
+SRC_PATH = ./
+DIRS = $(shell find $(SRC_PATH) -maxdepth 3 -type d)
+
+
+
+#DIRS = DBASE PRTC STD USR .
 
 TARGET = test_app
 

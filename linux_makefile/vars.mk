@@ -1,8 +1,8 @@
 %:
-        @echo '$*=$($*)'
+	@echo '$*=$($*)'
  
 d-%:
-        @echo '$*=$($*)'
-        @echo '  origin = $(origin $*)'
-        @echo '   value = $(value  $*)'
-        @echo '  flavor = $(flavor $*)'
+	@echo '$*=$($*)'
+	@echo '  origin = $(origin $*)'
+	@echo '   value = $(value  $*)'
+	@echo '  flavor = $(flavor $*)'
