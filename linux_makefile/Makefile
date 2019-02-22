@@ -19,6 +19,7 @@ FILES = $(foreach dir, $(DIRS), $(wildcard $(dir)/*.c))
 OBJS = $(patsubst %.c, %.o, $(FILES))
 $(TARGET):$(OBJS)
 	$(CC) -o $(TARGET) $(OBJS) $(LDFLAGS)
+	-$(RM) $(OBJS)
 
 clean:
 	-$(RM) $(TARGET)
