@@ -11,7 +11,7 @@
 #include "app_meter_task.h"
 #endif
 
-
+#include "hello.h"
 
 typedef enum thread_idx_t
 {
@@ -55,7 +55,7 @@ int main(int argc, char** argv)
 	int res=0;
 	int thread_idx=0;
 	memset(&g_dev_prm.debug_log_st,1,sizeof(g_dev_prm.debug_log_st));
-
+	print_hello();
 	for(thread_idx=0;thread_idx<THREAD_MAX;thread_idx++)
 	{
 		res=pthread_create(thread_info[thread_idx].thread,

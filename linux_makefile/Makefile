@@ -1,5 +1,5 @@
 SRC_PATH = ./
-DIRS = $(shell find $(SRC_PATH) -maxdepth 3 -type d)
+DIRS = $(shell find $(SRC_PATH) -maxdepth 5 -type d)
 
 
 
