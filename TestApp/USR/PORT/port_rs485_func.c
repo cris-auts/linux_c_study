@@ -253,6 +253,73 @@ int PORT_Rs485Cfg(int fd,int band_rate,int flow_ctrl,int data_bits,int stop_bits
 }
 
 
+/******************************************************************************
+* Function:    PORT_Rs485Read
+* Input:       xxx
+* Output:      xxx
+* Return:      xxx
+* Description: xxxxx
+*
+*
+******************************************************************************/
+int PORT_Rs485Read(int fd, char *rcv_buf,int data_len)
+{  
+	int len,fs_sel;  
+	fd_set fs_read;  
+	 
+	struct timeval time;  
+	 
+	FD_ZERO(&fs_read);	
+	FD_SET(fd,&fs_read);  
+	 
+	time.tv_sec = 1;  
+	time.tv_usec = 0;  
+	 
+	//使用select实现串口的多路通信	
+	fs_sel = select(fd+1,&fs_read,NULL,NULL,&time);  
+	printf("fs_sel = %d\n",fs_sel);  
+	if(fs_sel)	
+	{  
+		len = read(fd,rcv_buf,data_len);  
+		printf("I am right!(len = %d fs_sel = %d\n",len,fs_sel);  
+		return len;  
+	}  
+	else  
+	{  
+		printf("Sorry,I am wrong!");  
+		return FALSE;  
+	}		
+}  
+
+
+/******************************************************************************
+* Function:    PORT_Rs485Write
+* Input:       xxx
+* Output:      xxx
+* Return:      xxx
+* Description: xxxxx
+*
+*
+******************************************************************************/
+int PORT_Rs485Write(int fd, char *snd_buf,int data_len)
+{  
+	int len = 0;  
+	 
+	len = write(fd,snd_buf,data_len);	
+	if (len == data_len )  
+	{  
+		printf("Send data: \"%s\"\n",snd_buf);
+		return len;  
+	}		
+	else	 
+	{  
+				 
+		tcflush(fd,TCOFLUSH);  
+		return FALSE;  
+	}  
+	 
+}  
+
 
 /******************************************************************************
 * Function:    APP_Rs485Thread
@@ -265,7 +332,9 @@ int PORT_Rs485Cfg(int fd,int band_rate,int flow_ctrl,int data_bits,int stop_bits
 ******************************************************************************/
 void* PORT_Rs485Thread(void *p_arg)
 {
-	int fd; 
+	int fd;
+	int rcv_len=0;
+	char rcv_buf[128];
 	PORT_RS485_CFG_T *pcfg=p_arg;
 	fd=PORT_Rs485Init(pcfg->dev_path);
 	if(fd<0)
@@ -283,8 +352,15 @@ void* PORT_Rs485Thread(void *p_arg)
 	
 	while (1)
 	{
-		METER_PrintLog("Hello,APP_Rs485Thread!\r\n");
-		sleep(1);
+		//METER_PrintLog("Hello,APP_Rs485Thread!\r\n");
+
+		PORT_Rs485Write(fd,"Hello,APP_Rs485Thread!\r\n",sizeof("Hello,APP_Rs485Thread!\r\n"));
+		
+		rcv_len=PORT_Rs485Read(fd, rcv_buf,128);
+		if(rcv_len)
+		{
+			METER_PrintLog("Rcv New Dat:%s",rcv_buf);
+		}
 	}
 	return NULL;
 }
