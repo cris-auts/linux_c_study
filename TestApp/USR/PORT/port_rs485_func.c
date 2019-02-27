@@ -49,7 +49,6 @@
 
 /*-----------------------模块内宏定义-------------------------*/
 //#define    xxxxxx              (xxxxxxxx)
-#define PORT_RS485			"/dev/ttyUSB0"
 
 
 /*----------------------模块内类定义--------------------------*/
@@ -83,7 +82,7 @@ int PORT_Rs485Init(const char *dev_path)
 	if(fd<=0)  
 	{  
 	   perror("Can't Open Serial Port");  
-	   return(FALSE);  
+	   return (-1);  
 	}  
 	//恢复串口为阻塞状态		
 	
@@ -91,7 +90,7 @@ int PORT_Rs485Init(const char *dev_path)
 	if(fcntl(fd, F_SETFL, 0) < 0)  
 	{  
 	   printf("fcntl failed!\n");  
-	   return(FALSE);  
+	   return (-1);  
 	}	   
 	else  
 	{  
@@ -102,7 +101,7 @@ int PORT_Rs485Init(const char *dev_path)
 	if(0 == isatty(STDIN_FILENO))  
 	{  
 	   printf("standard input is not a terminal device\n");  
-	   return(FALSE);  
+	   return (-1);  
 	}  
 	else  
 	{  

@@ -49,8 +49,8 @@
 
 
 /*-----------------------模块内宏定义-------------------------*/
-#define    PORT_RS485_PATH              "/dev/ttyUSB0"
-#define    PORT_RS232_PATH              "/dev/ttyUSB1"
+#define    PORT_RS485_PATH              "/dev/ttyUSB1"
+#define    PORT_RS232_PATH              "/dev/ttyUSB0"
 
 
 
@@ -125,6 +125,7 @@ void APP_MeterThreadInit(void)
 	else
 		METER_PrintLog("Create port RS485 thread successfully\r\n");
 
+
 	port_rs232_cfg.port_type = PORT_RS232;
 	port_rs232_cfg.rs232_cfg.band_rate = 115200;
 	port_rs232_cfg.rs232_cfg.flow_ctrl = 0;
@@ -140,7 +141,6 @@ void APP_MeterThreadInit(void)
 	}
 	else
 		METER_PrintLog("Create port RS232 thread successfully\r\n");
-
 
 
 	
