@@ -10,7 +10,7 @@ TARGET = test_app
 
 
 CC = gcc
-CFLAGS = -Wall 
+CFLAGS = -Wall -g
 CFLAGS += $(patsubst %,-I%,$(DIRS))
 
 LDFLAGS := -l sqlite3 -l pthread -lpaho-mqtt3c

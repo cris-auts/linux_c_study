@@ -266,14 +266,15 @@ int PORT_Rs485Cfg(int fd,int band_rate,int flow_ctrl,int data_bits,int stop_bits
 void* PORT_Rs485Thread(void *p_arg)
 {
 	int fd; 
-	fd=PORT_Rs485Init(PORT_RS485);
+	PORT_RS485_CFG_T *pcfg=p_arg;
+	fd=PORT_Rs485Init(pcfg->dev_path);
 	if(fd<0)
 	{
 		METER_PrintLog("PORT RS485 Init failed!\r\n");
 		pthread_exit(NULL); 
 	}
 
-	if(PORT_Rs485Cfg(fd,9600,0,8,1,'N') == FALSE)
+	if(PORT_Rs485Cfg(fd,pcfg->band_rate,pcfg->flow_ctrl,pcfg->data_bits,pcfg->stop_bits,pcfg->parity) == FALSE)
 	{
 		METER_PrintLog("PORT RS485 Cfg failed!\r\n");
 		pthread_exit(NULL); 

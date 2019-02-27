@@ -49,7 +49,9 @@
 
 
 /*-----------------------模块内宏定义-------------------------*/
-//#define    xxxxxx              (xxxxxxxx)
+#define    PORT_RS485_PATH              "/dev/ttyUSB0"
+#define    PORT_RS232_PATH              "/dev/ttyUSB1"
+
 
 
 
@@ -113,7 +115,8 @@ void APP_MeterThreadInit(void)
 	port_rs485_cfg.rs485_cfg.data_bits = 8;
 	port_rs485_cfg.rs485_cfg.stop_bits = 1;
 	port_rs485_cfg.rs485_cfg.parity = 'N';
-	rc=pthread_create(&thread_port_rs485,&pthread_port_rs485_attr,PORT_Rs485Thread,&port_rs485_cfg);
+	memcpy(port_rs485_cfg.rs485_cfg.dev_path,PORT_RS485_PATH,sizeof(PORT_RS485_PATH));
+	rc=pthread_create(&thread_port_rs485,&pthread_port_rs485_attr,PORT_Rs485Thread,&(port_rs485_cfg.rs485_cfg));
 	if(rc != 0)
 	{
 		pthread_detach(thread_port_rs485);
@@ -123,12 +126,13 @@ void APP_MeterThreadInit(void)
 		METER_PrintLog("Create port RS485 thread successfully\r\n");
 
 	port_rs232_cfg.port_type = PORT_RS232;
-	port_rs232_cfg.rs485_cfg.band_rate = 115200;
-	port_rs232_cfg.rs485_cfg.flow_ctrl = 0;
-	port_rs232_cfg.rs485_cfg.data_bits = 8;
-	port_rs232_cfg.rs485_cfg.stop_bits = 1;
-	port_rs232_cfg.rs485_cfg.parity = 'N';
-	rc=pthread_create(&thread_port_rs232,&pthread_port_rs232_attr,PORT_Rs232Thread,&port_rs232_cfg);
+	port_rs232_cfg.rs232_cfg.band_rate = 115200;
+	port_rs232_cfg.rs232_cfg.flow_ctrl = 0;
+	port_rs232_cfg.rs232_cfg.data_bits = 8;
+	port_rs232_cfg.rs232_cfg.stop_bits = 1;
+	port_rs232_cfg.rs232_cfg.parity = 'N';
+	memcpy(port_rs232_cfg.rs232_cfg.dev_path,PORT_RS232_PATH,sizeof(PORT_RS232_PATH));
+	rc=pthread_create(&thread_port_rs232,&pthread_port_rs232_attr,PORT_Rs232Thread,&port_rs232_cfg.rs232_cfg);
 	if(rc != 0)
 	{
 		pthread_detach(thread_port_rs232);
