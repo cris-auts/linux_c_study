@@ -111,7 +111,7 @@ void* PORT_Rs232Thread(void *p_arg)
 	
 	while (1)
 	{
-		METER_PrintLog("Hello,PORT_Rs232Thread!\r\n");
+		RS232_PrintLog("Hello,PORT_Rs232Thread!\r\n");
 		sleep(1);
 	}
 	return NULL;

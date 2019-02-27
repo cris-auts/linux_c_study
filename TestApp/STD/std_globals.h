@@ -49,11 +49,11 @@
 #include <stdarg.h>
 #include <unistd.h>
 #include <pthread.h>
-#include<sys/types.h>   
-#include<sys/stat.h>     
-#include<fcntl.h>      /*文件控制定义*/  
-#include<termios.h>    /*PPSIX 终端控制定义*/  
-#include<errno.h>      /*错误号定义*/  
+#include <fcntl.h>      /*文件控制定义*/  
+#include <termios.h>    /*PPSIX 终端控制定义*/  
+#include <errno.h>      /*错误号定义*/  
+#include <sys/types.h>   
+#include <sys/stat.h>     
 
 
 /*-------------------公共头文件----------------*/

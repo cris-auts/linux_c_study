@@ -135,10 +135,13 @@
 
 #if __SYS_RS485_SUPPORT__
 #define    __SYS_RS485_ENABLE__                			(1)	//Added By Cris@20190218
+#define    __SYS_RS485_LOG_ENABLE__                		(1)	//Added By Cris@20190218
+
 #endif
 
 #if __SYS_RS232_SUPPORT__
 #define    __SYS_RS232_ENABLE__                			(1)	//Added By Cris@20190218
+#define    __SYS_RS232_LOG_ENABLE__                		(1)	//Added By Cris@20190218
 #endif
 
 

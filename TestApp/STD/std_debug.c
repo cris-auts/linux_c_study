@@ -133,9 +133,10 @@ void DEBUG_PrintHex(unsigned char *pdat,unsigned int dat_len)
     //DEBUG_Print("HEX: ");
     for (i = 0; i < dat_len; i++)
     {
-        DEBUG_Print("0x%.2X ",pdat[i]);
+        //DEBUG_Print("0x%.2X ",pdat[i]);
+        DEBUG_Print("%.2X ",pdat[i]);
     }
-    //DEBUG_Print("\r\n");
+    DEBUG_Print("\r\n");
 }
 
 

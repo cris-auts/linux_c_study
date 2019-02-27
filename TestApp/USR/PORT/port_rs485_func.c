@@ -342,13 +342,13 @@ void* PORT_Rs485Thread(void *p_arg)
 	fd=PORT_Rs485Init(pcfg->dev_path);
 	if(fd<0)
 	{
-		METER_PrintLog("PORT RS485 Init failed!\r\n");
+		RS485_PrintLog("PORT RS485 Init failed!\r\n");
 		pthread_exit(NULL); 
 	}
 
 	if(PORT_Rs485Cfg(fd,pcfg->band_rate,pcfg->flow_ctrl,pcfg->data_bits,pcfg->stop_bits,pcfg->parity) == FALSE)
 	{
-		METER_PrintLog("PORT RS485 Cfg failed!\r\n");
+		RS485_PrintLog("PORT RS485 Cfg failed!\r\n");
 		pthread_exit(NULL); 
 	}
 
@@ -361,22 +361,22 @@ void* PORT_Rs485Thread(void *p_arg)
 		
 	while (1)
 	{
-		//METER_PrintLog("Hello,APP_Rs485Thread!\r\n");
+		//RS485_PrintLog("Hello,APP_Rs485Thread!\r\n");
 
 		snd_len=PORT_Rs485Write(fd,snd_buf,snd_len);
 		if(snd_len)
 		{
-			METER_PrintLog("Snd New Dat:%d",snd_len);
-			METER_PrintHex(snd_buf,snd_len);
+			RS485_PrintLog("Snd New Dat:%d\r\n",snd_len);
+			RS485_PrintHex((unsigned char*)snd_buf,snd_len);
 
 		}
 		sleep(1);
 		rcv_len=PORT_Rs485Read(fd, rcv_buf,300);
 		if(rcv_len)
 		{
-			METER_PrintLog("Rcv New Dat:%d",rcv_len);
+			RS485_PrintLog("Rcv New Dat:%d\r\n",rcv_len);
 			
-			METER_PrintHex(rcv_buf,rcv_len);
+			RS485_PrintHex((unsigned char*)rcv_buf,rcv_len);
 		}
 		
 	}
