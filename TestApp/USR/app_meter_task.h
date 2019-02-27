@@ -60,6 +60,7 @@ extern "C" {
 
 
 /*----------------------公共类定义----------------------------*/
+
 typedef struct meter_nvram_t {//nvram data
     unsigned int demo_value;
 } METER_NVRAM_T;

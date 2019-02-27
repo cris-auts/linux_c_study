@@ -43,8 +43,7 @@
 /*------------------------------------------------------------------*/
 #include "std_globals.h"
 #if __SYS_RS485_ENABLE__
-//#include "xxx_xxx.h"
-//#include "xxx_xxx.h"
+#include "port_rs485_func.h"
 
 
 
@@ -78,9 +77,10 @@
 int PORT_Rs485Init(const char *dev_path)
 {
 	int fd;                          
+	printf("dev_path=%s\n",dev_path);
 
 	fd = open(dev_path, O_RDWR|O_NOCTTY|O_NDELAY);	
-	if (FALSE == fd)  
+	if(fd<=0)  
 	{  
 	   perror("Can't Open Serial Port");  
 	   return(FALSE);  
@@ -126,7 +126,6 @@ int PORT_Rs485Cfg(int fd,int band_rate,int flow_ctrl,int data_bits,int stop_bits
 {  
 	 
 	int   i;  
-	int   status;  
 	int   speed_arr[] = { B115200, B19200, B9600, B4800, B2400, B1200, B300};  
 	int   name_arr[] = {115200,  19200,  9600,	4800,  2400,  1200,  300};	
 		   

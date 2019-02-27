@@ -10,7 +10,7 @@
 *
 *********************************************************************************************************
 *
-* File name: port_rs485_func.h
+* File name: port_rs232_func.h
 * -------------------------------------
 *
 * Module: all
@@ -40,8 +40,8 @@
 * Others:
 *
 ********************************************************************************************************/
-#ifndef __PORT_RS485_H__
-#define __PORT_RS485_H__
+#ifndef __PORT_RS232_FUNC_H__
+#define __PORT_RS232_FUNC_H__
 
 #ifdef __cplusplus
 extern "C" {
@@ -50,7 +50,7 @@ extern "C" {
 
 /*----------------------公共头文件----------------------------*/
 #include "std_globals.h"
-#if __SYS_RS485_ENABLE__
+#if __SYS_RS232_ENABLE__
 
 //#include "xxx_xxx.h"
 
@@ -58,33 +58,32 @@ extern "C" {
 /*----------------------公共宏定义----------------------------*/
 //#define    xxxxxx                (xxxxxxxx)
 
+
 /*----------------------公共类定义----------------------------*/
-typedef struct port_rs485_cfg_t{
+typedef struct port_rs232_cfg_t{
 	char dev_path[32];
 	int band_rate;
 	int flow_ctrl;
 	int data_bits;
 	int stop_bits;
 	int parity;
-}PORT_RS485_CFG_T;
-
-
+}PORT_RS232_CFG_T;
 
 /*-----------------模块对外接口变量声明-----------------------*/
 //extern    xxxxx;
 
 
 /*-----------------模块对外接口函数声明-----------------------*/
-extern int PORT_Rs485WrBuf(void *pbuf,int len, int wait_ms);
-extern int PORT_Rs485RdBuf(void *pbuf,int len, int wait_ms);
-extern void* PORT_Rs485Thread(void *p_arg);
+extern int PORT_Rs232WrBuf(void *pbuf,int len, int wait_ms);
+extern int PORT_Rs232RdBuf(void *pbuf,int len, int wait_ms);
+extern void* PORT_Rs232Thread(void *p_arg);
 
-#endif//#if __SYS_RS485_ENABLE__
+#endif//#if __SYS_RS232_ENABLE__
 
 #ifdef __cplusplus
 }
 #endif
-#endif //#ifndef __PORT_RS485_H__
+#endif //#ifndef __PORT_RS232_FUNC_H__
 
 
 
