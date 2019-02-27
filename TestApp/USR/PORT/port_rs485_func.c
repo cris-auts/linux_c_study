@@ -235,7 +235,7 @@ int PORT_Rs485Cfg(int fd,int band_rate,int flow_ctrl,int data_bits,int stop_bits
 	
 	options.c_lflag &= ~(ICANON | ECHO | ECHOE | ISIG);  
 	//options.c_lflag &= ~(ISIG | ICANON);	
-	 
+	options.c_iflag &= ~(ICRNL | IXON);
 	//设置等待时间和最小接收字符  
 	options.c_cc[VTIME] = 1; /* 读取一个字符等待1*(1/10)s */	
 	options.c_cc[VMIN] = 1; /* 读取字符的最少个数为1 */  
@@ -277,11 +277,11 @@ int PORT_Rs485Read(int fd, char *rcv_buf,int data_len)
 	 
 	//使用select实现串口的多路通信	
 	fs_sel = select(fd+1,&fs_read,NULL,NULL,&time);  
-	printf("fs_sel = %d\n",fs_sel);  
+	//printf("fs_sel = %d\n",fs_sel);  
 	if(fs_sel)	
 	{  
 		len = read(fd,rcv_buf,data_len);  
-		printf("I am right!(len = %d fs_sel = %d\n",len,fs_sel);  
+		//printf("I am right!(len = %d fs_sel = %d\n",len,fs_sel);  
 		return len;  
 	}  
 	else  
@@ -308,7 +308,7 @@ int PORT_Rs485Write(int fd, char *snd_buf,int data_len)
 	len = write(fd,snd_buf,data_len);	
 	if (len == data_len )  
 	{  
-		printf("Send data: \"%s\"\n",snd_buf);
+		//printf("Send data: \"%s\"\n",snd_buf);
 		return len;  
 	}		
 	else	 
@@ -334,8 +334,11 @@ void* PORT_Rs485Thread(void *p_arg)
 {
 	int fd;
 	int rcv_len=0;
-	char rcv_buf[128];
+	int	snd_len=0;
+	char rcv_buf[512];
+	char snd_buf[512];
 	PORT_RS485_CFG_T *pcfg=p_arg;
+	
 	fd=PORT_Rs485Init(pcfg->dev_path);
 	if(fd<0)
 	{
@@ -349,18 +352,33 @@ void* PORT_Rs485Thread(void *p_arg)
 		pthread_exit(NULL); 
 	}
 
-	
+	memcpy(snd_buf,"Hello,APP_Rs485Thread!\r\n",sizeof("Hello,APP_Rs485Thread!\r\n"));
+	snd_len=sizeof("Hello,APP_Rs485Thread!\r\n");
+
+	for(int i=0;i<256;i++)
+		snd_buf[i]=i;
+	snd_len=256;
+		
 	while (1)
 	{
 		//METER_PrintLog("Hello,APP_Rs485Thread!\r\n");
 
-		PORT_Rs485Write(fd,"Hello,APP_Rs485Thread!\r\n",sizeof("Hello,APP_Rs485Thread!\r\n"));
-		
-		rcv_len=PORT_Rs485Read(fd, rcv_buf,128);
+		snd_len=PORT_Rs485Write(fd,snd_buf,snd_len);
+		if(snd_len)
+		{
+			METER_PrintLog("Snd New Dat:%d",snd_len);
+			METER_PrintHex(snd_buf,snd_len);
+
+		}
+		sleep(1);
+		rcv_len=PORT_Rs485Read(fd, rcv_buf,300);
 		if(rcv_len)
 		{
-			METER_PrintLog("Rcv New Dat:%s",rcv_buf);
+			METER_PrintLog("Rcv New Dat:%d",rcv_len);
+			
+			METER_PrintHex(rcv_buf,rcv_len);
 		}
+		
 	}
 	return NULL;
 }
