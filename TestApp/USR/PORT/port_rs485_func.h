@@ -75,8 +75,8 @@ typedef struct port_rs485_cfg_t{
 
 
 /*-----------------模块对外接口函数声明-----------------------*/
-extern int PORT_Rs485WrBuf(void *pbuf,int len, int wait_ms);
-extern int PORT_Rs485RdBuf(void *pbuf,int len, int wait_ms);
+extern int PORT_Rs485WrTxBuf(char *pbuf, int wlen);
+extern int PORT_Rs485RdRxBuf(char *pbuf, int rlen);
 extern void* PORT_Rs485Thread(void *p_arg);
 
 #endif//#if __SYS_RS485_ENABLE__

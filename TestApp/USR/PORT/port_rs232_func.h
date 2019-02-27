@@ -74,8 +74,8 @@ typedef struct port_rs232_cfg_t{
 
 
 /*-----------------模块对外接口函数声明-----------------------*/
-extern int PORT_Rs232WrBuf(void *pbuf,int len, int wait_ms);
-extern int PORT_Rs232RdBuf(void *pbuf,int len, int wait_ms);
+extern int PORT_Rs232WrTxBuf(char *pbuf, int wlen);
+extern int PORT_Rs232RdRxBuf(char *pbuf, int rlen);
 extern void* PORT_Rs232Thread(void *p_arg);
 
 #endif//#if __SYS_RS232_ENABLE__

@@ -252,8 +252,8 @@ typedef struct debug_log_st_t{
 
 /*-------------------------------函数接口声明-------------------------------*/
 extern void DEBUG_Print(char * format,...);
-extern void DEBUG_PrintHex(unsigned char *pdat,unsigned int dat_len);
-extern void DEBUG_PrintChar(unsigned char *pdat,unsigned int dat_len);
+extern void DEBUG_PrintHex(char *pdat, int dat_len);
+extern void DEBUG_PrintChar(char *pdat, int dat_len);
 
 
 

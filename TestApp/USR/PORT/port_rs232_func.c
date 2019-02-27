@@ -48,14 +48,43 @@
 
 
 /*-----------------------模块内宏定义-------------------------*/
-//#define    xxxxxx              (xxxxxxxx)
+#define    RS232_RX_DAT_Q_SIZE     (8)
+#define    RS232_TX_DAT_Q_SIZE     (8)
+
+#define    RS232_RX_DAT_BUF_SIZE     (512)
+#define    RS232_TX_DAT_BUF_SIZE     (512)
 
 
 /*----------------------模块内类定义--------------------------*/
+typedef struct rs232_rx_buf_t{
+	UINT32_T len;
+	UINT8_T  buf[RS232_RX_DAT_BUF_SIZE];
+}RS232_RX_BUF_T;
+
+typedef struct rs232_tx_buf_t{
+	UINT32_T len;
+	UINT8_T  buf[RS232_TX_DAT_BUF_SIZE];
+}RS232_TX_BUF_T;
+
+typedef struct rs232_rx_ringbuf_t{
+	UINT32_T rd;
+	UINT32_T wr;
+	RS232_RX_BUF_T  rx_buf[RS232_RX_DAT_Q_SIZE];
+}RS232_RX_RINGBUF_T;
+
+typedef struct rs232_tx_ringbuf_t{
+	UINT32_T rd;
+	UINT32_T wr;
+	RS232_TX_BUF_T  tx_buf[RS232_TX_DAT_Q_SIZE];
+}RS232_TX_RINGBUF_T;
 
 
 
 /*----------------------变量常量定义--------------------------*/
+
+
+RS232_RX_RINGBUF_T rs232_rx_ringbuf;
+RS232_TX_RINGBUF_T rs232_tx_ringbuf;
 
 
 
@@ -318,6 +347,141 @@ int PORT_Rs232Write(int fd, char *snd_buf,int data_len)
 	 
 }  
 
+/******************************************************************************
+* Function:    RS232_WrRxToRcvBuf()
+* Input:	   xxx
+* Output:	   xxx
+* Return:	   xxx
+* Description: RS232将接收到的新数据写到的缓冲区rs232_rx_ringbuf
+*
+*
+******************************************************************************/
+int RS232_WrRcvToRxBuf(char *pbuf, int wlen)
+{
+	int cnt=0;
+	if(!wlen)
+		return 0;
+	RS232_PrintLog("RS232_WrRcvToRxBuf[%d]:\r\n",wlen);
+	RS232_PrintHex(pbuf, wlen);
+	
+	if((rs232_rx_ringbuf.wr+1)%RS232_RX_DAT_Q_SIZE != rs232_rx_ringbuf.rd)
+	{
+		if(wlen > RS232_RX_DAT_BUF_SIZE)
+		{
+			wlen=RS232_RX_DAT_BUF_SIZE;
+			RS232_PrintLog("ERROR: %s:%d Write overflow! \r\n",__func__,__LINE__);
+		}
+		cnt = wlen;
+		memcpy(rs232_rx_ringbuf.rx_buf[rs232_rx_ringbuf.wr].buf,pbuf,wlen);
+		rs232_rx_ringbuf.rx_buf[rs232_rx_ringbuf.wr].len=wlen;
+		rs232_rx_ringbuf.wr =(rs232_rx_ringbuf.wr+1)%RS232_RX_DAT_Q_SIZE;
+	}
+	else
+		RS232_PrintLog("ERROR: %s:%d Write failed!,buf is full!\r\n",__func__,__LINE__);
+	return cnt;
+}
+
+
+/******************************************************************************
+* Function:    RS232_RdSndBufToTx()
+* Input:	   xxx
+* Output:	   xxx
+* Return:	   xxx
+* Description: RS232 模块从缓冲区（rs232_tx_ringbuf）中读出要发送的数据
+*
+*
+******************************************************************************/
+int RS232_RdTxBufToSnd(char *pbuf, int rlen)
+{
+	int cnt=0;
+	if(!rlen)
+		return 0;
+	if(rs232_tx_ringbuf.rd != rs232_tx_ringbuf.wr)
+	{
+		cnt=rs232_tx_ringbuf.tx_buf[rs232_tx_ringbuf.rd].len;
+		if(cnt>rlen)
+		{
+			cnt=rlen;
+			RS232_PrintLog("ERROR: %s:%d rlen < buf len. overflow! \r\n",__func__,__LINE__);
+		}
+		memcpy(pbuf,rs232_tx_ringbuf.tx_buf[rs232_tx_ringbuf.rd].buf,cnt);
+		rs232_tx_ringbuf.rd =(rs232_tx_ringbuf.rd+1)%RS232_TX_DAT_Q_SIZE;
+		RS232_PrintLog("RS232_RdTxBufToSnd[%d]:\r\n",cnt);
+		RS232_PrintHex(pbuf, cnt);
+	}
+	else
+		RS232_PrintLog("ERROR: %s:%d Read failed!,buf is empty!\r\n",__func__,__LINE__);
+	return cnt;
+}
+
+
+
+/******************************************************************************
+* Function:    PORT_Rs232WrTxBuf()
+* Input:	   xxx
+* Output:	   xxx
+* Return:	   xxx
+* Description: 外部模块将要发送的数据写到RS232的发送缓冲区（rs232_tx_ringbuf）
+*
+*
+******************************************************************************/
+int PORT_Rs232WrTxBuf(char *pbuf, int wlen)
+{
+	int cnt=0;
+	if(!wlen)
+		return 0;
+	if(((rs232_tx_ringbuf.wr+1)%RS232_TX_DAT_Q_SIZE) != rs232_tx_ringbuf.rd)
+	{
+		RS232_PrintLog("PORT_Rs232WrTxBuf[%d]:%d,%d\r\n",wlen,rs232_tx_ringbuf.wr,rs232_tx_ringbuf.rd);
+		RS232_PrintHex(pbuf, wlen);
+		if(wlen > RS232_TX_DAT_BUF_SIZE)
+		{
+			wlen=RS232_TX_DAT_BUF_SIZE;
+			RS232_PrintLog("ERROR: %s:%d Write overflow! \r\n",__func__,__LINE__);
+		}
+		cnt=wlen;
+		memcpy(rs232_tx_ringbuf.tx_buf[rs232_tx_ringbuf.wr].buf,pbuf,wlen);
+		rs232_tx_ringbuf.tx_buf[rs232_tx_ringbuf.wr].len=wlen;
+		rs232_tx_ringbuf.wr =(rs232_tx_ringbuf.wr+1)%RS232_TX_DAT_Q_SIZE;
+		
+	}else
+		RS232_PrintLog("ERROR: %s:%d Write failed!,buf is full!\r\n",__func__,__LINE__);
+	return cnt;
+}
+
+
+
+/******************************************************************************
+* Function:    PORT_Rs232RdRxBuf()
+* Input:	   xxx
+* Output:	   xxx
+* Return:	   xxx
+* Description: 外部模块通过rs232_rx_ringbuf来读取接收到的数据
+*
+*
+******************************************************************************/
+int PORT_Rs232RdRxBuf(char *pbuf, int rlen)
+{
+	int cnt=0;
+	if(!rlen)
+		return 0;
+	if(rs232_rx_ringbuf.rd != rs232_rx_ringbuf.wr)
+	{
+		cnt=rs232_rx_ringbuf.rx_buf[rs232_rx_ringbuf.rd].len;
+		if(cnt > rlen)
+		{
+			cnt=rlen;
+			RS232_PrintLog("ERROR: %s:%d rlen < buf len. overflow! \r\n",__func__,__LINE__);
+		}
+		memcpy(pbuf,rs232_rx_ringbuf.rx_buf[rs232_rx_ringbuf.rd].buf,cnt);
+		rs232_rx_ringbuf.rd =(rs232_rx_ringbuf.rd+1)%RS232_RX_DAT_Q_SIZE;
+		RS232_PrintLog("PORT_Rs232RdRxBuf[%d]:\r\n",cnt);
+		RS232_PrintHex(pbuf, cnt);
+	}
+	else
+		RS232_PrintLog("ERROR: %s:%d Read failed!,buf is empty!\r\n",__func__,__LINE__);
+	return cnt;
+}
 
 /******************************************************************************
 * Function:    APP_Rs232Thread
@@ -365,7 +529,7 @@ void* PORT_Rs232Thread(void *p_arg)
 		if(snd_len)
 		{
 			RS232_PrintLog("Snd New Dat:%d\r\n",snd_len);
-			RS232_PrintHex((unsigned char*)snd_buf,snd_len);
+			RS232_PrintHex(snd_buf,snd_len);
 
 		}
 		sleep(1);
@@ -374,7 +538,7 @@ void* PORT_Rs232Thread(void *p_arg)
 		{
 			RS232_PrintLog("Rcv New Dat:%d\r\n",rcv_len);
 			
-			RS232_PrintHex((unsigned char*)rcv_buf,rcv_len);
+			RS232_PrintHex(rcv_buf,rcv_len);
 		}
 		
 	}

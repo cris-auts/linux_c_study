@@ -127,7 +127,7 @@ void DEBUG_Print(char * format,...)
 *
 *
 ******************************************************************************/
-void DEBUG_PrintHex(unsigned char *pdat,unsigned int dat_len)
+void DEBUG_PrintHex(char *pdat, int dat_len)
 {
     unsigned int i;
     //DEBUG_Print("HEX: ");
@@ -153,7 +153,7 @@ void DEBUG_PrintHex(unsigned char *pdat,unsigned int dat_len)
 *
 *
 ******************************************************************************/
-void DEBUG_PrintChar(unsigned char *pdat,unsigned int dat_len)
+void DEBUG_PrintChar(char *pdat, int dat_len)
 {
     unsigned int i;
     //DEBUG_Print("HEX: ");

@@ -39,8 +39,9 @@ int main(int argc, char** argv)
 {
 	int res=0;
 	int thread_idx=0;
-	memset(&g_dev_prm.nvram.debug_log_st,1,sizeof(g_dev_prm.nvram.debug_log_st));
+	memset(&g_dev_prm.nvram.debug_log_st,0,sizeof(g_dev_prm.nvram.debug_log_st));
 	//NVRAM_Load();
+	g_dev_prm.nvram.debug_log_st.meter_log=1;
 	for(thread_idx=0;thread_idx<THREAD_MAX;thread_idx++)
 	{
 		res=pthread_create(thread_info[thread_idx].thread,

@@ -48,16 +48,43 @@
 
 
 /*-----------------------模块内宏定义-------------------------*/
-//#define    xxxxxx              (xxxxxxxx)
+#define    RS485_RX_DAT_Q_SIZE     (8)
+#define    RS485_TX_DAT_Q_SIZE     (8)
+
+#define    RS485_RX_DAT_BUF_SIZE     (512)
+#define    RS485_TX_DAT_BUF_SIZE     (512)
 
 
 /*----------------------模块内类定义--------------------------*/
+typedef struct rs485_rx_buf_t{
+	UINT32_T len;
+	UINT8_T  buf[RS485_RX_DAT_BUF_SIZE];
+}RS485_RX_BUF_T;
+
+typedef struct rs485_tx_buf_t{
+	UINT32_T len;
+	UINT8_T  buf[RS485_TX_DAT_BUF_SIZE];
+}RS485_TX_BUF_T;
+
+typedef struct rs485_rx_ringbuf_t{
+	UINT32_T rd;
+	UINT32_T wr;
+	RS485_RX_BUF_T  rx_buf[RS485_RX_DAT_Q_SIZE];
+}RS485_RX_RINGBUF_T;
+
+typedef struct rs485_tx_ringbuf_t{
+	UINT32_T rd;
+	UINT32_T wr;
+	RS485_TX_BUF_T  tx_buf[RS485_TX_DAT_Q_SIZE];
+}RS485_TX_RINGBUF_T;
 
 
 
 /*----------------------变量常量定义--------------------------*/
 
 
+RS485_RX_RINGBUF_T rs485_rx_ringbuf;
+RS485_TX_RINGBUF_T rs485_tx_ringbuf;
 
 
 /*****************************************************************************/
@@ -271,7 +298,7 @@ int PORT_Rs485Read(int fd, char *rcv_buf,int data_len)
 	FD_ZERO(&fs_read);	
 	FD_SET(fd,&fs_read);  
 	 
-	time.tv_sec = 1;  
+	time.tv_sec = 0;  
 	time.tv_usec = 0;  
 	 
 	//使用select实现串口的多路通信	
@@ -280,12 +307,12 @@ int PORT_Rs485Read(int fd, char *rcv_buf,int data_len)
 	if(fs_sel)	
 	{  
 		len = read(fd,rcv_buf,data_len);  
-		//printf("I am right!(len = %d fs_sel = %d\n",len,fs_sel);  
+		printf("I am right!(len = %d fs_sel = %d\n",len,fs_sel);  
 		return len;  
 	}  
 	else  
 	{  
-		printf("Sorry,I am wrong!");  
+		//printf("Sorry,I am wrong!\r\n");  
 		return FALSE;  
 	}		
 }  
@@ -320,6 +347,145 @@ int PORT_Rs485Write(int fd, char *snd_buf,int data_len)
 }  
 
 
+
+/******************************************************************************
+* Function:    RS485_WrRxToRcvBuf()
+* Input:	   xxx
+* Output:	   xxx
+* Return:	   xxx
+* Description: RS485将接收到的新数据写到的缓冲区rs485_rx_ringbuf
+*
+*
+******************************************************************************/
+int RS485_WrRcvToRxBuf(char *pbuf, int wlen)
+{
+	int cnt=0;
+	if(!wlen)
+		return 0;
+	RS485_PrintLog("RS485_WrRcvToRxBuf[%d]:\r\n",wlen);
+	RS485_PrintHex(pbuf, wlen);
+	
+	if((rs485_rx_ringbuf.wr+1)%RS485_RX_DAT_Q_SIZE != rs485_rx_ringbuf.rd)
+	{
+		if(wlen > RS485_RX_DAT_BUF_SIZE)
+		{
+			wlen=RS485_RX_DAT_BUF_SIZE;
+			RS485_PrintLog("ERROR: %s:%d Write overflow! \r\n",__func__,__LINE__);
+		}
+		cnt = wlen;
+		memcpy(rs485_rx_ringbuf.rx_buf[rs485_rx_ringbuf.wr].buf,pbuf,wlen);
+		rs485_rx_ringbuf.rx_buf[rs485_rx_ringbuf.wr].len=wlen;
+		rs485_rx_ringbuf.wr =(rs485_rx_ringbuf.wr+1)%RS485_RX_DAT_Q_SIZE;
+	}
+	else
+		RS485_PrintLog("ERROR: %s:%d Write failed!,buf is full!\r\n",__func__,__LINE__);
+	return cnt;
+}
+
+
+/******************************************************************************
+* Function:    RS485_RdSndBufToTx()
+* Input:	   xxx
+* Output:	   xxx
+* Return:	   xxx
+* Description: RS485 模块从缓冲区（rs485_tx_ringbuf）中读出要发送的数据
+*
+*
+******************************************************************************/
+int RS485_RdTxBufToSnd(char *pbuf, int rlen)
+{
+	int cnt=0;
+	if(!rlen)
+		return 0;
+	if(rs485_tx_ringbuf.rd != rs485_tx_ringbuf.wr)
+	{
+		cnt=rs485_tx_ringbuf.tx_buf[rs485_tx_ringbuf.rd].len;
+		if(cnt>rlen)
+		{
+			cnt=rlen;
+			RS485_PrintLog("ERROR: %s:%d rlen < buf len. overflow! \r\n",__func__,__LINE__);
+		}
+		memcpy(pbuf,rs485_tx_ringbuf.tx_buf[rs485_tx_ringbuf.rd].buf,cnt);
+		rs485_tx_ringbuf.rd =(rs485_tx_ringbuf.rd+1)%RS485_TX_DAT_Q_SIZE;
+		RS485_PrintLog("RS485_RdTxBufToSnd[%d]:\r\n",cnt);
+		RS485_PrintHex(pbuf, cnt);
+	}
+	else
+		RS485_PrintLog("ERROR: %s:%d Read failed!,buf is empty!\r\n",__func__,__LINE__);
+	return cnt;
+}
+
+
+
+/******************************************************************************
+* Function:    PORT_Rs485WrTxBuf()
+* Input:	   xxx
+* Output:	   xxx
+* Return:	   xxx
+* Description: 外部模块将要发送的数据写到RS485的发送缓冲区（rs485_tx_ringbuf）
+*
+*
+******************************************************************************/
+int PORT_Rs485WrTxBuf(char *pbuf, int wlen)
+{
+	int cnt=0;
+	if(!wlen)
+		return 0;
+	if(((rs485_tx_ringbuf.wr+1)%RS485_TX_DAT_Q_SIZE) != rs485_tx_ringbuf.rd)
+	{
+		RS485_PrintLog("PORT_Rs485WrTxBuf[%d]:%d,%d\r\n",wlen,rs485_tx_ringbuf.wr,rs485_tx_ringbuf.rd);
+		RS485_PrintHex(pbuf, wlen);
+		if(wlen > RS485_TX_DAT_BUF_SIZE)
+		{
+			wlen=RS485_TX_DAT_BUF_SIZE;
+			RS485_PrintLog("ERROR: %s:%d Write overflow! \r\n",__func__,__LINE__);
+		}
+		cnt=wlen;
+		memcpy(rs485_tx_ringbuf.tx_buf[rs485_tx_ringbuf.wr].buf,pbuf,wlen);
+		rs485_tx_ringbuf.tx_buf[rs485_tx_ringbuf.wr].len=wlen;
+		rs485_tx_ringbuf.wr =(rs485_tx_ringbuf.wr+1)%RS485_TX_DAT_Q_SIZE;
+		
+	}else
+		RS485_PrintLog("ERROR: %s:%d Write failed!,buf is full!\r\n",__func__,__LINE__);
+	return cnt;
+}
+
+
+
+/******************************************************************************
+* Function:    PORT_Rs485RdRxBuf()
+* Input:	   xxx
+* Output:	   xxx
+* Return:	   xxx
+* Description: 外部模块通过rs485_rx_ringbuf来读取接收到的数据
+*
+*
+******************************************************************************/
+int PORT_Rs485RdRxBuf(char *pbuf, int rlen)
+{
+	int cnt=0;
+	if(!rlen)
+		return 0;
+	if(rs485_rx_ringbuf.rd != rs485_rx_ringbuf.wr)
+	{
+		cnt=rs485_rx_ringbuf.rx_buf[rs485_rx_ringbuf.rd].len;
+		if(cnt > rlen)
+		{
+			cnt=rlen;
+			RS485_PrintLog("ERROR: %s:%d rlen < buf len. overflow! \r\n",__func__,__LINE__);
+		}
+		memcpy(pbuf,rs485_rx_ringbuf.rx_buf[rs485_rx_ringbuf.rd].buf,cnt);
+		rs485_rx_ringbuf.rd =(rs485_rx_ringbuf.rd+1)%RS485_RX_DAT_Q_SIZE;
+		RS485_PrintLog("PORT_Rs485RdRxBuf[%d]:\r\n",cnt);
+		RS485_PrintHex(pbuf, cnt);
+	}
+	else
+		RS485_PrintLog("ERROR: %s:%d Read failed!,buf is empty!\r\n",__func__,__LINE__);
+	return cnt;
+}
+
+
+
 /******************************************************************************
 * Function:    APP_Rs485Thread
 * Input:       xxx
@@ -334,10 +500,11 @@ void* PORT_Rs485Thread(void *p_arg)
 	int fd;
 	int rcv_len=0;
 	int	snd_len=0;
-	char rcv_buf[512];
-	char snd_buf[512];
+	char rcv_buf[RS485_RX_DAT_BUF_SIZE];
+	char snd_buf[RS485_TX_DAT_BUF_SIZE];
 	PORT_RS485_CFG_T *pcfg=p_arg;
-	
+	memset(&rs485_rx_ringbuf,0,sizeof(rs485_rx_ringbuf));
+	memset(&rs485_tx_ringbuf,0,sizeof(rs485_tx_ringbuf));
 	fd=PORT_Rs485Init(pcfg->dev_path);
 	if(fd<0)
 	{
@@ -351,6 +518,7 @@ void* PORT_Rs485Thread(void *p_arg)
 		pthread_exit(NULL); 
 	}
 
+	#if 0
 	memcpy(snd_buf,"Hello,APP_Rs485Thread!\r\n",sizeof("Hello,APP_Rs485Thread!\r\n"));
 	snd_len=sizeof("Hello,APP_Rs485Thread!\r\n");
 
@@ -367,24 +535,39 @@ void* PORT_Rs485Thread(void *p_arg)
 		{
 			RS485_PrintLog("Snd New Dat:%d\r\n",snd_len);
 			RS485_PrintHex((unsigned char*)snd_buf,snd_len);
-
 		}
 		sleep(1);
 		rcv_len=PORT_Rs485Read(fd, rcv_buf,300);
 		if(rcv_len)
 		{
 			RS485_PrintLog("Rcv New Dat:%d\r\n",rcv_len);
-			
 			RS485_PrintHex((unsigned char*)rcv_buf,rcv_len);
 		}
 		
 	}
+	#else
+	while(1)
+	{
+		snd_len=RS485_RdTxBufToSnd(snd_buf,RS485_TX_DAT_BUF_SIZE);
+		snd_len=PORT_Rs485Write(fd,snd_buf,snd_len);
+		if(snd_len)
+		{
+			RS485_PrintLog("Snd New Dat:%d\r\n",snd_len);
+			RS485_PrintHex(snd_buf,snd_len);
+		}
+		rcv_len=PORT_Rs485Read(fd,rcv_buf,RS485_RX_DAT_BUF_SIZE);
+		rcv_len=RS485_WrRcvToRxBuf(rcv_buf,rcv_len);
+		if(rcv_len)
+		{
+			RS485_PrintLog("Rcv New Dat:%d\r\n",rcv_len);
+			RS485_PrintHex(rcv_buf,rcv_len);
+		}
+
+
+	}
+	#endif
 	return NULL;
 }
-
-
-
-
 
 #endif//#if __SYS_RS485_ENABLE__
 
