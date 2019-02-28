@@ -289,9 +289,9 @@ int PORT_Rs232Cfg(int fd,int band_rate,int flow_ctrl,int data_bits,int stop_bits
 *
 *
 ******************************************************************************/
-int PORT_Rs232Read(int fd, char *rcv_buf,int data_len)
+UINT32_T PORT_Rs232Read(SINT_T fd, UINT8_T *rcv_buf,UINT32_T data_len)
 {  
-	int len,fs_sel;  
+	SINT_T len,fs_sel;  
 	fd_set fs_read;  
 	 
 	struct timeval time;  
@@ -328,7 +328,7 @@ int PORT_Rs232Read(int fd, char *rcv_buf,int data_len)
 *
 *
 ******************************************************************************/
-int PORT_Rs232Write(int fd, char *snd_buf,int data_len)
+UINT32_T PORT_Rs232Write(int fd, UINT8_T *snd_buf,UINT32_T data_len)
 {  
 	int len = 0;  
 	 
@@ -356,9 +356,9 @@ int PORT_Rs232Write(int fd, char *snd_buf,int data_len)
 *
 *
 ******************************************************************************/
-int RS232_WrRcvToRxBuf(char *pbuf, int wlen)
+UINT32_T RS232_WrRcvToRxBuf(UINT8_T *pbuf, UINT32_T wlen)
 {
-	int cnt=0;
+	UINT32_T cnt=0;
 	if(!wlen)
 		return 0;
 	RS232_PrintLog("RS232_WrRcvToRxBuf[%d]:\r\n",wlen);
@@ -391,9 +391,9 @@ int RS232_WrRcvToRxBuf(char *pbuf, int wlen)
 *
 *
 ******************************************************************************/
-int RS232_RdTxBufToSnd(char *pbuf, int rlen)
+UINT32_T RS232_RdTxBufToSnd(UINT8_T *pbuf, UINT32_T rlen)
 {
-	int cnt=0;
+	UINT32_T cnt=0;
 	if(!rlen)
 		return 0;
 	if(rs232_tx_ringbuf.rd != rs232_tx_ringbuf.wr)
@@ -425,9 +425,9 @@ int RS232_RdTxBufToSnd(char *pbuf, int rlen)
 *
 *
 ******************************************************************************/
-int PORT_Rs232WrTxBuf(char *pbuf, int wlen)
+UINT32_T PORT_Rs232WrTxBuf(UINT8_T *pbuf, UINT32_T wlen)
 {
-	int cnt=0;
+	UINT32_T cnt=0;
 	if(!wlen)
 		return 0;
 	if(((rs232_tx_ringbuf.wr+1)%RS232_TX_DAT_Q_SIZE) != rs232_tx_ringbuf.rd)
@@ -460,7 +460,7 @@ int PORT_Rs232WrTxBuf(char *pbuf, int wlen)
 *
 *
 ******************************************************************************/
-int PORT_Rs232RdRxBuf(char *pbuf, int rlen)
+UINT32_T PORT_Rs232RdRxBuf(UINT8_T *pbuf, UINT32_T rlen)
 {
 	int cnt=0;
 	if(!rlen)
@@ -494,12 +494,12 @@ int PORT_Rs232RdRxBuf(char *pbuf, int rlen)
 ******************************************************************************/
 void* PORT_Rs232Thread(void *p_arg)
 {
-	int i;
-	int fd;
-	int rcv_len=0;
-	int	snd_len=0;
-	char rcv_buf[512];
-	char snd_buf[512];
+	UINT32_T i;
+	SINT_T fd;
+	UINT32_T rcv_len=0;
+	UINT32_T snd_len=0;
+	UINT8_T rcv_buf[512];
+	UINT8_T snd_buf[512];
 	PORT_RS232_CFG_T *pcfg=p_arg;
 	
 	fd=PORT_Rs232Init(pcfg->dev_path);

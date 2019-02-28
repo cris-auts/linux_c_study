@@ -68,10 +68,10 @@ typedef union port_cfg_t{
 }PORT_CFG_T;
 
 typedef struct port_t{
-	int port_type;
+	PORT_TYPE_T port_type;
 	PORT_CFG_T port_cfg;
-	int (*port_write_func)(char *wr_buf,int wr_len);
-	int (*port_read_func) (char *rd_buf,int rd_len);
+	UINT32_T (*port_write_func)(UINT8_T *wr_buf, UINT32_T wr_len);
+	UINT32_T (*port_read_func) (UINT8_T *rd_buf, UINT32_T rd_len);
 }PORT_T;
 
 
@@ -164,11 +164,11 @@ void APP_MeterThreadInit(void)
 void* APP_MeterThread(void *p_arg)
 {
 	
-	int i=0;
-	int rcv_len=0;
-	int	snd_len=0;
-	char rcv_buf[512];
-	char snd_buf[512];
+	UINT32_T i=0;
+	UINT32_T rcv_len=0;
+	UINT32_T snd_len=0;
+	UINT8_T rcv_buf[512];
+	UINT8_T snd_buf[512];
 	
 	APP_MeterThreadInit();
 	
@@ -178,13 +178,16 @@ void* APP_MeterThread(void *p_arg)
 	sleep(1);
 	while (1)
 	{
-		//METER_PrintLog("Hello,APP_MeterThread!\r\n");
+		#if 1
+		METER_PrintLog("Snd New Dat:%d\r\n",256);
+		METER_PrintHex(snd_buf,256);
 		snd_len=PORT_Rs485WrTxBuf(snd_buf,256);
 		if(snd_len)
 		{
-			METER_PrintLog("Snd New Dat:%d\r\n",snd_len);
-			METER_PrintHex(snd_buf,snd_len);
+			METER_PrintLog("Snd New Dat Success:%d\r\n",snd_len);
 		}
+		sleep(1);
+		#endif
 		rcv_len=PORT_Rs485RdRxBuf(rcv_buf,512);
 		if(rcv_len)
 		{

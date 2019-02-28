@@ -47,7 +47,7 @@
 
 /*--------------------------------模块内宏定义-------------------------------*/
 
-#define    PRINT_BUF_LEN       (1024)
+#define    PRINT_BUF_LEN       (4096)
 
 
 /*--------------------------------模块内类定义-------------------------------*/
@@ -127,7 +127,7 @@ void DEBUG_Print(char * format,...)
 *
 *
 ******************************************************************************/
-void DEBUG_PrintHex(char *pdat, int dat_len)
+void DEBUG_PrintHex(UINT8_T *pdat, UINT32_T dat_len)
 {
     unsigned int i;
     //DEBUG_Print("HEX: ");
@@ -153,7 +153,7 @@ void DEBUG_PrintHex(char *pdat, int dat_len)
 *
 *
 ******************************************************************************/
-void DEBUG_PrintChar(char *pdat, int dat_len)
+void DEBUG_PrintChar(UINT8_T *pdat, UINT32_T dat_len)
 {
     unsigned int i;
     //DEBUG_Print("HEX: ");

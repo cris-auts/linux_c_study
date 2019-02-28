@@ -288,9 +288,9 @@ int PORT_Rs485Cfg(int fd,int band_rate,int flow_ctrl,int data_bits,int stop_bits
 *
 *
 ******************************************************************************/
-int PORT_Rs485Read(int fd, char *rcv_buf,int data_len)
+UINT32_T PORT_Rs485Read(int fd, UINT8_T *rcv_buf,UINT32_T data_len)
 {  
-	int len,fs_sel;  
+	UINT32_T len,fs_sel;  
 	fd_set fs_read;  
 	 
 	struct timeval time;  
@@ -327,9 +327,9 @@ int PORT_Rs485Read(int fd, char *rcv_buf,int data_len)
 *
 *
 ******************************************************************************/
-int PORT_Rs485Write(int fd, char *snd_buf,int data_len)
+UINT32_T PORT_Rs485Write(int fd, UINT8_T *snd_buf, UINT32_T data_len)
 {  
-	int len = 0;  
+	UINT32_T len = 0;  
 	 
 	len = write(fd,snd_buf,data_len);	
 	if (len == data_len )  
@@ -357,9 +357,9 @@ int PORT_Rs485Write(int fd, char *snd_buf,int data_len)
 *
 *
 ******************************************************************************/
-int RS485_WrRcvToRxBuf(char *pbuf, int wlen)
+UINT32_T RS485_WrRcvToRxBuf(UINT8_T *pbuf, UINT32_T wlen)
 {
-	int cnt=0;
+	UINT32_T cnt=0;
 	if(!wlen)
 		return 0;
 	RS485_PrintLog("RS485_WrRcvToRxBuf[%d]:\r\n",wlen);
@@ -378,7 +378,7 @@ int RS485_WrRcvToRxBuf(char *pbuf, int wlen)
 		rs485_rx_ringbuf.wr =(rs485_rx_ringbuf.wr+1)%RS485_RX_DAT_Q_SIZE;
 	}
 	else
-		RS485_PrintLog("ERROR: %s:%d Write failed!,buf is full!\r\n",__func__,__LINE__);
+		;//RS485_PrintLog("ERROR: %s:%d Write failed!,buf is full!\r\n",__func__,__LINE__);
 	return cnt;
 }
 
@@ -392,9 +392,9 @@ int RS485_WrRcvToRxBuf(char *pbuf, int wlen)
 *
 *
 ******************************************************************************/
-int RS485_RdTxBufToSnd(char *pbuf, int rlen)
+UINT32_T RS485_RdTxBufToSnd(UINT8_T *pbuf, UINT32_T rlen)
 {
-	int cnt=0;
+	UINT32_T cnt=0;
 	if(!rlen)
 		return 0;
 	if(rs485_tx_ringbuf.rd != rs485_tx_ringbuf.wr)
@@ -411,7 +411,7 @@ int RS485_RdTxBufToSnd(char *pbuf, int rlen)
 		RS485_PrintHex(pbuf, cnt);
 	}
 	else
-		RS485_PrintLog("ERROR: %s:%d Read failed!,buf is empty!\r\n",__func__,__LINE__);
+		;//RS485_PrintLog("ERROR: %s:%d Read failed!,buf is empty!\r\n",__func__,__LINE__);
 	return cnt;
 }
 
@@ -426,9 +426,9 @@ int RS485_RdTxBufToSnd(char *pbuf, int rlen)
 *
 *
 ******************************************************************************/
-int PORT_Rs485WrTxBuf(char *pbuf, int wlen)
+UINT32_T PORT_Rs485WrTxBuf(UINT8_T *pbuf, UINT32_T wlen)
 {
-	int cnt=0;
+	UINT32_T cnt=0;
 	if(!wlen)
 		return 0;
 	if(((rs485_tx_ringbuf.wr+1)%RS485_TX_DAT_Q_SIZE) != rs485_tx_ringbuf.rd)
@@ -446,7 +446,7 @@ int PORT_Rs485WrTxBuf(char *pbuf, int wlen)
 		rs485_tx_ringbuf.wr =(rs485_tx_ringbuf.wr+1)%RS485_TX_DAT_Q_SIZE;
 		
 	}else
-		RS485_PrintLog("ERROR: %s:%d Write failed!,buf is full!\r\n",__func__,__LINE__);
+		;//RS485_PrintLog("ERROR: %s:%d Write failed!,buf is full!\r\n",__func__,__LINE__);
 	return cnt;
 }
 
@@ -461,9 +461,9 @@ int PORT_Rs485WrTxBuf(char *pbuf, int wlen)
 *
 *
 ******************************************************************************/
-int PORT_Rs485RdRxBuf(char *pbuf, int rlen)
+UINT32_T PORT_Rs485RdRxBuf(UINT8_T *pbuf, UINT32_T rlen)
 {
-	int cnt=0;
+	UINT32_T cnt=0;
 	if(!rlen)
 		return 0;
 	if(rs485_rx_ringbuf.rd != rs485_rx_ringbuf.wr)
@@ -480,7 +480,7 @@ int PORT_Rs485RdRxBuf(char *pbuf, int rlen)
 		RS485_PrintHex(pbuf, cnt);
 	}
 	else
-		RS485_PrintLog("ERROR: %s:%d Read failed!,buf is empty!\r\n",__func__,__LINE__);
+		;//RS485_PrintLog("ERROR: %s:%d Read failed!,buf is empty!\r\n",__func__,__LINE__);
 	return cnt;
 }
 
@@ -497,12 +497,12 @@ int PORT_Rs485RdRxBuf(char *pbuf, int rlen)
 ******************************************************************************/
 void* PORT_Rs485Thread(void *p_arg)
 {
-	int i;
-	int fd;
-	int rcv_len=0;
-	int	snd_len=0;
-	char rcv_buf[RS485_RX_DAT_BUF_SIZE];
-	char snd_buf[RS485_TX_DAT_BUF_SIZE];
+	UINT32_T i;
+	SINT_T fd;
+	UINT32_T rcv_len=0;
+	UINT32_T	snd_len=0;
+	UINT8_T rcv_buf[RS485_RX_DAT_BUF_SIZE];
+	UINT8_T snd_buf[RS485_TX_DAT_BUF_SIZE];
 	PORT_RS485_CFG_T *pcfg=p_arg;
 	memset(&rs485_rx_ringbuf,0,sizeof(rs485_rx_ringbuf));
 	memset(&rs485_tx_ringbuf,0,sizeof(rs485_tx_ringbuf));
