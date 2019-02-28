@@ -494,6 +494,7 @@ int PORT_Rs232RdRxBuf(char *pbuf, int rlen)
 ******************************************************************************/
 void* PORT_Rs232Thread(void *p_arg)
 {
+	int i;
 	int fd;
 	int rcv_len=0;
 	int	snd_len=0;
@@ -517,7 +518,7 @@ void* PORT_Rs232Thread(void *p_arg)
 	memcpy(snd_buf,"Hello,APP_Rs232Thread!\r\n",sizeof("Hello,APP_Rs232Thread!\r\n"));
 	snd_len=sizeof("Hello,APP_Rs232Thread!\r\n");
 
-	for(int i=0;i<256;i++)
+	for(i=0;i<256;i++)
 		snd_buf[i]=i;
 	snd_len=256;
 		

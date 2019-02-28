@@ -164,6 +164,7 @@ void APP_MeterThreadInit(void)
 void* APP_MeterThread(void *p_arg)
 {
 	
+	int i=0;
 	int rcv_len=0;
 	int	snd_len=0;
 	char rcv_buf[512];
@@ -171,7 +172,7 @@ void* APP_MeterThread(void *p_arg)
 	
 	APP_MeterThreadInit();
 	
-	for(int i=0;i<256;i++)
+	for(i=0;i<256;i++)
 		snd_buf[i]=i;
 	snd_len=256;
 	sleep(1);
