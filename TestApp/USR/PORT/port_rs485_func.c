@@ -48,8 +48,8 @@
 
 
 /*-----------------------模块内宏定义-------------------------*/
-#define    RS485_RX_DAT_Q_SIZE     (8)
-#define    RS485_TX_DAT_Q_SIZE     (8)
+#define    RS485_RX_DAT_Q_SIZE     (16)
+#define    RS485_TX_DAT_Q_SIZE     (16)
 
 #define    RS485_RX_DAT_BUF_SIZE     (512)
 #define    RS485_TX_DAT_BUF_SIZE     (512)
@@ -362,11 +362,12 @@ UINT32_T RS485_WrRcvToRxBuf(UINT8_T *pbuf, UINT32_T wlen)
 	UINT32_T cnt=0;
 	if(!wlen)
 		return 0;
-	RS485_PrintLog("RS485_WrRcvToRxBuf[%d]:\r\n",wlen);
-	RS485_PrintHex(pbuf, wlen);
 	
 	if((rs485_rx_ringbuf.wr+1)%RS485_RX_DAT_Q_SIZE != rs485_rx_ringbuf.rd)
 	{
+	
+		//RS485_PrintLog("RS485_WrRcvToRxBuf[%d]:\r\n",wlen);
+		//RS485_PrintHex(pbuf, wlen);
 		if(wlen > RS485_RX_DAT_BUF_SIZE)
 		{
 			wlen=RS485_RX_DAT_BUF_SIZE;
@@ -407,8 +408,8 @@ UINT32_T RS485_RdTxBufToSnd(UINT8_T *pbuf, UINT32_T rlen)
 		}
 		memcpy(pbuf,rs485_tx_ringbuf.tx_buf[rs485_tx_ringbuf.rd].buf,cnt);
 		rs485_tx_ringbuf.rd =(rs485_tx_ringbuf.rd+1)%RS485_TX_DAT_Q_SIZE;
-		RS485_PrintLog("RS485_RdTxBufToSnd[%d]:\r\n",cnt);
-		RS485_PrintHex(pbuf, cnt);
+		//RS485_PrintLog("RS485_RdTxBufToSnd[%d]:\r\n",cnt);
+		//RS485_PrintHex(pbuf, cnt);
 	}
 	else
 		;//RS485_PrintLog("ERROR: %s:%d Read failed!,buf is empty!\r\n",__func__,__LINE__);
@@ -433,8 +434,8 @@ UINT32_T PORT_Rs485WrTxBuf(UINT8_T *pbuf, UINT32_T wlen)
 		return 0;
 	if(((rs485_tx_ringbuf.wr+1)%RS485_TX_DAT_Q_SIZE) != rs485_tx_ringbuf.rd)
 	{
-		RS485_PrintLog("PORT_Rs485WrTxBuf[%d]:%d,%d\r\n",wlen,rs485_tx_ringbuf.wr,rs485_tx_ringbuf.rd);
-		RS485_PrintHex(pbuf, wlen);
+		//RS485_PrintLog("PORT_Rs485WrTxBuf[%d]:%d,%d\r\n",wlen,rs485_tx_ringbuf.wr,rs485_tx_ringbuf.rd);
+		//RS485_PrintHex(pbuf, wlen);
 		if(wlen > RS485_TX_DAT_BUF_SIZE)
 		{
 			wlen=RS485_TX_DAT_BUF_SIZE;
@@ -476,8 +477,8 @@ UINT32_T PORT_Rs485RdRxBuf(UINT8_T *pbuf, UINT32_T rlen)
 		}
 		memcpy(pbuf,rs485_rx_ringbuf.rx_buf[rs485_rx_ringbuf.rd].buf,cnt);
 		rs485_rx_ringbuf.rd =(rs485_rx_ringbuf.rd+1)%RS485_RX_DAT_Q_SIZE;
-		RS485_PrintLog("PORT_Rs485RdRxBuf[%d]:\r\n",cnt);
-		RS485_PrintHex(pbuf, cnt);
+		//RS485_PrintLog("PORT_Rs485RdRxBuf[%d]:\r\n",cnt);
+		//RS485_PrintHex(pbuf, cnt);
 	}
 	else
 		;//RS485_PrintLog("ERROR: %s:%d Read failed!,buf is empty!\r\n",__func__,__LINE__);
@@ -560,7 +561,7 @@ void* PORT_Rs485Thread(void *p_arg)
 		rcv_len=RS485_WrRcvToRxBuf(rcv_buf,rcv_len);
 		if(rcv_len)
 		{
-			RS485_PrintLog("Rcv New Dat:%d\r\n",rcv_len);
+			RS485_PrintLog("xxx:Rcv New Dat:%d\r\n",rcv_len);
 			RS485_PrintHex(rcv_buf,rcv_len);
 		}
 

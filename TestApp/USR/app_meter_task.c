@@ -194,6 +194,90 @@ void* APP_MeterThread(void *p_arg)
 			METER_PrintLog("Rcv New Dat:%d\r\n",rcv_len);
 			METER_PrintHex(rcv_buf,rcv_len);
 		}
+		rcv_len=PORT_Rs485RdRxBuf(rcv_buf,512);
+		if(rcv_len)
+		{
+			METER_PrintLog("Rcv New Dat:%d\r\n",rcv_len);
+			METER_PrintHex(rcv_buf,rcv_len);
+		}
+		rcv_len=PORT_Rs485RdRxBuf(rcv_buf,512);
+		if(rcv_len)
+		{
+			METER_PrintLog("Rcv New Dat:%d\r\n",rcv_len);
+			METER_PrintHex(rcv_buf,rcv_len);
+		}
+		rcv_len=PORT_Rs485RdRxBuf(rcv_buf,512);
+		if(rcv_len)
+		{
+			METER_PrintLog("Rcv New Dat:%d\r\n",rcv_len);
+			METER_PrintHex(rcv_buf,rcv_len);
+		}
+		rcv_len=PORT_Rs485RdRxBuf(rcv_buf,512);
+		if(rcv_len)
+		{
+			METER_PrintLog("Rcv New Dat:%d\r\n",rcv_len);
+			METER_PrintHex(rcv_buf,rcv_len);
+		}
+		rcv_len=PORT_Rs485RdRxBuf(rcv_buf,512);
+		if(rcv_len)
+		{
+			METER_PrintLog("Rcv New Dat:%d\r\n",rcv_len);
+			METER_PrintHex(rcv_buf,rcv_len);
+		}
+		rcv_len=PORT_Rs485RdRxBuf(rcv_buf,512);
+		if(rcv_len)
+		{
+			METER_PrintLog("Rcv New Dat:%d\r\n",rcv_len);
+			METER_PrintHex(rcv_buf,rcv_len);
+		}
+		rcv_len=PORT_Rs485RdRxBuf(rcv_buf,512);
+		if(rcv_len)
+		{
+			METER_PrintLog("Rcv New Dat:%d\r\n",rcv_len);
+			METER_PrintHex(rcv_buf,rcv_len);
+		}
+		rcv_len=PORT_Rs485RdRxBuf(rcv_buf,512);
+		if(rcv_len)
+		{
+			METER_PrintLog("Rcv New Dat:%d\r\n",rcv_len);
+			METER_PrintHex(rcv_buf,rcv_len);
+		}
+		rcv_len=PORT_Rs485RdRxBuf(rcv_buf,512);
+		if(rcv_len)
+		{
+			METER_PrintLog("Rcv New Dat:%d\r\n",rcv_len);
+			METER_PrintHex(rcv_buf,rcv_len);
+		}
+		rcv_len=PORT_Rs485RdRxBuf(rcv_buf,512);
+		if(rcv_len)
+		{
+			METER_PrintLog("Rcv New Dat:%d\r\n",rcv_len);
+			METER_PrintHex(rcv_buf,rcv_len);
+		}
+		rcv_len=PORT_Rs485RdRxBuf(rcv_buf,512);
+		if(rcv_len)
+		{
+			METER_PrintLog("Rcv New Dat:%d\r\n",rcv_len);
+			METER_PrintHex(rcv_buf,rcv_len);
+		}
+		rcv_len=PORT_Rs485RdRxBuf(rcv_buf,512);
+		if(rcv_len)
+		{
+			METER_PrintLog("Rcv New Dat:%d\r\n",rcv_len);
+			METER_PrintHex(rcv_buf,rcv_len);
+		}
+		rcv_len=PORT_Rs485RdRxBuf(rcv_buf,512);
+		if(rcv_len)
+		{
+			METER_PrintLog("Rcv New Dat:%d\r\n",rcv_len);
+			METER_PrintHex(rcv_buf,rcv_len);
+		}
+		rcv_len=PORT_Rs485RdRxBuf(rcv_buf,512);
+		if(rcv_len)
+		{
+			METER_PrintLog("Rcv New Dat:%d\r\n",rcv_len);
+			METER_PrintHex(rcv_buf,rcv_len);
+		}
 	}
 	return NULL;
 }

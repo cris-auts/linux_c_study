@@ -39,7 +39,8 @@ int main(int argc, char** argv)
 {
 	int res=0;
 	int thread_idx=0;
-	memset(&g_dev_prm.nvram.debug_log_st,1,sizeof(g_dev_prm.nvram.debug_log_st));
+	memset(&g_dev_prm.nvram.debug_log_st,0,sizeof(g_dev_prm.nvram.debug_log_st));
+	g_dev_prm.nvram.debug_log_st.rs485_log=1;
 	//NVRAM_Load();
 	for(thread_idx=0;thread_idx<THREAD_MAX;thread_idx++)
 	{
