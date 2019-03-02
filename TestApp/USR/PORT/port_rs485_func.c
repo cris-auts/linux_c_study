@@ -561,7 +561,7 @@ void* PORT_Rs485Thread(void *p_arg)
 		rcv_len=RS485_WrRcvToRxBuf(rcv_buf,rcv_len);
 		if(rcv_len)
 		{
-			RS485_PrintLog("xxx:Rcv New Dat:%d\r\n",rcv_len);
+			RS485_PrintLog("Rcv New Dat:%d\r\n",rcv_len);
 			RS485_PrintHex(rcv_buf,rcv_len);
 		}
 
