@@ -1,0 +1,2 @@
+2019-03-05 17:12:33 INFO [4350:test_hello.c:15] hello, zlog
+2019-03-05 17:16:41 INFO [4456:test_hello.c:15] hello, zlog

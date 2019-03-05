@@ -2,25 +2,19 @@
 #include "zlog.h"
 
 int main(int argc, char** argv)
+
 {
-    int rc;
-    zlog_category_t *c;
+	int rc;
+	rc = dzlog_init("test_default.conf", "my_cat");
 
-    rc = zlog_init("test_hello.conf");
-    if (rc) {
-        printf("init failed\n");
-        return -1;
-    }
+	if (rc) {
+		printf("init failed\n");
+		return -1;
+	}
 
-    c = zlog_get_category("my_cat");
-    if (!c) {
-        printf("get cat fail\n");
-        zlog_fini();
-        return -2;
-    }
+	dzlog_info("hello, zlog");
 
-    zlog_info(c, "hello, zlog");
-    zlog_fini();
-    return 0;
+	zlog_fini();
 
-}
+	return 0;
+} 
