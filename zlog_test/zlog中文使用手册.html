@@ -1,0 +1,1421 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<!-- saved from url=(0053)http://hardysimpson.github.io/zlog/UsersGuide-CN.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>zlog使用手册
+</title>
+
+
+<meta name="GENERATOR" content="hevea 1.10">
+<style type="text/css">
+.li-itemize{margin:1ex 0ex;}
+.li-enumerate{margin:1ex 0ex;}
+.dd-description{margin:0ex 0ex 1ex 4ex;}
+.dt-description{margin:0ex;}
+.toc{list-style:none;}
+.thefootnotes{text-align:left;margin:0ex;}
+.dt-thefootnotes{margin:0em;}
+.dd-thefootnotes{margin:0em 0em 0em 2em;}
+.footnoterule{margin:1em auto 1em 0px;width:50%;}
+.caption{padding-left:2ex; padding-right:2ex; margin-left:auto; margin-right:auto}
+.title{margin:2ex auto;text-align:center}
+.center{text-align:center;margin-left:auto;margin-right:auto;}
+.flushleft{text-align:left;margin-left:0ex;margin-right:auto;}
+.flushright{text-align:right;margin-left:auto;margin-right:0ex;}
+DIV TABLE{margin-left:inherit;margin-right:inherit;}
+PRE{text-align:left;margin-left:0ex;margin-right:auto;}
+BLOCKQUOTE{margin-left:4ex;margin-right:4ex;text-align:left;}
+TD P{margin:0px;}
+.boxed{border:1px solid black}
+.textboxed{border:1px solid black}
+.vbar{border:none;width:2px;background-color:black;}
+.hbar{border:none;height:2px;width:100%;background-color:black;}
+.hfill{border:none;height:1px;width:200%;background-color:black;}
+.vdisplay{border-collapse:separate;border-spacing:2px;width:auto; empty-cells:show; border:2px solid red;}
+.vdcell{white-space:nowrap;padding:0px;width:auto; border:2px solid green;}
+.display{border-collapse:separate;border-spacing:2px;width:auto; border:none;}
+.dcell{white-space:nowrap;padding:0px;width:auto; border:none;}
+.dcenter{margin:0ex auto;}
+.vdcenter{border:solid #FF8000 2px; margin:0ex auto;}
+.minipage{text-align:left; margin-left:0em; margin-right:auto;}
+.marginpar{border:solid thin black; width:20%; text-align:left;}
+.marginparleft{float:left; margin-left:0ex; margin-right:1ex;}
+.marginparright{float:right; margin-left:1ex; margin-right:0ex;}
+.theorem{text-align:left;margin:1ex auto 1ex 0ex;}
+.part{margin:2ex auto;text-align:center}
+</style>
+</head>
+<body>
+<!--HEVEA command line is: /usr/bin/hevea book.hva -s UsersGuide-CN.tex -->
+<!--CUT DEF chapter 1 --><table class="title"><tbody><tr><td><h1 class="titlemain">zlog<sup><a name="text1" href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#note1">1</a></sup>使用手册</h1><h3 class="titlerest">难易 著<sup><a name="text2" href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#note2">2</a></sup><sup><a name="text3" href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#note3">3</a></sup></h3></td></tr>
+</tbody></table><!--TOC chapter Contents-->
+<h1 class="chapter"><!--SEC ANCHOR -->Contents</h1><!--SEC END --><ul class="toc"><li class="li-toc">
+<a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc1">Chapter&nbsp;1&nbsp;&nbsp;zlog是什么？</a>
+<ul class="toc"><li class="li-toc">
+<a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc2">1.1&nbsp;&nbsp;兼容性说明</a>
+</li><li class="li-toc"><a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc3">1.2&nbsp;&nbsp;zlog 1.2 发布说明</a>
+</li></ul>
+</li><li class="li-toc"><a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc4">Chapter&nbsp;2&nbsp;&nbsp;zlog不是什么？</a>
+</li><li class="li-toc"><a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc5">Chapter&nbsp;3&nbsp;&nbsp;Hello World</a>
+<ul class="toc"><li class="li-toc">
+<a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc6">3.1&nbsp;&nbsp;编译和安装zlog</a>
+</li><li class="li-toc"><a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc7">3.2&nbsp;&nbsp;应用程序调用和链接zlog</a>
+</li><li class="li-toc"><a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc8">3.3&nbsp;&nbsp;Hello World 代码</a>
+</li><li class="li-toc"><a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc9">3.4&nbsp;&nbsp;更简单的Hello World</a>
+</li></ul>
+</li><li class="li-toc"><a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc10">Chapter&nbsp;4&nbsp;&nbsp;Syslog 模型</a>
+<ul class="toc"><li class="li-toc">
+<a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc11">4.1&nbsp;&nbsp;分类(Category)、规则(Rule)和格式(Format)</a>
+</li><li class="li-toc"><a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc12">4.2&nbsp;&nbsp;syslog模型和log4j模型的区别</a>
+</li><li class="li-toc"><a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc13">4.3&nbsp;&nbsp;扩展syslog模型</a>
+</li></ul>
+</li><li class="li-toc"><a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc14">Chapter&nbsp;5&nbsp;&nbsp;配置文件</a>
+<ul class="toc"><li class="li-toc">
+<a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc15">5.1&nbsp;&nbsp;全局参数</a>
+</li><li class="li-toc"><a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc16">5.2&nbsp;&nbsp;日志等级自定义</a>
+</li><li class="li-toc"><a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc17">5.3&nbsp;&nbsp;格式(Formats)</a>
+</li><li class="li-toc"><a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc18">5.4&nbsp;&nbsp;转换格式串</a>
+<ul class="toc"><li class="li-toc">
+<a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc19">5.4.1&nbsp;&nbsp;转换字符</a>
+</li><li class="li-toc"><a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc20">5.4.2&nbsp;&nbsp;宽度修饰符 </a>
+</li><li class="li-toc"><a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc21">5.4.3&nbsp;&nbsp;时间字符</a>
+</li></ul>
+</li><li class="li-toc"><a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc22">5.5&nbsp;&nbsp;规则(Rules)</a>
+<ul class="toc"><li class="li-toc">
+<a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc23">5.5.1&nbsp;&nbsp;级别匹配</a>
+</li><li class="li-toc"><a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc24">5.5.2&nbsp;&nbsp;分类匹配</a>
+</li><li class="li-toc"><a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc25">5.5.3&nbsp;&nbsp;输出动作</a>
+</li></ul>
+</li><li class="li-toc"><a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc26">5.6&nbsp;&nbsp;文件转档</a>
+</li><li class="li-toc"><a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc27">5.7&nbsp;&nbsp;配置文件工具</a>
+</li></ul>
+</li><li class="li-toc"><a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc28">Chapter&nbsp;6&nbsp;&nbsp;zlog接口(API)</a>
+<ul class="toc"><li class="li-toc">
+<a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc29">6.1&nbsp;&nbsp;初始化和清理</a>
+</li><li class="li-toc"><a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc30">6.2&nbsp;&nbsp;分类(Category)操作</a>
+</li><li class="li-toc"><a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc31">6.3&nbsp;&nbsp;写日志函数及宏</a>
+</li><li class="li-toc"><a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc32">6.4&nbsp;&nbsp;MDC操作</a>
+</li><li class="li-toc"><a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc33">6.5&nbsp;&nbsp;dzlog接口</a>
+</li><li class="li-toc"><a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc34">6.6&nbsp;&nbsp;用户自定义输出</a>
+</li><li class="li-toc"><a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc35">6.7&nbsp;&nbsp;调试和诊断</a>
+</li></ul>
+</li><li class="li-toc"><a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc36">Chapter&nbsp;7&nbsp;&nbsp;高阶使用</a>
+<ul class="toc"><li class="li-toc">
+<a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc37">7.1&nbsp;&nbsp;MDC</a>
+</li><li class="li-toc"><a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc38">7.2&nbsp;&nbsp;诊断zlog本身</a>
+</li><li class="li-toc"><a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc39">7.3&nbsp;&nbsp;用户自定义等级</a>
+</li><li class="li-toc"><a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc40">7.4&nbsp;&nbsp;用户自定义输出</a>
+</li></ul>
+</li><li class="li-toc"><a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#htoc41">Chapter&nbsp;8&nbsp;&nbsp;尾声</a>
+</li></ul><!--TOC chapter zlog是什么？-->
+<h1 class="chapter"><!--SEC ANCHOR --><a name="htoc1">Chapter&nbsp;1</a>&nbsp;&nbsp;zlog是什么？</h1><!--SEC END --><p>zlog是一个高可靠性、高性能、线程安全、灵活、概念清晰的纯C日志函数库。</p><p>事实上，在C的世界里面没有特别好的日志函数库（就像JAVA里面的的log4j，或者C++的log4cxx）。C程序员都喜欢用自己的轮子。printf就是个挺好的轮子，但没办法通过配置改变日志的格式或者输出文件。syslog是个系统级别的轮子，不过速度慢，而且功能比较单调。</p><p>所以我写了zlog。</p><p>zlog在效率、功能、安全性上大大超过了log4c，并且是用c写成的，具有比较好的通用性。</p><p>zlog有这些特性：
+</p><ul class="itemize"><li class="li-itemize">
+syslog分类模型，比log4j模型更加直接了当
+</li><li class="li-itemize">日志格式定制，类似于log4j的pattern layout
+</li><li class="li-itemize">多种输出，包括动态文件、静态文件、stdout、stderr、syslog、用户自定义输出函数
+</li><li class="li-itemize">运行时手动、自动刷新配置文件（同时保证安全）
+</li><li class="li-itemize">高性能，在我的笔记本上达到25万条日志每秒, 大概是syslog(3)配合rsyslogd的1000倍速度 
+</li><li class="li-itemize">用户自定义等级
+</li><li class="li-itemize">多线程和多进程环境下保证安全转档
+</li><li class="li-itemize">精确到微秒
+</li><li class="li-itemize">简单调用包装dzlog（一个程序默认只用一个分类）
+</li><li class="li-itemize">MDC，线程键-值对的表，可以扩展用户自定义的字段
+</li><li class="li-itemize">自诊断，可以在运行时输出zlog自己的日志和配置状态
+</li><li class="li-itemize">不依赖其他库，只要是个POSIX系统就成(当然还要一个C99兼容的vsnprintf)
+</li></ul><p>
+相关链接：</p><p>主页：<a href="http://hardysimpson.github.com/zlog/">http://hardysimpson.github.com/zlog/</a></p><p>下载：<a href="https://github.com/HardySimpson/zlog/releases">https://github.com/HardySimpson/zlog/releases</a></p><p>邮箱：<a href="mailto:HardySimpson1984@gmail.com">HardySimpson1984@gmail.com</a></p><!--TOC section 兼容性说明-->
+<h2 class="section"><!--SEC ANCHOR --><a name="htoc2">1.1</a>&nbsp;&nbsp;兼容性说明</h2><!--SEC END --><ol class="enumerate" type="1"><li class="li-enumerate">
+zlog是基于POSIX的。目前我手上有的环境只有AIX和linux。在其他的系统下（FreeBSD, NetBSD, OpenBSD,
+OpenSolaris, Mac OS X...）估计也能行，有问题欢迎探讨。
+</li><li class="li-enumerate">zlog使用了一个C99兼容的vsnprintf。也就是说如果缓存大小不足，vsnprintf将会返回目标字符串应有的长度（不包括’\0’)。如果在你的系统上vsnprintf不是这么运作的，zlog就不知道怎么扩大缓存。如果在目标缓存不够的时候vsnprintf返回-1，zlog就会认为这次写入失败。幸运的是目前大多数c标准库符合C99标准。glibc
+2.1,libc on AIX, libc on freebsd...都是好的，不过glibc2.0不是。在这种情况下，用户需要自己来装一个C99兼容的vsnprintf，来crack这个函数库。我推荐<a href="http://sourceforge.net/projects/ctrio/">ctrio</a>,
+或者<a href="http://www.jhweiss.de/software/snprintf.html">C99-snprintf</a>。只要改buf.c就行，祝好运！
+</li><li class="li-enumerate">有网友提供了如下版本，方便其他平台上安装编译，非常感谢！<p>auto tools版本: <a href="https://github.com/bmanojlovic/zlog">https://github.com/bmanojlovic/zlog</a> </p><p>cmake版本: <a href="https://github.com/lisongmin/zlog">https://github.com/lisongmin/zlog</a> </p><p>windows版本: <a href="https://github.com/lopsd07/WinZlog">https://github.com/lopsd07/WinZlog</a></p></li></ol><!--TOC section zlog 1.2 发布说明-->
+<h2 class="section"><!--SEC ANCHOR --><a name="htoc3">1.2</a>&nbsp;&nbsp;zlog 1.2 发布说明</h2><!--SEC END --><ol class="enumerate" type="1"><li class="li-enumerate">
+zlog 1.2 新增了这些功能<ol class="enumerate" type="a"><li class="li-enumerate">
+对管道的支持，从此zlog可以外接cronolog这样的日志过滤程序来输出
+</li><li class="li-enumerate">全面的日志转档支持，详见<a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#sec:=006587=004EF6=008F6C=006863">5.6</a>
+</li><li class="li-enumerate">其他兼容性的代码改动
+</li></ol></li><li class="li-enumerate">zlog 1.2 在库方面是和zlog 1.0/1.1二进制兼容的，区别在于：<ol class="enumerate" type="a"><li class="li-enumerate">
+所有的宏改为小写，ZLOG_INFO-&gt;zlog_info，方便开发者手工输入。这是一个巨大的改变，如果zlog1.1/1.0的用户要用zlog
+1.2的话，需要写一个脚本，把源代码中的大写批量替换为小写，然后重新编译你的程序。我提供了一个脚本：<div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+sed&nbsp;-i&nbsp;-e&nbsp;’s/\b\w</tt><tt>*</tt><tt>ZLOG\w</tt><tt>*</tt><tt>\b/\L&amp;\E/g’&nbsp;aa.c
+</tt></dd></dl></div></li><li class="li-enumerate">取消了auto tools的使用，也就是说，不论你在任何平台，都需要gcc和gnu make才能编译安装zlog。主流的操作系统(Aix,
+OpenSolaris..)都能安装gcc和gnu make。当然也可以自行修改makefile来完成编译，对于平台稍有经验的Geek都可以自行完成！
+</li></ol></li></ol><!--TOC chapter zlog不是什么？-->
+<h1 class="chapter"><!--SEC ANCHOR --><a name="htoc4">Chapter&nbsp;2</a>&nbsp;&nbsp;zlog不是什么？</h1><!--SEC END --><p>zlog的目标是成为一个简而精的日志函数库，不会直接支持网络输出或者写入数据库，不会直接支持日志内容的过滤和解析。</p><p>原因很明显，日志库是被应用程序调用的，所有花在日志库上的时间都是应用程序运行时间的一部分，而上面说的这些操作都很费时间，会拖慢应用程序的速度。这些事儿应该在别的进程或者别的机器上做。</p><p>如果你需要这些特性，我建议使用rsyslog、zLogFabric、Logstash，这些日志搜集、过滤、存储软件，当然这是单独的进程，不是应用程序的一部分。</p><p>目前zlog已经支持<a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#sec:=007528=006237=0081EA=005B9A=004E49=008F93=0051FA">7.4</a>，可以自己实现一个输出函数，自由的把日志输出到其他进程或者其他机器。而把日志的分类匹配、日志格式成型的工作交给zlog。</p><p>目前我的想法是实现一个zlog-redis客户端，用自定义输出功能，把日志存储到本机或者远程的redis服务器内，然后用其他进程(也使用zlog库)来把日志写到文件里面，不知大家以为这个想法如何？欢迎和我联系探讨。</p><!--TOC chapter Hello World-->
+<h1 class="chapter"><!--SEC ANCHOR --><a name="htoc5">Chapter&nbsp;3</a>&nbsp;&nbsp;Hello World</h1><!--SEC END --><!--TOC section 编译和安装zlog-->
+<h2 class="section"><!--SEC ANCHOR --><a name="htoc6">3.1</a>&nbsp;&nbsp;编译和安装zlog</h2><!--SEC END --><p>下载<a href="file://https://github.com/HardySimpson/zlog/archive/latest-stable.tar.gz">zlog-latest-stable.tar.gz</a>
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+$&nbsp;tar&nbsp;-zxvf&nbsp;zlog-latest-stable.tar.gz</tt><p><tt>$&nbsp;cd&nbsp;zlog-latest-stable/</tt></p><p><tt>$&nbsp;make&nbsp;</tt></p><p><tt>$&nbsp;sudo&nbsp;make&nbsp;install</tt></p><p><tt>or</tt></p><p><tt>$&nbsp;sudo&nbsp;make&nbsp;PREFIX=/usr/local/&nbsp;install
+</tt></p></dd></dl></div><p>
+PREFIX指明了安装的路径，安转完之后为了让你的程序能找到zlog动态库
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+$&nbsp;sudo&nbsp;vi&nbsp;/etc/ld.so.conf</tt><p><tt>/usr/local/lib</tt></p><p><tt>$&nbsp;sudo&nbsp;ldconfig
+</tt></p></dd></dl></div><p>
+在你的程序运行之前，保证libzlog.so在系统的动态链接库加载器可以找到的目录下。上面的命令适用于linux，别的系统自己想办法。
+</p><ul class="itemize"><li class="li-itemize">
+除了一般的make以外，还可以</li></ul><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+$&nbsp;make&nbsp;32bit&nbsp;#&nbsp;32bit&nbsp;version&nbsp;on&nbsp;64bit&nbsp;machine,&nbsp;libc6-dev-i386&nbsp;is&nbsp;needed</tt><p><tt>$&nbsp;make&nbsp;noopt&nbsp;#&nbsp;without&nbsp;gcc&nbsp;optimization</tt></p><p><tt>$&nbsp;make&nbsp;doc&nbsp;&nbsp;&nbsp;#&nbsp;lyx&nbsp;and&nbsp;hevea&nbsp;is&nbsp;needed</tt></p><p><tt>$&nbsp;make&nbsp;test&nbsp;&nbsp;#&nbsp;test&nbsp;code,&nbsp;which&nbsp;is&nbsp;also&nbsp;good&nbsp;example&nbsp;for&nbsp;zlog</tt></p></dd></dl></div><ul class="itemize"><li class="li-itemize">
+makefile是用GNU make的格式写的，所以在你的平台上需要预装gnu make和gcc。或者，手工修改一个自己平台的makefile也行。
+</li></ul><!--TOC section 应用程序调用和链接zlog-->
+<h2 class="section"><!--SEC ANCHOR --><a name="htoc7">3.2</a>&nbsp;&nbsp;应用程序调用和链接zlog</h2><!--SEC END --><p>应用程序使用zlog很简单，只要在C文件里面加一行。
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+#include&nbsp;"zlog.h"
+</tt></dd></dl></div><p>
+链接zlog需要pthread库，命令是：
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+$&nbsp;cc&nbsp;-c&nbsp;-o&nbsp;app.o&nbsp;app.c&nbsp;-I/usr/local/include</tt><p><tt>&nbsp;&nbsp;#&nbsp;-I</tt><tt>[</tt><tt>where&nbsp;zlog.h&nbsp;is&nbsp;put</tt><tt>]</tt></p><p><tt>$&nbsp;cc&nbsp;-o&nbsp;app&nbsp;app.o&nbsp;-L/usr/local/lib&nbsp;-lzlog&nbsp;-lpthread</tt></p><p><tt>&nbsp;&nbsp;#&nbsp;-L</tt><tt>[</tt><tt>where&nbsp;libzlog.so&nbsp;is&nbsp;put</tt><tt>]</tt><tt>
+</tt></p></dd></dl></div><!--TOC section Hello World 代码-->
+<h2 class="section"><!--SEC ANCHOR --><a name="htoc8">3.3</a>&nbsp;&nbsp;Hello World 代码<a name="sec:Hello-World-=004EE3=007801"></a></h2><!--SEC END --><p>这些代码在$(top_builddir)/test/test_hello.c, test_hello.conf
+</p><ol class="enumerate" type="1"><li class="li-enumerate">
+写一个C文件：<div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+$&nbsp;vi&nbsp;test_hello.c</tt><p><tt>#include&nbsp;&lt;stdio.h&gt;&nbsp;</tt></p><p><tt>#include&nbsp;"zlog.h"</tt></p><p><tt>&nbsp;</tt></p><p><tt>int&nbsp;main(int&nbsp;argc,&nbsp;char</tt><tt>*</tt><tt>*</tt><tt>&nbsp;argv)</tt></p><p><tt>{
+</tt></p><div class="flushleft"><dl class="list"><dt class="dt-list"><tt>
+
+
+
+
+</tt><tt></tt></dt><dd class="dd-list"><tt>
+int&nbsp;rc;</tt><p><tt>zlog_category_t&nbsp;</tt><tt>*</tt><tt>c;</tt></p><p><tt>rc&nbsp;=&nbsp;zlog_init("test_hello.conf");</tt></p><p><tt>if&nbsp;(rc)&nbsp;{
+</tt></p><div class="flushleft"><dl class="list"><dt class="dt-list"><tt>
+
+
+
+
+</tt><tt></tt></dt><dd class="dd-list"><tt>
+printf("init&nbsp;failed\n");</tt><p><tt>return&nbsp;-1;
+</tt></p></dd></dl></div><p><tt>
+}</tt></p><p><tt>c&nbsp;=&nbsp;zlog_get_category("my_cat");</tt></p><p><tt>if&nbsp;(!c)&nbsp;{</tt></p><p><tt>printf("get&nbsp;cat&nbsp;fail\n");
+</tt></p><div class="flushleft"><dl class="list"><dt class="dt-list"><tt>
+
+
+
+
+</tt><tt></tt></dt><dd class="dd-list"><tt>
+zlog_fini();</tt><p><tt>return&nbsp;-2;
+</tt></p></dd></dl></div><p><tt>
+}</tt></p><p><tt>zlog_info(c,&nbsp;"hello,&nbsp;zlog");</tt></p><p><tt>zlog_fini();</tt></p><p><tt>return&nbsp;0;
+</tt></p></dd></dl></div><p><tt>
+}&nbsp;
+</tt></p></dd></dl></div></li><li class="li-enumerate">写一个配置文件，放在和test_hello.c同样的目录下:<div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+$&nbsp;vi&nbsp;test_hello.conf</tt><p><tt>[</tt><tt>formats</tt><tt>]</tt></p><p><tt>simple&nbsp;=&nbsp;"%m%n"</tt></p><p><tt>[</tt><tt>rules</tt><tt>]</tt></p><p><tt>my_cat.DEBUG&nbsp;&nbsp;&nbsp;&nbsp;&gt;stdout;&nbsp;simple
+</tt></p></dd></dl></div></li><li class="li-enumerate">编译、然后运行!<div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+$&nbsp;cc&nbsp;-c&nbsp;-o&nbsp;test_hello.o&nbsp;test_hello.c&nbsp;-I/usr/local/include</tt><p><tt>$&nbsp;cc&nbsp;-o&nbsp;test_hello&nbsp;test_hello.o&nbsp;-L/usr/local/lib&nbsp;-lzlog</tt></p><p><tt>$&nbsp;./test_hello</tt></p><p><tt>hello,&nbsp;zlog
+</tt></p></dd></dl></div></li></ol><!--TOC section 更简单的Hello World-->
+<h2 class="section"><!--SEC ANCHOR --><a name="htoc9">3.4</a>&nbsp;&nbsp;更简单的Hello World</h2><!--SEC END --><p>这个例子在$(top_builddir)/test/test_default.c, test_default.conf. 源代码是： 
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+#include&nbsp;&lt;stdio.h&gt;</tt><p><tt>#include&nbsp;"zlog.h"</tt></p><p><tt>int&nbsp;main(int&nbsp;argc,&nbsp;char</tt><tt>*</tt><tt>*</tt><tt>&nbsp;argv)</tt></p><p><tt>{
+</tt></p><div class="flushleft"><dl class="list"><dt class="dt-list"><tt>
+
+
+
+
+</tt><tt></tt></dt><dd class="dd-list"><tt>
+int&nbsp;rc;</tt><p><tt>rc&nbsp;=&nbsp;dzlog_init("test_default.conf",&nbsp;"my_cat");</tt></p><p><tt>if&nbsp;(rc)&nbsp;{
+</tt></p><div class="flushleft"><dl class="list"><dt class="dt-list"><tt>
+
+
+
+
+</tt><tt></tt></dt><dd class="dd-list"><tt>
+printf("init&nbsp;failed\n");</tt><p><tt>return&nbsp;-1;
+</tt></p></dd></dl></div><p><tt>
+}</tt></p><p><tt>dzlog_info("hello,&nbsp;zlog");</tt></p><p><tt>zlog_fini();</tt></p><p><tt>return&nbsp;0;
+</tt></p></dd></dl></div><p><tt>
+}&nbsp;
+</tt></p></dd></dl></div><p>
+配置文件是test_default.conf，和test_hello.conf一模一样，最后执行程序的输出也一样。区别在于这里用了dzlog
+API，内含一个默认的zlog_category_t。详见<a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#sec:dzlog=0063A5=0053E3">6.5</a>。</p><!--TOC chapter Syslog 模型-->
+<h1 class="chapter"><!--SEC ANCHOR --><a name="htoc10">Chapter&nbsp;4</a>&nbsp;&nbsp;Syslog 模型</h1><!--SEC END --><!--TOC section 分类(Category)、规则(Rule)和格式(Format)-->
+<h2 class="section"><!--SEC ANCHOR --><a name="htoc11">4.1</a>&nbsp;&nbsp;分类(Category)、规则(Rule)和格式(Format)</h2><!--SEC END --><p>zlog有3个重要的概念：分类(Category)、规则(Rule)和格式(Format)。</p><p>分类(Category)用于区分不同的输入。代码中的分类变量的名字是一个字符串，在一个程序里面可以通过获取不同的分类名的category用来后面输出不同分类的日志，用于不同的目的。</p><p>格式(Format)是用来描述输出日志的格式，比如是否有带有时间戳，是否包含文件位置信息等，上面的例子里面的格式simple就是简单的用户输入的信息+换行符。</p><p>规则(Rule)则是把分类、级别、输出文件、格式组合起来，决定一条代码中的日志是否输出，输出到哪里，以什么格式输出。</p><p>所以，当程序执行下面的语句的时候
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+zlog_category_t&nbsp;</tt><tt>*</tt><tt>c;</tt><p><tt>c&nbsp;=&nbsp;zlog_get_category("my_cat");</tt></p><p><tt>zlog_info(c,&nbsp;"hello,&nbsp;zlog");
+</tt></p></dd></dl></div><p>
+zlog会找到c的名字是"my_cat"，对应的配置文件中的规则是
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+</tt><tt>[</tt><tt>rules</tt><tt>]</tt><p><tt>my_cat.DEBUG&nbsp;&nbsp;&nbsp;&nbsp;&gt;stdout;&nbsp;simple
+</tt></p></dd></dl></div><p>
+然后库会检查，目前这条日志的级别是否符合规则中的级别来决定是否输出。因为INFO&gt;=DEBUG，所以这条日志会被输出。并且根据这条规则，会被输出到stdout（标准输出）
+，输出的格式是simple，在配置文件中定义是
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+</tt><tt>[</tt><tt>formats</tt><tt>]</tt><p><tt>simple&nbsp;=&nbsp;"%m%n"&nbsp;
+</tt></p></dd></dl></div><p>
+最后在屏幕上打印
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+hello,&nbsp;zlog
+</tt></dd></dl></div><p>
+这就是整个过程。用户要做就是写自己的信息。日志往哪里输出，以什么格式输出，都是库和配置文件来完成的。</p><!--TOC section syslog模型和log4j模型的区别-->
+<h2 class="section"><!--SEC ANCHOR --><a name="htoc12">4.2</a>&nbsp;&nbsp;syslog模型和log4j模型的区别</h2><!--SEC END --><p>好，那么目前这个模型和syslog有什么关系呢？至今为止，这个模型还是比较像log4j。log4j的模型里面有logger, appender和layout。区别在于，在log4j里面，代码中的logger和配置中的logger是一一对应的，并且一个logger有唯一的级别。一对一关系是log4j,
+log4cxx, log4cpp, log4cplus, log4net的唯一选择。</p><p>但这种模型是不灵活的，他们发明了过滤器（filters）来弥补，但这只能把事情弄得更加混乱。所以让我们把目光转回syslog的模型，这是一个设计的很简易正确的模型。</p><p>继续上一节的例子，如果在zlog的配置文件中有这么2行规则：
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+</tt><tt>[</tt><tt>rules</tt><tt>]</tt><p><tt>my_cat.DEBUG&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;stdout;&nbsp;simple</tt></p><p><tt>my_cat.INFO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;stdout;
+</tt></p></dd></dl></div><p>
+然后，一行代码会产生两行输出：
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+hello,&nbsp;zlog</tt><p><tt>2012-05-29&nbsp;10:41:36&nbsp;INFO&nbsp;</tt><tt>[</tt><tt>11288:test_hello.c:41</tt><tt>]</tt><tt>&nbsp;hello,&nbsp;zlog
+</tt></p></dd></dl></div><p>
+现在一个代码中的分类对应配置文件中的两条规则。log4j的用户可能会说："这很好，但是只要在log4j里面放两个appender也能做的一样。"所以继续看下一个例子：
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+</tt><tt>[</tt><tt>rules</tt><tt>]</tt><p><tt>my_cat.WARN&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/var/log/aa.log"</tt></p><p><tt>my_cat.DEBUG&nbsp;&nbsp;&nbsp;&nbsp;"/var/log/bb.log"
+</tt></p></dd></dl></div><p>
+代码是：
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+zlog_info(c,&nbsp;"info,&nbsp;zlog");</tt><p><tt>zlog_debug(c,&nbsp;"debug,&nbsp;zlog");
+</tt></p></dd></dl></div><p>
+最后，在aa.log中只有一条日志
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+2012-05-29&nbsp;10:41:36&nbsp;INFO&nbsp;</tt><tt>[</tt><tt>11288:test_hello.c:41</tt><tt>]</tt><tt>&nbsp;info,&nbsp;zlog
+</tt></dd></dl></div><p>
+但在bb.log里面有两条
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+2012-05-29&nbsp;10:41:36&nbsp;INFO&nbsp;</tt><tt>[</tt><tt>11288:test_hello.c:41</tt><tt>]</tt><tt>&nbsp;info,&nbsp;zlog</tt><p><tt>2012-05-29&nbsp;10:41:36&nbsp;DEBUG&nbsp;</tt><tt>[</tt><tt>11288:test_hello.c:42</tt><tt>]</tt><tt>&nbsp;debug,&nbsp;zlog
+</tt></p></dd></dl></div><p>
+从这个例子能看出来区别。log4j无法轻易的做到这一点。在zlog里面，一个分类可以对应多个规则，每个规则有自己的级别、输出和格式。这就让用户能按照需求过滤、多渠道输出自己的所有日志。</p><!--TOC section 扩展syslog模型-->
+<h2 class="section"><!--SEC ANCHOR --><a name="htoc13">4.3</a>&nbsp;&nbsp;扩展syslog模型</h2><!--SEC END --><p>所以到现在你能看出来zlog的模型更像syslog的模型。不幸的是，在syslog里面，设施（facility）是个int型，而且必须从系统定义的那几种里面选择。zlog走的远一点，用一个字符串来标识分类。</p><p>syslog有一个通配符"*"，匹配所有的设施（facility）。zlog里面也一样，"*"匹配所有分类。这提供了一个很方便的办法来重定向你的系统中各个组件的错误。只要这么写：
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+</tt><tt>[</tt><tt>rules</tt><tt>]</tt><p><tt>*</tt><tt>.error&nbsp;&nbsp;&nbsp;&nbsp;"/var/log/error.log"
+</tt></p></dd></dl></div><p>
+zlog强大而独有的特性是上下级分类匹配。如果你的分类是这样的：
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+c&nbsp;=&nbsp;zlog_get_category("my_cat");
+</tt></dd></dl></div><p>
+然后配置文件是这样的
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+</tt><tt>[</tt><tt>rules</tt><tt>]</tt><p><tt>my_cat.</tt><tt>*</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/var/log/my_cat.log"</tt></p><p><tt>my_.NOTICE&nbsp;&nbsp;&nbsp;&nbsp;"/var/log/my.log"
+</tt></p></dd></dl></div><p>
+这两条规则都匹配c分类"my_cat"。通配符"_"
+表示上级分类。 "my_"是"my_cat"和"my_dog"的上级分类。还有一个通配符是"!"，详见<a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#sub:=005206=007C7B=005339=00914D">5.5.2</a></p><!--TOC chapter 配置文件-->
+<h1 class="chapter"><!--SEC ANCHOR --><a name="htoc14">Chapter&nbsp;5</a>&nbsp;&nbsp;配置文件</h1><!--SEC END --><p>大部分的zlog的行为取决于配置文件：把日志打到哪里去，用什么格式，怎么转档。配置文件是zlog的黑话，我尽量把这个黑话设计的简单明了。这是个配置文件例子：
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+#&nbsp;comments</tt><p><tt>[</tt><tt>global</tt><tt>]</tt></p><p><tt>strict&nbsp;init&nbsp;=&nbsp;true</tt></p><p><tt>buffer&nbsp;min&nbsp;=&nbsp;1024</tt></p><p><tt>buffer&nbsp;max&nbsp;=&nbsp;2MB</tt></p><p><tt>rotate&nbsp;lock&nbsp;file&nbsp;=&nbsp;/tmp/zlog.lock</tt></p><p><tt>default&nbsp;format&nbsp;=&nbsp;"%d.%us&nbsp;%-6V&nbsp;(%c:%F:%L)&nbsp;-&nbsp;%m%n"</tt></p><p><tt>file&nbsp;perms&nbsp;=&nbsp;600</tt></p><p><tt>&nbsp;</tt></p><p><tt>[</tt><tt>levels</tt><tt>]</tt></p><p><tt>TRACE&nbsp;=&nbsp;10</tt></p><p><tt>CRIT&nbsp;=&nbsp;130,&nbsp;LOG_CRIT</tt></p><p><tt>&nbsp;</tt></p><p><tt>[</tt><tt>formats</tt><tt>]</tt></p><p><tt>simple&nbsp;=&nbsp;"%m%n"</tt></p><p><tt>normal&nbsp;=&nbsp;"%d&nbsp;%m%n"</tt></p><p><tt>&nbsp;</tt></p><p><tt>[</tt><tt>rules</tt><tt>]</tt></p><p><tt>default.</tt><tt>*</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;stdout;&nbsp;simple</tt></p><p><tt>*</tt><tt>.</tt><tt>*</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"%12.2E(HOME)/log/%c.log",&nbsp;1MB</tt><tt>*</tt><tt>12;&nbsp;simple</tt></p><p><tt>my_.INFO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;stderr;</tt></p><p><tt>my_cat.!ERROR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/var/log/aa.log"</tt></p><p><tt>my_dog.=DEBUG&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;syslog,&nbsp;LOG_LOCAL0;&nbsp;simple</tt></p><p><tt>my_mice.</tt><tt>*</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$user_define;
+</tt></p></dd></dl></div><p>
+有关单位：当设置内存大小或者大数字时，可以设置1k 5GB 4M这样的单位：
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+#&nbsp;1k&nbsp;=&gt;&nbsp;1000&nbsp;bytes&nbsp;</tt><p><tt>#&nbsp;1kb&nbsp;=&gt;&nbsp;1024&nbsp;bytes&nbsp;</tt></p><p><tt>#&nbsp;1m&nbsp;=&gt;&nbsp;1000000&nbsp;bytes&nbsp;</tt></p><p><tt>#&nbsp;1mb&nbsp;=&gt;&nbsp;1024</tt><tt>*</tt><tt>1024&nbsp;bytes</tt></p><p><tt>#&nbsp;1g&nbsp;=&gt;&nbsp;1000000000&nbsp;bytes&nbsp;</tt></p><p><tt>#&nbsp;1gb&nbsp;=&gt;&nbsp;1024</tt><tt>*</tt><tt>1024</tt><tt>*</tt><tt>1024&nbsp;byte
+</tt></p></dd></dl></div><p>
+单位是大小写不敏感的，所以1GB 1Gb 1gB是等效的。</p><!--TOC section 全局参数-->
+<h2 class="section"><!--SEC ANCHOR --><a name="htoc15">5.1</a>&nbsp;&nbsp;全局参数</h2><!--SEC END --><p>全局参数以[global]开头。[]代表一个节的开始，四个小节的顺序不能变，依次为global-levels-formats-rules。这一节可以忽略不写。语法为
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+(key)&nbsp;=&nbsp;(value)</tt></dd></dl></div><ul class="itemize"><li class="li-itemize">
+strict init<p>如果"strict init"是true，zlog_init()将会严格检查所有的格式和规则，任何错误都会导致zlog_init()
+失败并且返回-1。当"strict init"是false的时候，zlog_init()会忽略错误的格式和规则。
+这个参数默认为true。</p></li><li class="li-itemize">reload conf period<p>这个选项让zlog能在一段时间间隔后自动重载配置文件。重载的间隔以每进程写日志的次数来定义。当写日志次数到了一定值后，内部将会调用zlog_reload()进行重载。每次zlog_reload()或者zlog_init()之后重新计数累加。因为zlog_reload()是原子性的，重载失败继续用当前的配置信息，所以自动重载是安全的。默认值是0，自动重载是关闭的。</p></li><li class="li-itemize">buffer min
+</li><li class="li-itemize">buffer max<p>zlog在堆上为每个线程申请缓存。"buffer min"是单个缓存的最小值，zlog_init()的时候申请这个长度的内存。写日志的时候，如果单条日志长度大于缓存，缓存会自动扩充，直到到"buffer
+max"。 单条日志再长超过"buffer max"就会被截断。如果
+"buffer max" 是 0，意味着不限制缓存，每次扩充为原先的2倍，直到这个进程用完所有内存为止。缓存大小可以加上
+KB, MB 或 GB这些单位。默认来说"buffer min"是 1K ，
+"buffer max" 是2MB。</p></li><li class="li-itemize">rotate lock file<p>这个选项指定了一个锁文件，用来保证多进程情况下日志安全转档。zlog会在zlog_init()时候以读写权限打开这个文件。确认你执行程序的用户有权限创建和读写这个文件。转档日志的伪代码是：
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+write(log_file,&nbsp;a_log)</tt><p><tt>if&nbsp;(log_file&nbsp;&gt;&nbsp;1M)
+</tt></p><div class="flushleft"><dl class="list"><dt class="dt-list"><tt>
+
+
+
+
+</tt><tt></tt></dt><dd class="dd-list"><tt>
+if&nbsp;(pthread_mutex_lock&nbsp;succ&nbsp;&amp;&amp;&nbsp;fcntl_lock(lock_file)&nbsp;succ)
+</tt><div class="flushleft"><dl class="list"><dt class="dt-list"><tt>
+
+
+
+
+</tt><tt></tt></dt><dd class="dd-list"><tt>
+if&nbsp;(log_file&nbsp;&gt;&nbsp;1M)&nbsp;rotate(log_file);</tt><p><tt>fcntl_unlock(lock_file);</tt></p><p><tt>pthread_mutex_unlock;
+</tt></p></dd></dl></div></dd></dl></div></dd></dl></div><p>mutex_lock用于多线程， fcntl_lock用于多进程。fcntl_lock是POSIX建议锁。详见man 3 fcntl。这个锁是全系统有效的。在某个进程意外死亡后，操作系统会释放此进程持有的锁。这就是我为什么用fcntl锁来保证安全转档。进程需要对锁文件有读写权限。</p><p>默认来说，rotate lock file = self。在这种情况下，zlog不会创建任何锁文件，用配置文件作为锁文件。fcntl是建议锁，所以用户可以自由的修改存储他们的配置文件。一般来说，单个日志文件不会被不同操作系统用户的进程转档，所以用配置文件作为锁文件是安全的。</p><p>如果你设置其他路径作为锁文件，例如/tmp/zlog.lock，zlog会在zlog_init()的时候创建这个文件。如果有多个操作系统用户的进程需要转档同一个日志文件，确认这个锁文件对于多个用户都可读写。默认值是/tmp/zlog.lock。</p></li><li class="li-itemize">default format<p>这个参数是缺省的日志格式，默认值为：
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+"%d&nbsp;%V&nbsp;</tt><tt>[</tt><tt>%p:%F:%L</tt><tt>]</tt><tt>&nbsp;%m%n"
+</tt></dd></dl></div><p>这种格式产生的输出类似这样：
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+2012-02-14&nbsp;17:03:12&nbsp;INFO&nbsp;</tt><tt>[</tt><tt>3758:test_hello.c:39</tt><tt>]</tt><tt>&nbsp;hello,&nbsp;zlog
+</tt></dd></dl></div></li><li class="li-itemize">file perms<p>这个指定了创建日志文件的缺省访问权限。必须注意的是最后的产生的日志文件的权限为"file perms"&amp;
+~umask。默认为600，只允许当前用户读写。</p></li><li class="li-itemize">fsync period<p>在每条规则写了一定次数的日志到文件后，zlog会调用fsync(3)来让操作系统马上把数据写到硬盘。次数是每条规则单独统计的，并且在zlog_reload()后会被清0。必须指出的是，在日志文件名是动态生成或者被转档的情况下，zlog不能保证把所有文件都搞定，zlog只fsync()那个时候刚刚write()的文件描述符。这提供了写日志速度和数据安全性之间的平衡。例子：
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+$&nbsp;time&nbsp;./test_press_zlog&nbsp;1&nbsp;10&nbsp;100000</tt><p><tt>real	0m1.806s</tt></p><p><tt>user	0m3.060s&nbsp;</tt></p><p><tt>sys	&nbsp;0m0.270s</tt></p><p><tt>&nbsp;</tt></p><p><tt>$&nbsp;wc&nbsp;-l&nbsp;press.log&nbsp;&nbsp;</tt></p><p><tt>1000000&nbsp;press.log&nbsp;&nbsp;</tt></p><p><tt>&nbsp;</tt></p><p><tt>$&nbsp;time&nbsp;./test_press_zlog&nbsp;1&nbsp;10&nbsp;100000&nbsp;#fsync&nbsp;period&nbsp;=&nbsp;1K</tt></p><p><tt>real	0m41.995s&nbsp;</tt></p><p><tt>user	0m7.920s&nbsp;</tt></p><p><tt>sys	&nbsp;0m0.990s</tt></p><p><tt>&nbsp;</tt></p><p><tt>$&nbsp;time&nbsp;./test_press_zlog&nbsp;1&nbsp;10&nbsp;100000&nbsp;#fsync&nbsp;period&nbsp;=&nbsp;10K</tt></p><p><tt>real	0m6.856s&nbsp;</tt></p><p><tt>user	0m4.360s&nbsp;</tt></p><p><tt>sys	&nbsp;0m0.550s
+</tt></p></dd></dl></div><p>如果你极度在乎安全而不是速度的话，用同步IO文件，见<a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#ite:=00540C=006B65IO=006587=004EF6">5.5.3</a>。默认值是0，由操作系统来决定什么时候刷缓存到文件。</p></li></ul><!--TOC section 日志等级自定义-->
+<h2 class="section"><!--SEC ANCHOR --><a name="htoc16">5.2</a>&nbsp;&nbsp;日志等级自定义</h2><!--SEC END --><p>这一节以[levels]开始。用于定义用户自己的日志等级，建议和用户自定义的日志记录宏一起使用。这一节可以忽略不写。语法为：
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+(level&nbsp;string)&nbsp;=&nbsp;(level&nbsp;int),&nbsp;(syslog&nbsp;level,&nbsp;optional)
+</tt></dd></dl></div><p>
+(level int)必须在[1,253]这个范围内，越大越重要。(syslog level)是可选的，如果不设默认为LOG_DEBUG。</p><p>详见<a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#sec:=007528=006237=0081EA=005B9A=004E49=007B49=007EA7">7.3</a>。</p><!--TOC section 格式(Formats)-->
+<h2 class="section"><!--SEC ANCHOR --><a name="htoc17">5.3</a>&nbsp;&nbsp;格式(Formats)</h2><!--SEC END --><p>这一节以[formats]开始。用来定义日志的格式。语法为：
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+(name)&nbsp;=&nbsp;"(actual&nbsp;formats)"
+</tt></dd></dl></div><p>
+很好理解，(name)被后面的规则使用。(name)必须由数字和字母组成，下划线"_"也算字母。(actual
+format)前后需要有双引号。 (actual formats)可以由转换字符组成，见下一节。</p><!--TOC section 转换格式串-->
+<h2 class="section"><!--SEC ANCHOR --><a name="htoc18">5.4</a>&nbsp;&nbsp;转换格式串<a name="sec:=008F6C=006362=00683C=005F0F=004E32"></a></h2><!--SEC END --><p>转换格式串的设计是从C的printf函数里面抄来的。一个转换格式串由文本字符和转换说明组成。</p><p>转换格式串用在规则的日志文件路径和输出格式(format)中。</p><p>你可以把任意的文本字符放到转换格式串里面。</p><p>每个转换说明都是以百分号(%)打头的，后面跟可选的宽度修饰符，最后以转换字符结尾。转换字符决定了输出什么数据，例如分类名、级别、时间日期、进程号等等。宽度修饰符控制了这个字段的最大最小宽度、左右对齐。下面是简单的例子。</p><p>如果转换格式串是：
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+"%d(%m-%d&nbsp;%T)&nbsp;%-5V&nbsp;</tt><tt>[</tt><tt>%p:%F:%L</tt><tt>]</tt><tt>&nbsp;%m%n".
+</tt></dd></dl></div><p>
+源代码中的写日志语句是：
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+zlog_info(c,&nbsp;"hello,&nbsp;zlog");
+</tt></dd></dl></div><p>
+将会输出：
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+02-14&nbsp;17:17:42&nbsp;INFO&nbsp;&nbsp;</tt><tt>[</tt><tt>4935:test_hello.c:39</tt><tt>]</tt><tt>&nbsp;hello,&nbsp;zlog
+</tt></dd></dl></div><p>
+可以注意到，在文本字符和转换说明之间没有显式的分隔符。zlog解析的时候知道哪里是转换说明的开头和结尾。在这个例子里面%-5p这个转换说明决定了日志级别要被左对齐，占5个字符宽。 </p><!--TOC subsection 转换字符-->
+<h3 class="subsection"><!--SEC ANCHOR --><a name="htoc19">5.4.1</a>&nbsp;&nbsp;转换字符</h3><!--SEC END --><p>可以被辨认的转换字符是</p><p>
+
+
+</p><blockquote class="table"><div class="center"><hr width="80%" size="2"></div><div class="center"><table border="1" cellspacing="0" cellpadding="1"><tbody><tr><td valign="top" align="left"><div class="center">字符</div></td><td valign="top" align="left"><div class="flushleft">效果</div></td><td valign="top" align="left"><div class="flushleft">例子</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%c</div></td><td valign="top" align="left"><div class="flushleft">分类名</div></td><td valign="top" align="left"><div class="flushleft">aa_bb</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%d()</div></td><td valign="top" align="left"><div class="flushleft">打日志的时间。这个后面要跟一对小括号()内含说明具体的日期格式。就像%d(%F)或者%d(%m-%d %T)。如果不跟小括号，默认是%d(%F
+%T)。括号内的格式和 strftime(2)的格式一致。详见<a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#sub:=0065F6=0095F4=005B57=007B26">5.4.3</a></div></td><td valign="top" align="left"><div class="flushleft">%d(%F) 2011-12-01</div><p>%d(%m-%d %T) 12-01 17:17:42</p><p>%d(%T) 17:17:42.035</p><p>%d 2012-02-14 17:03:12</p><p>%d()</p></td></tr>
+<tr><td valign="top" align="left"><div class="center">%E()</div></td><td valign="top" align="left"><div class="flushleft">获取环境变量的值</div></td><td valign="top" align="left"><div class="flushleft">%E(USER) simpson</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%ms</div></td><td valign="top" align="left"><div class="flushleft">毫秒，3位数字字符串</div><p>取自gettimeofday(2)</p></td><td valign="top" align="left"><div class="flushleft">013</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%us</div></td><td valign="top" align="left"><div class="flushleft">微秒，6位数字字符串</div><p>取自gettimeofday(2)</p></td><td valign="top" align="left"><div class="flushleft">002323</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%F</div></td><td valign="top" align="left"><div class="flushleft">源代码文件名，来源于__FILE__宏。在某些编译器下 __FILE__是绝对路径。用%f来去掉目录只保留文件名，或者编译器有选项可以调节</div></td><td valign="top" align="left"><div class="flushleft">test_hello.c</div><p>或者在某些编译器下</p><p>/home/zlog/src/test/test_hello.c</p></td></tr>
+<tr><td valign="top" align="left"><div class="center">%f</div></td><td valign="top" align="left"><div class="flushleft">源代码文件名，输出$F最后一个’/’后面的部分。当然这会有一定的性能损失</div></td><td valign="top" align="left"><div class="flushleft">test_hello.c</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%H</div></td><td valign="top" align="left"><div class="flushleft">主机名，来源于 gethostname(2)</div></td><td valign="top" align="left"><div class="flushleft">zlog-dev</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%L</div></td><td valign="top" align="left"><div class="flushleft">源代码行数，来源于__LINE__宏</div></td><td valign="top" align="left"><div class="flushleft">135</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%m</div></td><td valign="top" align="left"><div class="flushleft">用户日志，用户从zlog函数输入的日志。</div></td><td valign="top" align="left"><div class="flushleft">hello, zlog</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%M</div></td><td valign="top" align="left"><div class="flushleft">MDC (mapped diagnostic context)，每个线程一张键值对表，输出键相对应的值。后面必需跟跟一对小括号()内含键。例如
+%M(clientNumber) ，clientNumbe是键。 详见 <a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#sec:MDC">7.1</a></div></td><td valign="top" align="left"><div class="flushleft">%M(clientNumber) 12345</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%n</div></td><td valign="top" align="left"><div class="flushleft">换行符，目前还不支持windows换行符</div></td><td valign="top" align="left"><div class="flushleft">\n</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%p</div></td><td valign="top" align="left"><div class="flushleft">进程ID，来源于getpid()</div></td><td valign="top" align="left"><div class="flushleft">2134</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%U</div></td><td valign="top" align="left"><div class="flushleft">调用函数名，来自于__func__(C99)或者__FUNCTION__(gcc)，如果编译器支持的话。</div></td><td valign="top" align="left"><div class="flushleft">main</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%V</div></td><td valign="top" align="left"><div class="flushleft">日志级别，大写</div></td><td valign="top" align="left"><div class="flushleft">INFO</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%v</div></td><td valign="top" align="left"><div class="flushleft">日志级别，小写</div></td><td valign="top" align="left"><div class="flushleft">info</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%t</div></td><td valign="top" align="left"><div class="flushleft">16进制表示的线程ID，来源于pthread_self()</div><p>"0x%x",(unsigned int) pthread_t</p></td><td valign="top" align="left"><div class="flushleft">0xba01e700</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%T</div></td><td valign="top" align="left"><div class="flushleft">相当于%t,不过是以长整型表示的</div><p>"%lu", (unsigned long) pthread_t</p></td><td valign="top" align="left"><div class="flushleft">140633234859776</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%%</div></td><td valign="top" align="left"><div class="flushleft">一个百分号</div></td><td valign="top" align="left"><div class="flushleft">%</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%[其他字符]</div></td><td valign="top" align="left"><div class="flushleft">解析为错误，zlog_init()将会失败</div></td><td valign="top" align="left">&nbsp;</td></tr>
+<tr><td valign="top" align="left">&nbsp;</td></tr>
+</tbody></table>
+
+</div><div class="center"><hr width="80%" size="2"></div></blockquote><!--TOC subsection 宽度修饰符 -->
+<h3 class="subsection"><!--SEC ANCHOR --><a name="htoc20">5.4.2</a>&nbsp;&nbsp;宽度修饰符 </h3><!--SEC END --><p>一般来说数据按原样输出。不过，有了宽度修饰符，就能够控制最小字段宽度、最大字段宽度和左右对齐。当然这要付出一定的性能代价。</p><p>可选的宽度修饰符放在百分号和转换字符之间。</p><p>第一个可选的宽度修饰符是左对齐标识，减号(-)。然后是可选的最小字段宽度，这是一个十进制数字常量，表示最少有几个字符会被输出。如果数据本来没有那么多字符，将会填充空格（左对齐或者右对齐）直到最小字段宽度为止。默认是填充在左边也就是右对齐。当然你也可以使用左对齐标志，指定为填充在右边来左对齐。填充字符为空格(space)。如果数据的宽度超过最小字段宽度，则按照数据的宽度输出，永远不会截断数据。</p><p>这种行为可以用最大字段宽度来改变。最大字段宽度是放在一个句点号(.)后面的十进制数字常量。如果数据的宽度超过了最大字段宽度，则尾部多余的字符（超过最大字段宽度的部分）将会被截去。
+最大字段宽度是8，数据的宽度是10，则最后两个字符会被丢弃。这种行为和C的printf是一样的，把后面的部分截断。</p><p>下面是各种宽度修饰符和分类转换字符配合一起用的例子。</p><table border="1" cellspacing="0" cellpadding="1"><tbody><tr><td valign="top" align="left"><div class="center">宽度修饰符</div></td><td valign="top" align="left"><div class="center">左对齐</div></td><td valign="top" align="left"><div class="center">最小字段宽度</div></td><td valign="top" align="left"><div class="center">最大字段宽度</div></td><td valign="top" align="left"><div class="center">附注</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%20c</div></td><td valign="top" align="left"><div class="center">否</div></td><td valign="top" align="left"><div class="center">20</div></td><td valign="top" align="left"><div class="center">无</div></td><td valign="top" align="left"><div class="center">左补充空格，如果分类名小于20个字符长。</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%-20c</div></td><td valign="top" align="left"><div class="center">是</div></td><td valign="top" align="left"><div class="center">20</div></td><td valign="top" align="left"><div class="center">无</div></td><td valign="top" align="left"><div class="center">右补充空格，如果分类名小于20个字符长。</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%.30c</div></td><td valign="top" align="left"><div class="center">无</div></td><td valign="top" align="left"><div class="center">无</div></td><td valign="top" align="left"><div class="center">30</div></td><td valign="top" align="left"><div class="center">如果分类名大于30个字符长，取前30个字符，去掉后面的。</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%20.30c</div></td><td valign="top" align="left"><div class="center">否</div></td><td valign="top" align="left"><div class="center">20</div></td><td valign="top" align="left"><div class="center">30</div></td><td valign="top" align="left"><div class="center">如果分类名小于20个字符长，左补充空格。如果在20-30之间，按照原样输出。如果大于30个字符长，取前30个字符，去掉后面的。</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%-20.30c</div></td><td valign="top" align="left"><div class="center">是</div></td><td valign="top" align="left"><div class="center">20</div></td><td valign="top" align="left"><div class="center">30</div></td><td valign="top" align="left"><div class="center">如果分类名小于20个字符长，右补充空格。如果在20-30之间，按照原样输出。如果大于30个字符长，取前30个字符，去掉后面的。</div></td></tr>
+</tbody></table><!--TOC subsection 时间字符-->
+<h3 class="subsection"><!--SEC ANCHOR --><a name="htoc21">5.4.3</a>&nbsp;&nbsp;时间字符<a name="sub:=0065F6=0095F4=005B57=007B26"></a></h3><!--SEC END --><p>这里是转换字符d支持的时间字符。</p><p>所有字符都是由strftime(2)生成的，在我的linux操作系统上支持的是：</p><p>
+
+
+</p><blockquote class="table"><div class="center"><hr width="80%" size="2"></div><div class="center"><table border="1" cellspacing="0" cellpadding="1"><tbody><tr><td valign="top" align="left"><div class="center">字符</div></td><td valign="top" align="left"><div class="flushleft">效果</div></td><td valign="top" align="left"><div class="flushleft">例子</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%a</div></td><td valign="top" align="left"><div class="flushleft">一星期中各天的缩写名，根据locale显示</div></td><td valign="top" align="left"><div class="flushleft">Wed</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%A</div></td><td valign="top" align="left"><div class="flushleft">一星期中各天的全名，根据locale显示</div></td><td valign="top" align="left"><div class="flushleft">Wednesday</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%b</div></td><td valign="top" align="left"><div class="flushleft">缩写的月份名，根据locale显示</div></td><td valign="top" align="left"><div class="flushleft">Mar</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%B</div></td><td valign="top" align="left"><div class="flushleft">月份全名，根据locale显示</div></td><td valign="top" align="left"><div class="flushleft">March</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%c</div></td><td valign="top" align="left"><div class="flushleft">当地时间和日期的全表示， 根据locale显示</div></td><td valign="top" align="left"><div class="flushleft">Thu Feb 16 14:16:35 2012</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%C</div></td><td valign="top" align="left"><div class="flushleft">世纪 (年/100)，2位的数字(SU)</div></td><td valign="top" align="left"><div class="flushleft">20</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%d</div></td><td valign="top" align="left"><div class="flushleft">一个月中的某一天 (01-31)</div></td><td valign="top" align="left"><div class="flushleft">06</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%D</div></td><td valign="top" align="left"><div class="flushleft">相当于%m/%d/%y. (呃，美国人专用，美国人要知道在别的国家%d/%m/%y 才是主流。也就是说在国际环境下这个格式容易造成误解，要少用)
+(SU)</div></td><td valign="top" align="left"><div class="flushleft">02/16/12</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%e</div></td><td valign="top" align="left"><div class="flushleft">就像%d，一个月中的某一天，但是头上的0被替换成空格(SU)</div></td><td valign="top" align="left"><div class="flushleft">6</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%F</div></td><td valign="top" align="left"><div class="flushleft">相当于%Y-%m-%d (ISO 8601日期格式)(C99)</div></td><td valign="top" align="left"><div class="flushleft">2012-02-16</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%G</div></td><td valign="top" align="left"><div class="flushleft">The ISO 8601 week-based year (see NOTES) with century as a decimal
+number. The 4-digit year corre‐ sponding to the ISO week number (see
+%V). This has the same format and value as %Y, except that if the
+ISO week number belongs to the previous or next year, that year is
+used instead. (TZ)</div><p>大意是采用%V定义的年，如果那年的前几天不算新年的第一周，就算上一年</p></td><td valign="top" align="left"><div class="flushleft">2012</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%g</div></td><td valign="top" align="left"><div class="flushleft">相当于%G，就是不带世纪 (00-99). (TZ)</div></td><td valign="top" align="left"><div class="flushleft">12</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%h</div></td><td valign="top" align="left"><div class="flushleft">相当于%b(SU)</div></td><td valign="top" align="left"><div class="flushleft">Feb</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%H</div></td><td valign="top" align="left"><div class="flushleft">小时，24小时表示(00-23)</div></td><td valign="top" align="left"><div class="flushleft">14</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%I</div></td><td valign="top" align="left"><div class="flushleft">小时，12小时表示(01-12)</div></td><td valign="top" align="left"><div class="flushleft">02</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%j</div></td><td valign="top" align="left"><div class="flushleft">一年中的各天(001-366)</div></td><td valign="top" align="left"><div class="flushleft">047</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%k</div></td><td valign="top" align="left"><div class="flushleft">小时，24小时表示( 0-23)； 一位的前面为空格 (可和%H比较) (TZ)</div></td><td valign="top" align="left"><div class="flushleft">15</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%l</div></td><td valign="top" align="left"><div class="flushleft">小时，12小时表示( 0-12)； 一位的前面为空格 (可和%比较)(TZ)</div></td><td valign="top" align="left"><div class="flushleft">3</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%m</div></td><td valign="top" align="left"><div class="flushleft">月份(01-12)</div></td><td valign="top" align="left"><div class="flushleft">02</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%M</div></td><td valign="top" align="left"><div class="flushleft">分钟(00-59)</div></td><td valign="top" align="left"><div class="flushleft">11</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%n</div></td><td valign="top" align="left"><div class="flushleft">换行符 (SU)</div></td><td valign="top" align="left"><div class="flushleft">\n</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%p</div></td><td valign="top" align="left"><div class="flushleft">"AM" 或 "PM"，根据当时的时间，根据locale显示相应的值，例如"上午"、"下午"
+。 中午是"PM"，凌晨是"AM"</div></td><td valign="top" align="left"><div class="flushleft">PM</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%P</div></td><td valign="top" align="left"><div class="flushleft">相当于%p不过是小写，根据locale显示相应的值 (GNU)</div></td><td valign="top" align="left"><div class="flushleft">pm</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%r</div></td><td valign="top" align="left"><div class="flushleft">时间+后缀AM或PM。在POSIX locale下相当于%I:%M:%S %p. (SU)</div></td><td valign="top" align="left"><div class="flushleft">03:11:54 PM</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%R</div></td><td valign="top" align="left"><div class="flushleft">小时(24小时制):分钟 (%H:%M) (SU) 如果要带秒的，见%T</div></td><td valign="top" align="left"><div class="flushleft">15:11</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%s</div></td><td valign="top" align="left"><div class="flushleft">Epoch以来的秒数，也就是从1970-01-01 00:00:00 UTC. (TZ)</div></td><td valign="top" align="left"><div class="flushleft">1329376487</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%S</div></td><td valign="top" align="left"><div class="flushleft">秒(00-60). (允许60是为了闰秒)</div></td><td valign="top" align="left"><div class="flushleft">54</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%t</div></td><td valign="top" align="left"><div class="flushleft">制表符tab(SU)</div></td><td valign="top" align="left">&nbsp;</td></tr>
+<tr><td valign="top" align="left"><div class="center">%T</div></td><td valign="top" align="left"><div class="flushleft">小时(24小时制):分钟:秒 (%H:%M:%S) (SU)</div></td><td valign="top" align="left"><div class="flushleft">15:14:47</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%u</div></td><td valign="top" align="left"><div class="flushleft">一周的天序号(1-7)，周一是1，另见%w (SU)</div></td><td valign="top" align="left"><div class="flushleft">4</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%U</div></td><td valign="top" align="left"><div class="flushleft">一年中的星期序号(00-53)，周日是一周的开始，一年中第一个周日所在的周是第01周。另见%V和%W</div></td><td valign="top" align="left"><div class="flushleft">07</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%V</div></td><td valign="top" align="left"><div class="flushleft">ISO 8601星期序号(01-53)，01周是第一个至少有4天在新年的周。另见%U 和%W(SU)</div></td><td valign="top" align="left"><div class="flushleft">07</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%w</div></td><td valign="top" align="left"><div class="flushleft">一周的天序号(0-6)，周日是0。另见%u</div></td><td valign="top" align="left"><div class="flushleft">4</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%W</div></td><td valign="top" align="left"><div class="flushleft">一年中的星期序号(00-53)，周一是一周的开始，一年中第一个周一所在的周是第01周。另见%V和%W</div></td><td valign="top" align="left"><div class="flushleft">07</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%x</div></td><td valign="top" align="left"><div class="flushleft">当前locale下的偏好日期</div></td><td valign="top" align="left"><div class="flushleft">02/16/12</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%X</div></td><td valign="top" align="left"><div class="flushleft">当前locale下的偏好时间</div></td><td valign="top" align="left"><div class="flushleft">15:14:47</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%y</div></td><td valign="top" align="left"><div class="flushleft">不带世纪数目的年份(00-99)</div></td><td valign="top" align="left"><div class="flushleft">12</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%Y</div></td><td valign="top" align="left"><div class="flushleft">带世纪数目的年份</div></td><td valign="top" align="left"><div class="flushleft">2012</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%z</div></td><td valign="top" align="left"><div class="flushleft">当前时区相对于GMT时间的偏移量。采用RFC 822-conformant来计算(话说我也不知道是啥) (using "%a,
+%d %b %Y %H:%M:%S %z"). (GNU)</div></td><td valign="top" align="left"><div class="flushleft">+0800</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%Z</div></td><td valign="top" align="left"><div class="flushleft">时区名(如果有的话)</div></td><td valign="top" align="left"><div class="flushleft">CST</div></td></tr>
+<tr><td valign="top" align="left"><div class="center">%%</div></td><td valign="top" align="left"><div class="flushleft">一个百分号</div></td><td valign="top" align="left"><div class="flushleft">%</div></td></tr>
+<tr><td valign="top" align="left">&nbsp;</td></tr>
+</tbody></table>
+
+</div><div class="center"><hr width="80%" size="2"></div></blockquote><!--TOC section 规则(Rules)-->
+<h2 class="section"><!--SEC ANCHOR --><a name="htoc22">5.5</a>&nbsp;&nbsp;规则(Rules)</h2><!--SEC END --><p>这一节以[rules]开头。这个描述了日志是怎么被过滤、格式化以及被输出的。这节可以忽略不写，不过这样就没有日志输出了，嘿嘿。语法是：
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+(category).(level)&nbsp;&nbsp;&nbsp;&nbsp;(output),&nbsp;(options,&nbsp;optional);&nbsp;(format&nbsp;name,&nbsp;optional)
+</tt></dd></dl></div><p>
+当zlog_init()被调用的时候，所有规则都会被读到内存中。当zlog_get_category()被调用，规则就被被分配给分类（<a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#sub:=005206=007C7B=005339=00914D">5.5.2</a>）。在实际写日志的时候，例如zlog_info()被调用的时候，就会比较这个INFO和各条规则的等级，来决定这条日志会不会通过这条规则输出。当zlog_reload()被调用的时候，配置文件会被重新读入，包括所有的规则，并且重新计算分类对应的规则。</p><!--TOC subsection 级别匹配-->
+<h3 class="subsection"><!--SEC ANCHOR --><a name="htoc23">5.5.1</a>&nbsp;&nbsp;级别匹配</h3><!--SEC END --><p>zlog有6个默认的级别："DEBUG", "INFO",
+"NOTICE", "WARN",
+"ERROR"和"FATAL"。就像其他的日志函数库那样，
+aa.DEBUG意味着任何大于等于DEBUG级别的日志会被输出。当然还有其他的表达式。配置文件中的级别是大小写不敏感的。</p><table border="1" cellspacing="0" cellpadding="1"><tbody><tr><td align="center" nowrap="">表达式</td><td align="center" nowrap="">含义</td></tr>
+<tr><td align="center" nowrap="">*</td><td align="center" nowrap="">所有等级</td></tr>
+<tr><td align="center" nowrap="">aa.debug</td><td align="center" nowrap="">代码内等级&gt;=debug</td></tr>
+<tr><td align="center" nowrap="">aa.=debug</td><td align="center" nowrap="">代码内等级==debug</td></tr>
+<tr><td align="center" nowrap="">aa.!debug</td><td align="center" nowrap="">代码内等级!=debug</td></tr>
+</tbody></table><p>用户可以自定义等级，详见<a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#sec:=007528=006237=0081EA=005B9A=004E49=007B49=007EA7">7.3</a>。</p><!--TOC subsection 分类匹配-->
+<h3 class="subsection"><!--SEC ANCHOR --><a name="htoc24">5.5.2</a>&nbsp;&nbsp;分类匹配<a name="sub:=005206=007C7B=005339=00914D"></a></h3><!--SEC END --><p>分类必须由数字和字母组成，下划线"_"也算字母。</p><table border="1" cellspacing="0" cellpadding="1"><tbody><tr><td valign="top" align="left"><div class="flushleft">总结</div></td><td valign="top" align="left"><div class="flushleft">配置文件规则分类</div></td><td valign="top" align="left"><div class="flushleft">匹配的代码分类</div></td><td valign="top" align="left"><div class="flushleft">不匹配的代码分类</div></td></tr>
+<tr><td valign="top" align="left"><div class="flushleft">*匹配所有</div></td><td valign="top" align="left"><div class="flushleft">*.*</div></td><td valign="top" align="left"><div class="flushleft">aa, aa_bb, aa_cc, xx, yy ...</div></td><td valign="top" align="left"><div class="flushleft">NONE</div></td></tr>
+<tr><td valign="top" align="left"><div class="flushleft">以_结尾的分类匹配本级及下级分类</div></td><td valign="top" align="left"><div class="flushleft">aa_.*</div></td><td valign="top" align="left"><div class="flushleft">aa, aa_bb, aa_cc, aa_bb_cc</div></td><td valign="top" align="left"><div class="flushleft">xx, yy</div></td></tr>
+<tr><td valign="top" align="left"><div class="flushleft">不以_结尾的精确匹配分类名</div></td><td valign="top" align="left"><div class="flushleft">aa.*</div></td><td valign="top" align="left"><div class="flushleft">aa</div></td><td valign="top" align="left"><div class="flushleft">aa_bb, aa_cc, aa_bb_cc</div></td></tr>
+<tr><td valign="top" align="left"><div class="flushleft">!匹配那些没有找到规则的分类</div></td><td valign="top" align="left"><div class="flushleft">!.*</div></td><td valign="top" align="left"><div class="flushleft">xx</div></td><td valign="top" align="left"><div class="flushleft">aa(as it matches rules above)</div></td></tr>
+</tbody></table><!--TOC subsection 输出动作-->
+<h3 class="subsection"><!--SEC ANCHOR --><a name="htoc25">5.5.3</a>&nbsp;&nbsp;输出动作</h3><!--SEC END --><p>目前zlog支持若干种输出，语法是：</p><p>[输出], [附加选项, 可选]; [format(格式)名, 可选]</p><table border="1" cellspacing="0" cellpadding="1"><tbody><tr><td valign="top" align="left" nowrap="">动作</td><td valign="top" align="center" nowrap="">输出字段</td><td valign="top" align="left"><div class="flushleft">附加选项</div></td></tr>
+<tr><td valign="top" align="left" nowrap="">标准输出</td><td valign="top" align="center" nowrap="">&gt;stdout</td><td valign="top" align="left"><div class="flushleft">无意义</div></td></tr>
+<tr><td valign="top" align="left" nowrap="">标准错误输出</td><td valign="top" align="center" nowrap="">&gt;stderr</td><td valign="top" align="left"><div class="flushleft">无意义</div></td></tr>
+<tr><td valign="top" align="left" nowrap="">输出到syslog</td><td valign="top" align="center" nowrap="">&gt;syslog</td><td valign="top" align="left"><div class="flushleft">syslog设施(facilitiy)：</div><p>LOG_USER(default), LOG_LOCAL[0-7]</p><p>必填</p></td></tr>
+<tr><td valign="top" align="left" nowrap="">管道输出</td><td valign="top" align="center" nowrap="">|cat</td><td valign="top" align="left"><div class="flushleft">无意义</div></td></tr>
+<tr><td valign="top" align="left" nowrap="">文件</td><td valign="top" align="center" nowrap="">"文件路径"</td><td valign="top" align="left"><div class="flushleft">文件转档，详见<a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#sec:=006587=004EF6=008F6C=006863">5.6</a></div><p>10M * 3 ～ "press.#r.log"</p></td></tr>
+<tr><td valign="top" align="left" nowrap="">同步IO文件</td><td valign="top" align="center" nowrap="">-"文件路径"</td><td valign="top" align="left">&nbsp;</td></tr>
+<tr><td valign="top" align="left" nowrap="">用户自定义输出</td><td valign="top" align="center" nowrap="">$name</td><td valign="top" align="left"><div class="flushleft">"path" 动态或者静态的用于record输出</div></td></tr>
+</tbody></table><ul class="itemize"><li class="li-itemize">
+stdout, stderr, syslog<p>如表格描述，其中只有sylog的附加选项是有意义并必须写的。</p><p>值得注意的是，zlog在写日志的时候会用这样的语句
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+write(STDOUT_FILENO,&nbsp;zlog_buf_str(a_thread-&gt;msg_buf),&nbsp;zlog_buf_len(a_thread-&gt;msg_buf))
+</tt></dd></dl></div><p>而如果你的程序是个守护进程，在启动的时候把STDOUT_FILENO，也就是1的文件描述符关掉的话，会发生什么结果呢？</p><p>日志会被写到新的1的文件描述符所代表的文件里面！我收到过邮件，说zlog把日志写到自己的配置文件里面去了！</p><p>所以，千万不要在守护进程的规则里面加上&gt;stdout或&gt;stderr。这会产生不可预料的结果……如果一定要输出到终端，用"/dev/tty"代替。</p></li><li class="li-itemize">管道输出<div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+</tt><tt>*</tt><tt>.</tt><tt>*</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;/usr/bin/cronolog&nbsp;/www/logs/example_%Y%m%d.log&nbsp;;&nbsp;normal
+</tt></dd></dl></div><p>这是一个将zlog的输出到管道后接cronolog的例子。实现的原理很简单，在zlog_init的时候调用popen("/usr/bin/cronolog
+/www/logs/example_%Y%m%d.log", "w")，后面往这个文件描述符里面写指定格式的日志。使用cronolog来生成按天分割的日志效率比zlog自己的动态路径的效率要高，因为通过管道，无须每次打开关闭动态路径的文件描述符。
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+</tt><tt>[</tt><tt>rules</tt><tt>]</tt><tt>&nbsp;</tt><p><tt>*</tt><tt>.</tt><tt>*</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	"press%d(%Y%m%d).log"</tt></p><p><tt>$&nbsp;time&nbsp;./test_press_zlog&nbsp;1&nbsp;10&nbsp;100000</tt></p><p><tt>real	0m4.240s&nbsp;</tt></p><p><tt>user	0m2.500s&nbsp;</tt></p><p><tt>sys	0m5.460s&nbsp;</tt></p><p><tt>&nbsp;&nbsp;</tt></p><p><tt>[</tt><tt>rules</tt><tt>]</tt><tt>&nbsp;</tt></p><p><tt>*</tt><tt>.</tt><tt>*</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;/usr/bin/cronolog&nbsp;press%Y%m%d.log</tt></p><p><tt>$&nbsp;time&nbsp;./test_press_zlog&nbsp;1&nbsp;10&nbsp;100000</tt></p><p><tt>real	0m1.911s&nbsp;</tt></p><p><tt>user	0m1.980s&nbsp;</tt></p><p><tt>sys	0m1.470s
+</tt></p></dd></dl></div><p>不过，使用管道也是有限制的：
+</p><ul class="itemize"><li class="li-itemize">
+POSIX.1-2001保证读写不大于PIPE_BUF大小的内容是原子的。linux上PIPE_BUF为4096。
+</li><li class="li-itemize">单条日志的长度超过PIPE_BUF的时候并且有多个有父子关系的进程写通过zlog写同一个管道，也就是在zlog_init之后fork多个子进程，此时只有一个cronolog的进程监听一个管道描述符，日志内容可能会交错。
+</li><li class="li-itemize">多个进程分别zlog_init，启动多个cronolog进程，写拥有同一个文件路径的日志文件，即使单条日志长度不超过PIPE_BUF，也有可能导致日志交错，因为cronolog读到的文件流是连续的，它不知道单条日志的边界在哪里。
+</li></ul><p>所以，总结一下，使用管道来输出到单个日志文件的情况是：
+</p><ul class="itemize"><li class="li-itemize">
+单进程写，单条日志长度不限制。单进程内内的多线程写日志的原子性已经由zlog保证了。
+</li><li class="li-itemize">有父子关系的多进程，单条日志长度不能超过PIPE_BUF（4096）
+</li><li class="li-itemize">无父子关系的多进程使用管道同时写一个日志，无论单条日志长度是多少，都有可能导致日志交错。
+</li></ul><p>zlog本身的直接文件输出能保证即使是多进程，同时调用zlog写一个日志文件也不会产生交错，见下。</p></li><li class="li-itemize">文件<ul class="itemize"><li class="li-itemize">
+文件路径<p>可以是相对路径或者绝对路径，被双引号"包含。转换格式串可以用在文件路径上。例如文件路径是 "%E(HOME)/log/out.log"，环境变量$HOME是/home/harry，那最后的输出文件是/home/harry/log/output.log。转换格式串详见
+<a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#sec:=008F6C=006362=00683C=005F0F=004E32">5.4</a>。</p><p>zlog的文件功能极为强大，例如
+</p><ol class="enumerate" type="1"><li class="li-enumerate">
+输出到命名管道(FIFO)，必须在调用前由mkfifo(1)创建<div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+</tt><tt>*</tt><tt>.</tt><tt>*</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;"/tmp/pipefile"
+</tt></dd></dl></div></li><li class="li-enumerate">输出到NULL，也就是不输出<div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+</tt><tt>*</tt><tt>.</tt><tt>*</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/dev/null"
+</tt></dd></dl></div></li><li class="li-enumerate">在任何情况下输出到终端<div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+</tt><tt>*</tt><tt>.</tt><tt>*</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/dev/tty"
+</tt></dd></dl></div></li><li class="li-enumerate">每线程一个日志，在程序运行的目录下<div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+</tt><tt>*</tt><tt>.</tt><tt>*</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"%T.log"
+</tt></dd></dl></div></li><li class="li-enumerate">输出到有进程号区分的日志，每天，在$HOME/log目录，每1GB转档一次，保持5个日志文件。<div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+</tt><tt>*</tt><tt>.</tt><tt>*</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"%E(HOME)/log/aa.%p.%d(%F).log",1GB&nbsp;</tt><tt>*</tt><tt>&nbsp;5
+</tt></dd></dl></div></li><li class="li-enumerate">aa_及下级分类，每个分类一个日志<div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+aa_.</tt><tt>*</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"/var/log/%c.log"
+</tt></dd></dl></div></li></ol></li><li class="li-itemize">文件转档<p>控制文件的大小和个数。zlog根据这个字段来转档，当日志文件太大的时候。例如
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+"%E(HOME)/log/out.log",&nbsp;1M&nbsp;</tt><tt>*</tt><tt>&nbsp;3&nbsp;~&nbsp;"%E(HOME)/log/out.log.#r"
+</tt></dd></dl></div><p>这三个参数都不是必填项，zlog的转档功能详见<a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#sec:=006587=004EF6=008F6C=006863">5.6</a></p></li><li class="li-itemize">同步IO文件<a name="ite:=00540C=006B65IO=006587=004EF6"></a><p>在文件路径前加上一个"-"就打开了同步IO选项。在打开文件(open)的时候，会以O_SYNC选项打开，这时候每次写日志操作都会等操作系统把数据写到硬盘后才返回。这个选项极为耗时：
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+$&nbsp;time&nbsp;./test_press_zlog&nbsp;100&nbsp;1000</tt><p><tt>real	0m0.732s</tt></p><p><tt>user	0m1.030s</tt></p><p><tt>sys	&nbsp;0m1.080s</tt></p><p><tt>$&nbsp;time&nbsp;./test_press_zlog&nbsp;100&nbsp;1000&nbsp;#&nbsp;synchronous&nbsp;I/O&nbsp;open</tt></p><p><tt>real	0m20.646s</tt></p><p><tt>user	0m2.570s</tt></p><p><tt>sys	&nbsp;0m6.950s
+</tt></p></dd></dl></div></li></ul></li><li class="li-itemize">格式名<p>是可选的，如果不写，用全局配置里面的默认格式：
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+</tt><tt>[</tt><tt>global</tt><tt>]</tt><p><tt>default&nbsp;format&nbsp;=&nbsp;"%d(%F&nbsp;%T)&nbsp;%V&nbsp;</tt><tt>[</tt><tt>%p:%F:%L</tt><tt>]</tt><tt>&nbsp;%m%n"
+</tt></p></dd></dl></div></li><li class="li-itemize">用户自定义输出详见<a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#sec:=007528=006237=0081EA=005B9A=004E49=008F93=0051FA">7.4</a>
+</li></ul><!--TOC section 文件转档-->
+<h2 class="section"><!--SEC ANCHOR --><a name="htoc26">5.6</a>&nbsp;&nbsp;文件转档<a name="sec:=006587=004EF6=008F6C=006863"></a></h2><!--SEC END --><p>为什么需要将日志文件转档？我已经在实际的运行环境中不止一次的看到过，因为日志文件过大，导致系统硬盘被撑爆，或者单个日志文件过大而即使用grep也要花费很多时间来寻找匹配的日志。对于日志转档，我总结了如下几种范式：
+</p><ol class="enumerate" type="1"><li class="li-enumerate">
+按固定时间段来切分日志。<p>例如，每天生成一个日志
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+aa.2012-08-02.log&nbsp;</tt><p><tt>aa.2012-08-03.log</tt></p><p><tt>aa.2012-08-04.log
+</tt></p></dd></dl></div><p>这种日志适合的场景是，管理员大概知道每天生成的日志量，然后希望在n个月之后能精确的找出某天的所有日志。这种日志切分最好由日志库来完成，其次的方法是用cronosplit这种软件来分析日志内容的时间字符串来进行后期的切分，较差的办法是用crontab+logrotate或mv来定期移动（但这并不精确，会造成若干条当天的日志被放到上一天的文件里面去）。</p><p>在zlog里面，这种需求不需要用日志转档功能来完成，简单的在日志文件名里面设置时间日期字符串就能解决问题：
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+</tt><tt>*</tt><tt>.</tt><tt>*</tt><tt>&nbsp;&nbsp;"aa.%d(%F).log"
+</tt></dd></dl></div><p>或者用cronolog来完成，速度会更快一点
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+</tt><tt>*</tt><tt>.</tt><tt>*</tt><tt>&nbsp;&nbsp;|&nbsp;cronolog&nbsp;aa.%F.log
+</tt></dd></dl></div></li><li class="li-enumerate">按照日志大小切分<p>多用于开发环境，适合的场景是，程序在短时间内生成大量的日志，而用编辑器vi,ue等能快速打开的日志大小是有限的，或者大的日志打开来极慢。同样的，这种日志的切分可以在事后用split等工具来完成，但对于开发而言会增加步骤，所以最好也是由日志库来完成。值得一提的是存档有两种模式，nlog里面称之为Sequence和Rolling，在Sequence情况下
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+aa.log&nbsp;(new)&nbsp;</tt><p><tt>aa.log.2&nbsp;(less&nbsp;new)&nbsp;</tt></p><p><tt>aa.log.1&nbsp;</tt></p><p><tt>aa.log.0&nbsp;(old)
+</tt></p></dd></dl></div><p>而在Rolling的情况下
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+aa.log&nbsp;(new)&nbsp;</tt><p><tt>aa.log.0&nbsp;(less&nbsp;new)&nbsp;</tt></p><p><tt>aa.log.1&nbsp;</tt></p><p><tt>aa.log.2&nbsp;(old)
+</tt></p></dd></dl></div><p>很难说哪种更加符合人的直觉。</p><p>如果只有若干个最新的文件是有意义的，需要日志库来做主动的删除旧的工作。由外部程序是很难判定哪些日志是旧的。</p><p>最简单的zlog的转档配置为
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+</tt><tt>*</tt><tt>.</tt><tt>*</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"aa.log",&nbsp;10MB
+</tt></dd></dl></div><p>这个配置是Rolling的情况，每次aa.log超过10MB的时候，会做这样的重命名
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+aa.log.2&nbsp;-&gt;&nbsp;aa.log.3</tt><p><tt>aa.log.1&nbsp;-&gt;&nbsp;aa.log.2</tt></p><p><tt>aa.log.0&nbsp;-&gt;&nbsp;aa.log.1</tt></p><p><tt>aa.log&nbsp;-&gt;&nbsp;aa.log.0
+</tt></p></dd></dl></div><p>上面的配置可以写的更加罗嗦一点
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+</tt><tt>*</tt><tt>.</tt><tt>*</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"aa.log",&nbsp;10MB&nbsp;</tt><tt>*</tt><tt>&nbsp;0&nbsp;~&nbsp;"aa.log.#r"
+</tt></dd></dl></div><p>逗号后第一个参数表示文件达到多大后开始进行转档。</p><p>第二个参数表示保留多少个存档文件（0代表不删除任何存档文件）。</p><p>第三个参数表示转档的文件名，其中#r表示存档文件的序号，r是rolling的缩写。还可以放#s，是sequence的缩写。转档文件名必须包含#r或者#s。</p></li><li class="li-enumerate">按照日志大小切分，但同时加上时间标签<div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+aa.log&nbsp;</tt><p><tt>aa.log-20070305.00.log&nbsp;</tt></p><p><tt>aa.log-20070501.00.log&nbsp;</tt></p><p><tt>aa.log-20070501.01.log</tt></p><p><tt>aa.log-20071008.00.log
+</tt></p></dd></dl></div><p>这种情况适合于程序本身的日志一般不是很受关注，但是又在某一天想要找出来看的情况。当然，在这种情况下，万一在20070501这一天日志的量超过了指定值，例如100MB，就又要退回到第二种状态，在文件名中加后缀。</p><p>zlog对应的配置是
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+</tt><tt>*</tt><tt>.</tt><tt>*</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"aa.log",&nbsp;100MB&nbsp;~&nbsp;"aa-%d(%Y%m%d).#2s.log"
+</tt></dd></dl></div><p>每到100MB的时候转档，转档文件名也支持转换字符，可以把转档当时的时间串作为转档文件名的一部分。#2s的意思是序号的长度最少为2位，从00开始编号，Sequence转档。这是zlog对转档最复杂的支持了！</p></li><li class="li-enumerate">压缩、移动、删除旧的日志<p>首先，压缩不应该由日志库来完成，因为压缩消耗时间和CPU。日志库的任务是配合压缩。</p><p>对于第一种和第三种，管理较为简单，只要符合某些文件名规则或修改日期的，可以用shell脚本+crontab轻易的压缩、移动和删除。</p><p>对于第二种，其实不是非常需要压缩，只需要删除就可以了。</p><p>如果一定需要转档的同时进行压缩，只有logrotate能干这活儿，毕竟他是独立的程序，能在转档同时搞压缩，不会有混淆的问题。</p></li><li class="li-enumerate">zlog对外部转档工具，例如logrotate的支持<p>zlog的转档功能已经极为强大，当然也有几种情况是zlog无法处理的，例如按时间条件进行转档，转档前后调用一些自制的shell脚本……这会把zlog的配置和表达弄得过于复杂而缺乏美感。</p><p>这时候你也许喜欢用一些外部转档工具，例如logrotate来完成工作。问题是，在linux操作系统下，转档工具重命名日志文件名后，应用进程还是往原来的文件描述符写日志，没办法重新打开日志文件写新的日志。标准的做法是给应用程序一个信号，让他重新打开日志文件，对于syslogd是
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+kill&nbsp;-SIGHUP&nbsp;‘cat&nbsp;/var/run/syslogd.pid‘
+</tt></dd></dl></div><p>对于zlog，因为是个函数库，不适合接受信号。zlog提供了函数接口zlog_reload()，这个函数会重载配置文件，重新打开所有的日志文件。应用程序在logrotate的信号，或者其他途径，例如客户端的命令后，可以调用这个函数，来重新打开所有的日志文件。</p></li></ol><!--TOC section 配置文件工具-->
+<h2 class="section"><!--SEC ANCHOR --><a name="htoc27">5.7</a>&nbsp;&nbsp;配置文件工具</h2><!--SEC END --><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+$&nbsp;zlog-chk-conf&nbsp;-h&nbsp;</tt><p><tt>Useage:&nbsp;zlog-chk-conf&nbsp;</tt><tt>[</tt><tt>conf&nbsp;files</tt><tt>]</tt><tt>...&nbsp;	</tt></p><p><tt>-q,	suppress&nbsp;non-error&nbsp;message&nbsp;	</tt></p><p><tt>-h,	show&nbsp;help&nbsp;message
+</tt></p></dd></dl></div><p>
+zlog-chk-conf 尝试读取配置文件，检查语法，然后往屏幕上输出这些配置文件是否正确。我建议每次创建或者改动一个配置文件之后都用一下这个工具。输出可能是这样：
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+$&nbsp;./zlog-chk-conf&nbsp;zlog.conf</tt><p><tt>03-08&nbsp;15:35:44&nbsp;ERROR&nbsp;(10595:rule.c:391)&nbsp;sscanf&nbsp;</tt><tt>[</tt><tt>aaa</tt><tt>]</tt><tt>&nbsp;fail,&nbsp;category&nbsp;or&nbsp;level&nbsp;is&nbsp;null&nbsp;</tt></p><p><tt>03-08&nbsp;15:35:44&nbsp;ERROR&nbsp;(10595:conf.c:155)&nbsp;zlog_rule_new&nbsp;fail&nbsp;</tt><tt>[</tt><tt>aaa</tt><tt>]</tt><tt>&nbsp;</tt></p><p><tt>03-08&nbsp;15:35:44&nbsp;ERROR&nbsp;(10595:conf.c:258)&nbsp;parse&nbsp;configure&nbsp;file</tt><tt>[</tt><tt>zlog.conf</tt><tt>]</tt><tt>&nbsp;line</tt><tt>[</tt><tt>126</tt><tt>]</tt><tt>&nbsp;fail&nbsp;</tt></p><p><tt>03-08&nbsp;15:35:44&nbsp;ERROR&nbsp;(10595:conf.c:306)&nbsp;zlog_conf_read_config&nbsp;fail&nbsp;</tt></p><p><tt>03-08&nbsp;15:35:44&nbsp;ERROR&nbsp;(10595:conf.c:366)&nbsp;zlog_conf_build&nbsp;fail&nbsp;</tt></p><p><tt>03-08&nbsp;15:35:44&nbsp;ERROR&nbsp;(10595:zlog.c:66)&nbsp;conf_file</tt><tt>[</tt><tt>zlog.conf</tt><tt>]</tt><tt>,&nbsp;init&nbsp;conf&nbsp;fail&nbsp;</tt></p><p><tt>03-08&nbsp;15:35:44&nbsp;ERROR&nbsp;(10595:zlog.c:131)&nbsp;zlog_init_inner</tt><tt>[</tt><tt>zlog.conf</tt><tt>]</tt><tt>&nbsp;fail</tt></p><p><tt>&nbsp;&nbsp;</tt></p><p><tt>---</tt><tt>[</tt><tt>zlog.conf</tt><tt>]</tt><tt>&nbsp;syntax&nbsp;error,&nbsp;see&nbsp;error&nbsp;message&nbsp;above
+</tt></p></dd></dl></div><p>
+这个告诉你配置文件zlog.conf的126行，是错的。第一行进一步告诉你[aaa]不是一条正确的规则。</p><p>zlog-chk-conf可以同时分析多个配置文件，举例：
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+$&nbsp;zlog-chk-conf&nbsp;zlog.conf&nbsp;ylog.conf&nbsp;</tt><p><tt>--</tt><tt>[</tt><tt>zlog.conf</tt><tt>]</tt><tt>&nbsp;syntax&nbsp;right&nbsp;</tt></p><p><tt>--</tt><tt>[</tt><tt>ylog.conf</tt><tt>]</tt><tt>&nbsp;syntax&nbsp;right&nbsp;</tt></p></dd></dl></div><!--TOC chapter zlog接口(API)-->
+<h1 class="chapter"><!--SEC ANCHOR --><a name="htoc28">Chapter&nbsp;6</a>&nbsp;&nbsp;zlog接口(API)</h1><!--SEC END --><p>zlog的所有函数都是线程安全的，使用的时候只需要
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+#include&nbsp;"zlog.h"
+</tt></dd></dl></div><!--TOC section 初始化和清理-->
+<h2 class="section"><!--SEC ANCHOR --><a name="htoc29">6.1</a>&nbsp;&nbsp;初始化和清理</h2><!--SEC END --><dl class="list"><dt class="dt-list">
+
+
+
+
+总览</dt><dd class="dd-list">&nbsp;<div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+int&nbsp;zlog_init(const&nbsp;char&nbsp;</tt><tt>*</tt><tt>confpath</tt><tt>);</tt><p><tt>int&nbsp;zlog_reload(const&nbsp;char&nbsp;</tt><tt>*</tt><tt>confpath</tt><tt>);</tt></p><p><tt>void&nbsp;zlog_fini(void);
+</tt></p></dd></dl></div></dd><dt class="dt-list">描述</dt><dd class="dd-list">&nbsp;<p>zlog_init()从配置文件confpath中读取配置信息到内存。如果confpath为NULL，会寻找环境变量ZLOG_CONF_PATH的值作为配置文件名。如果环境变量ZLOG_CONF_PATH也没有，所有日志以内置格式写到标准输出上。每个进程只有第一次调用zlog_init()是有效的，后面的多余调用都会失败并不做任何事情。 </p><p>zlog_reload()从confpath重载配置，并根据这个配置文件来重计算内部的分类规则匹配、重建每个线程的缓存、并设置原有的用户自定义输出函数。可以在配置文件发生改变后调用这个函数。这个函数使用次数不限。如果confpath为NULL，会重载上一次zlog_init()或者zlog_reload()使用的配置文件。如果zlog_reload()失败，上一次的配置依然有效。所以zlog_reload()具有原子性。</p><p>zlog_fini()清理所有zlog API申请的内存，关闭它们打开的文件。使用次数不限。</p></dd><dt class="dt-list">返回值</dt><dd class="dd-list">&nbsp;<p>如果成功，zlog_init()和zlog_reload()返回0。失败的话，zlog_init()和zlog_reload()返回-1。详细错误会被写在由环境变量ZLOG_PROFILE_ERROR指定的错误日志里面。</p></dd></dl><!--TOC section 分类(Category)操作-->
+<h2 class="section"><!--SEC ANCHOR --><a name="htoc30">6.2</a>&nbsp;&nbsp;分类(Category)操作</h2><!--SEC END --><dl class="list"><dt class="dt-list">
+
+
+
+
+总览</dt><dd class="dd-list">&nbsp;<div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+typedef&nbsp;struct&nbsp;zlog_category_s&nbsp;zlog_category_t;</tt><p><tt>zlog_category_t&nbsp;</tt><tt>*</tt><tt>zlog_get_category(const&nbsp;char&nbsp;</tt><tt>*</tt><tt>cname</tt><tt>);
+</tt></p></dd></dl></div></dd><dt class="dt-list">描述</dt><dd class="dd-list">&nbsp;<p>zlog_get_category()从zlog的全局分类表里面找到分类，用于以后输出日志。如果没有的话，就建一个。然后它会遍历所有的规则，寻找和cname匹配的规则并绑定。</p><p>配置文件规则中的分类名匹配cname的规律描述如下：
+</p><ol class="enumerate" type="1"><li class="li-enumerate">
+* 匹配任意cname。
+</li><li class="li-enumerate">以下划线_结尾的分类名同时匹配本级分类和下级分类。例如aa_匹配aa, aa_, aa_bb, aa_bb_cc这几个cname。
+</li><li class="li-enumerate">不以下划线_结尾的分类名精确匹配cname。例如aa_bb匹配aa_bb这个cname。
+</li><li class="li-enumerate">! 匹配目前还没有规则的cname。
+</li></ol><p>每个zlog_category_t *对应的规则，在zlog_reload()的时候会被自动重新计算。不用担心内存释放，zlog_fini()
+最后会清理一切。</p></dd><dt class="dt-list">返回值</dt><dd class="dd-list">&nbsp;<p>如果成功，返回zlog_category_t的指针。如果失败，返回NULL。详细错误会被写在由环境变量ZLOG_PROFILE_ERROR指定的错误日志里面。</p></dd></dl><!--TOC section 写日志函数及宏-->
+<h2 class="section"><!--SEC ANCHOR --><a name="htoc31">6.3</a>&nbsp;&nbsp;写日志函数及宏</h2><!--SEC END --><dl class="list"><dt class="dt-list">
+
+
+
+
+总览</dt><dd class="dd-list">&nbsp;<div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+void&nbsp;zlog(zlog_category_t&nbsp;</tt><tt>*</tt><tt>&nbsp;</tt><tt>category</tt><tt>,&nbsp;</tt><p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;char&nbsp;</tt><tt>*</tt><tt>file</tt><tt>,&nbsp;size_t&nbsp;</tt><tt>filelen</tt><tt>,</tt></p><p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;char&nbsp;</tt><tt>*</tt><tt>func</tt><tt>,&nbsp;size_t&nbsp;</tt><tt>funclen</tt><tt>,&nbsp;</tt></p><p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;long&nbsp;</tt><tt>line</tt><tt>,&nbsp;int&nbsp;</tt><tt>level</tt><tt>,</tt></p><p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;char&nbsp;</tt><tt>*</tt><tt>format</tt><tt>,&nbsp;...);&nbsp;</tt></p><p><tt>void&nbsp;vzlog(zlog_category_t&nbsp;</tt><tt>*</tt><tt>&nbsp;</tt><tt>category</tt><tt>,</tt></p><p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;char&nbsp;</tt><tt>*</tt><tt>file</tt><tt>,&nbsp;size_t&nbsp;</tt><tt>filelen</tt><tt>,</tt></p><p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;char&nbsp;</tt><tt>*</tt><tt>func</tt><tt>,&nbsp;size_t&nbsp;</tt><tt>funclen</tt><tt>,&nbsp;</tt></p><p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;long&nbsp;</tt><tt>line</tt><tt>,&nbsp;int&nbsp;</tt><tt>level</tt><tt>,</tt></p><p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;char&nbsp;</tt><tt>*</tt><tt>format</tt><tt>,&nbsp;va_list&nbsp;</tt><tt>args</tt><tt>);&nbsp;</tt></p><p><tt>void&nbsp;hzlog(zlog_category_t&nbsp;</tt><tt>*</tt><tt>&nbsp;</tt><tt>category</tt><tt>,</tt></p><p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;char&nbsp;</tt><tt>*</tt><tt>file</tt><tt>,&nbsp;size_t&nbsp;</tt><tt>filelen</tt><tt>,</tt></p><p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;char&nbsp;</tt><tt>*</tt><tt>func</tt><tt>,&nbsp;size_t&nbsp;</tt><tt>funclen</tt><tt>,&nbsp;</tt></p><p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;long&nbsp;</tt><tt>line</tt><tt>,&nbsp;int&nbsp;</tt><tt>level</tt><tt>,</tt></p><p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;void&nbsp;</tt><tt>*</tt><tt>buf</tt><tt>,&nbsp;size_t&nbsp;</tt><tt>buflen</tt><tt>);&nbsp;</tt></p></dd></dl></div></dd><dt class="dt-list">描述</dt><dd class="dd-list">&nbsp;<p>这3个函数是实际写日志的函数，输入的数据对应于配置文件中的%m。category来自于调用zlog_get_category()。</p><p>zlog()和vzlog()根据format输出，就像printf(3)和vprintf(3)。</p><p>vzlog()相当于zlog()，只是它用一个va_list类型的参数args，而不是一堆类型不同的参数。vzlog() 内部使用了
+va_copy 宏，args的内容在vzlog()后保持不变，可以参考stdarg(3)。</p><p>hzlog()有点不一样，它产生下面这样的输出，长度为buf_len的内存buf以16进制的形式表示出来<em>。</em>
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+hex_buf_len=</tt><tt>[</tt><tt>5365</tt><tt>]</tt><tt>&nbsp;&nbsp;</tt><p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;1&nbsp;&nbsp;2&nbsp;&nbsp;3&nbsp;&nbsp;4&nbsp;&nbsp;5&nbsp;&nbsp;6&nbsp;&nbsp;7&nbsp;&nbsp;8&nbsp;&nbsp;9&nbsp;&nbsp;A&nbsp;&nbsp;B&nbsp;&nbsp;C&nbsp;&nbsp;D&nbsp;&nbsp;E&nbsp;&nbsp;F&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0123456789ABCDEF</tt></p><p><tt>0000000001&nbsp;&nbsp;&nbsp;23&nbsp;21&nbsp;20&nbsp;2f&nbsp;62&nbsp;69&nbsp;6e&nbsp;2f&nbsp;62&nbsp;61&nbsp;73&nbsp;68&nbsp;0a&nbsp;0a&nbsp;23&nbsp;20&nbsp;&nbsp;&nbsp;#!&nbsp;/bin/bash..#</tt></p><p><tt>0000000002&nbsp;&nbsp;&nbsp;74&nbsp;65&nbsp;73&nbsp;74&nbsp;5f&nbsp;68&nbsp;65&nbsp;78&nbsp;20&nbsp;2d&nbsp;20&nbsp;74&nbsp;65&nbsp;6d&nbsp;70&nbsp;6f&nbsp;&nbsp;&nbsp;test_hex&nbsp;-&nbsp;tempo</tt></p><p><tt>0000000003&nbsp;&nbsp;&nbsp;72&nbsp;61&nbsp;72&nbsp;79&nbsp;20&nbsp;77&nbsp;72&nbsp;61&nbsp;70&nbsp;70&nbsp;65&nbsp;72&nbsp;20&nbsp;73&nbsp;63&nbsp;72&nbsp;&nbsp;&nbsp;rary&nbsp;wrapper&nbsp;scr
+</tt></p></dd></dl></div><p>参数file和line填写为__FILE__和__LINE__这两个宏。这两个宏标识日志是在哪里发生的。参数func
+填写为__func__或者__FUNCTION__，如果编译器支持的话，如果不支持，就填写为"&lt;unkown&gt;"。</p><p>level是一个整数，应该是在下面几个里面取值。
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+typedef&nbsp;enum&nbsp;{&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</tt><div class="flushleft"><dl class="list"><dt class="dt-list"><tt>
+
+
+
+
+</tt><tt></tt></dt><dd class="dd-list"><tt>
+ZLOG_LEVEL_DEBUG&nbsp;=&nbsp;20,</tt><p><tt>ZLOG_LEVEL_INFO&nbsp;=&nbsp;40,</tt></p><p><tt>ZLOG_LEVEL_NOTICE&nbsp;=&nbsp;60,</tt></p><p><tt>ZLOG_LEVEL_WARN&nbsp;=&nbsp;80,</tt></p><p><tt>ZLOG_LEVEL_ERROR&nbsp;=&nbsp;100,</tt></p><p><tt>ZLOG_LEVEL_FATAL&nbsp;=&nbsp;120
+</tt></p></dd></dl></div><p><tt><tt>
+}&nbsp;zlog_level;
+</tt></tt></p></dd></dl></div><p>每个函数都有对应的宏，简单使用。例如：
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+#define&nbsp;zlog_fatal(cat,&nbsp;format,&nbsp;args...)&nbsp;\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt><p><tt>zlog(cat,&nbsp;__FILE__,&nbsp;sizeof(__FILE__)-1,&nbsp;\</tt></p><p><tt>__func__,&nbsp;sizeof(__func__)-1,&nbsp;__LINE__,&nbsp;\&nbsp;</tt></p><p><tt>ZLOG_LEVEL_FATAL,&nbsp;format,&nbsp;##args)&nbsp;
+</tt></p></dd></dl></div><p>所有的宏列表：
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+/</tt><tt>*</tt><tt>&nbsp;zlog&nbsp;macros&nbsp;</tt><tt>*</tt><tt>/</tt><p><tt>zlog_fatal(cat,&nbsp;format,&nbsp;...)</tt></p><p><tt>zlog_error(cat,&nbsp;format,&nbsp;...)</tt></p><p><tt>zlog_warn(cat,&nbsp;format,&nbsp;...)</tt></p><p><tt>zlog_notice(cat,&nbsp;format,&nbsp;...)</tt></p><p><tt>zlog_info(cat,&nbsp;format,&nbsp;...)</tt></p><p><tt>zlog_debug(cat,&nbsp;format,&nbsp;...)</tt></p><p><tt>&nbsp;</tt></p><p><tt>/</tt><tt>*</tt><tt>&nbsp;vzlog&nbsp;macros&nbsp;</tt><tt>*</tt><tt>/</tt></p><p><tt>vzlog_fatal(cat,&nbsp;format,&nbsp;args)</tt></p><p><tt>vzlog_error(cat,&nbsp;format,&nbsp;args)</tt></p><p><tt>vzlog_warn(cat,&nbsp;format,&nbsp;args)</tt></p><p><tt>vzlog_notice(cat,&nbsp;format,&nbsp;args)</tt></p><p><tt>vzlog_info(cat,&nbsp;format,&nbsp;args)</tt></p><p><tt>vzlog_debug(cat,&nbsp;format,&nbsp;args)</tt></p><p><tt>&nbsp;</tt></p><p><tt>/</tt><tt>*</tt><tt>&nbsp;hzlog&nbsp;macros&nbsp;</tt><tt>*</tt><tt>/</tt></p><p><tt>hzlog_fatal(cat,&nbsp;buf,&nbsp;buf_len)</tt></p><p><tt>hzlog_error(cat,&nbsp;buf,&nbsp;buf_len)</tt></p><p><tt>hzlog_warn(cat,&nbsp;buf,&nbsp;buf_len)</tt></p><p><tt>hzlog_notice(cat,&nbsp;buf,&nbsp;buf_len)</tt></p><p><tt>hzlog_info(cat,&nbsp;buf,&nbsp;buf_len)</tt></p><p><tt>hzlog_debug(cat,&nbsp;buf,&nbsp;buf_len)&nbsp;
+</tt></p></dd></dl></div></dd><dt class="dt-list">返回值</dt><dd class="dd-list">&nbsp;<p>这些函数不返回。如果有错误发生，详细错误会被写在由环境变量ZLOG_PROFILE_ERROR指定的错误日志里面。</p></dd></dl><!--TOC section MDC操作-->
+<h2 class="section"><!--SEC ANCHOR --><a name="htoc32">6.4</a>&nbsp;&nbsp;MDC操作</h2><!--SEC END --><dl class="list"><dt class="dt-list">
+
+
+
+
+总览</dt><dd class="dd-list">&nbsp;<div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+int&nbsp;zlog_put_mdc(const&nbsp;char&nbsp;</tt><tt>*</tt><tt>key</tt><tt>,&nbsp;const&nbsp;char&nbsp;</tt><tt>*</tt><tt>value</tt><tt>);</tt><p><tt>char&nbsp;</tt><tt>*</tt><tt>zlog_get_mdc(const&nbsp;char&nbsp;</tt><tt>*</tt><tt>key</tt><tt>);</tt></p><p><tt>void&nbsp;zlog_remove_mdc(const&nbsp;char&nbsp;</tt><tt>*</tt><tt>key</tt><tt>);</tt></p><p><tt>void&nbsp;zlog_clean_mdc(void);
+</tt></p></dd></dl></div></dd><dt class="dt-list">描述</dt><dd class="dd-list">&nbsp;<p>MDC(Mapped Diagnostic Context)是一个每线程拥有的键-值表，所以和分类没什么关系。</p><p>key和value是字符串，长度不能超过MAXLEN_PATH(1024)。如果超过MAXLEN_PATH(1024)的话，会被截断。</p><p>记住这个表是和线程绑定的，每个线程有自己的表，所以在一个线程内的调用不会影响其他线程。</p></dd><dt class="dt-list">返回值</dt><dd class="dd-list">&nbsp;<p>zlog_put_mdc()成功返回0，失败返回-1。zlog_get_mdc()成功返回value的指针，失败或者没有相应的key返回NULL。如果有错误发生，详细错误会被写在由环境变量ZLOG_PROFILE_ERROR指定的错误日志里面。</p></dd></dl><!--TOC section dzlog接口-->
+<h2 class="section"><!--SEC ANCHOR --><a name="htoc33">6.5</a>&nbsp;&nbsp;dzlog接口<a name="sec:dzlog=0063A5=0053E3"></a></h2><!--SEC END --><dl class="list"><dt class="dt-list">
+
+
+
+
+总览</dt><dd class="dd-list">&nbsp;<div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+int&nbsp;dzlog_init(const&nbsp;char&nbsp;</tt><tt>*</tt><tt>confpath</tt><tt>,&nbsp;const&nbsp;char&nbsp;</tt><tt>*</tt><tt>cname</tt><tt>);</tt><p><tt>int&nbsp;dzlog_set_category(const&nbsp;char&nbsp;</tt><tt>*</tt><tt>cname</tt><tt>);&nbsp;</tt></p><p><tt>void&nbsp;dzlog(const&nbsp;char&nbsp;</tt><tt>*</tt><tt>file</tt><tt>,&nbsp;size_t&nbsp;</tt><tt>filelen</tt><tt>,</tt></p><p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;char&nbsp;</tt><tt>*</tt><tt>func</tt><tt>,&nbsp;size_t&nbsp;</tt><tt>funclen</tt><tt>,</tt></p><p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;long&nbsp;</tt><tt>line</tt><tt>,&nbsp;int&nbsp;</tt><tt>level</tt><tt>,</tt></p><p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;char&nbsp;</tt><tt>*</tt><tt>format</tt><tt>,&nbsp;...);&nbsp;</tt></p><p><tt>void&nbsp;vdzlog(const&nbsp;char&nbsp;</tt><tt>*</tt><tt>file</tt><tt>,&nbsp;size_t&nbsp;</tt><tt>filelen</tt><tt>,</tt></p><p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;char&nbsp;</tt><tt>*</tt><tt>func</tt><tt>,&nbsp;size_t&nbsp;</tt><tt>funclen</tt><tt>,</tt></p><p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;long&nbsp;</tt><tt>line</tt><tt>,&nbsp;int&nbsp;</tt><tt>level</tt><tt>,</tt></p><p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;char&nbsp;</tt><tt>*</tt><tt>format</tt><tt>,&nbsp;va_list&nbsp;</tt><tt>args</tt><tt>);&nbsp;</tt></p><p><tt>void&nbsp;hdzlog(const&nbsp;char&nbsp;</tt><tt>*</tt><tt>file</tt><tt>,&nbsp;size_t&nbsp;</tt><tt>filelen</tt><tt>,</tt></p><p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;char&nbsp;</tt><tt>*</tt><tt>func</tt><tt>,&nbsp;size_t&nbsp;</tt><tt>funclen</tt><tt>,</tt></p><p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;long&nbsp;</tt><tt>line</tt><tt>,&nbsp;int&nbsp;</tt><tt>level</tt><tt>,</tt></p><p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;const&nbsp;void&nbsp;</tt><tt>*</tt><tt>buf</tt><tt>,&nbsp;size_t&nbsp;</tt><tt>buflen</tt><tt>);
+</tt></p></dd></dl></div></dd><dt class="dt-list">描述</dt><dd class="dd-list">&nbsp;<p>dzlog是忽略分类(zlog_category_t)的一组简单zlog接口。它采用内置的一个默认分类，这个分类置于锁的保护下。这些接口也是线程安全的。忽略了分类，意味着用户不需要操心创建、存储、传输zlog_category_t类型的变量<em><span style="font-variant:small-caps">。当然也可以在用</span></em>dzlog接口的同时用一般的zlog接口函数，这样会更爽。</p><p>dzlog_init()和zlog_init()一样做初始化，就是多需要一个默认分类名cname的参数。zlog_reload()、
+zlog_fini() 可以和以前一样使用，用来刷新配置，或者清理。</p><p>dzlog_set_category()是用来改变默认分类用的。上一个分类会被替换成新的。同样不用担心内存释放的问题，zlog_fini()最后会清理。</p><p>dzlog的宏也定义在zlog.h里面。更简单的写法。
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+dzlog_fatal(format,&nbsp;...)</tt><p><tt>dzlog_error(format,&nbsp;...)</tt></p><p><tt>dzlog_warn(format,&nbsp;...)</tt></p><p><tt>dzlog_notice(format,&nbsp;...)</tt></p><p><tt>dzlog_info(format,&nbsp;...)</tt></p><p><tt>dezlog_debug(format,&nbsp;...)</tt></p><p><tt>&nbsp;</tt></p><p><tt>vdzlog_fatal(format,&nbsp;args)</tt></p><p><tt>vdzlog_error(format,&nbsp;args)</tt></p><p><tt>vdzlog_warn(format,&nbsp;args)</tt></p><p><tt>vdzlog_notice(format,&nbsp;args)</tt></p><p><tt>vdzlog_info(format,&nbsp;args)</tt></p><p><tt>vdzlog_debug(format,&nbsp;args)</tt></p><p><tt>&nbsp;</tt></p><p><tt>hdzlog_fatal(buf,&nbsp;buf_len)</tt></p><p><tt>hdzlog_error(buf,&nbsp;buf_len)</tt></p><p><tt>hdzlog_warn(buf,&nbsp;buf_len)</tt></p><p><tt>hdzlog_noticebuf,&nbsp;buf_len)</tt></p><p><tt>hdzlog_info(buf,&nbsp;buf_len)</tt></p><p><tt>hdzlog_debug(buf,&nbsp;buf_len)
+</tt></p></dd></dl></div></dd><dt class="dt-list">返回值</dt><dd class="dd-list">&nbsp;<p>成功情况下dzlog_init()和dzlog_set_category()返回0。失败情况下dzlog_init()和 dzlog_set_category()返回-1。详细错误会被写在由环境变量ZLOG_PROFILE_ERROR指定的错误日志里面。</p></dd></dl><!--TOC section 用户自定义输出-->
+<h2 class="section"><!--SEC ANCHOR --><a name="htoc34">6.6</a>&nbsp;&nbsp;用户自定义输出</h2><!--SEC END --><dl class="list"><dt class="dt-list">
+
+
+
+
+总览</dt><dd class="dd-list">&nbsp;<div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+typedef&nbsp;struct&nbsp;zlog_msg_s&nbsp;{</tt><p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;char&nbsp;</tt><tt>*</tt><tt>buf;</tt></p><p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;size_t&nbsp;len;</tt></p><p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;char&nbsp;</tt><tt>*</tt><tt>path;</tt></p><p><tt>}&nbsp;zlog_msg_t;</tt></p><p><tt>typedef&nbsp;int&nbsp;(</tt><tt>*</tt><tt>zlog_record_fn)(zlog_msg_t&nbsp;</tt><tt>*</tt><tt>msg</tt><tt>);&nbsp;</tt></p><p><tt>int&nbsp;zlog_set_record(const&nbsp;char&nbsp;</tt><tt>*</tt><tt>rname</tt><tt>,&nbsp;zlog_record_fn&nbsp;</tt><tt>record</tt><tt>);&nbsp;
+</tt></p></dd></dl></div></dd><dt class="dt-list">描述</dt><dd class="dd-list">&nbsp;<p>zlog允许用户自定义输出函数。输出函数需要绑定到某条特殊的规则上。这种规则的例子是：
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+</tt><tt>*</tt><tt>.</tt><tt>*</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$name,&nbsp;"record&nbsp;path&nbsp;%c&nbsp;%d";&nbsp;simple
+</tt></dd></dl></div><p>zlog_set_record()做绑定动作。规则中输出段有$name的，会被用来做用户自定义输出。输出函数为record。这个函数需要为zlog_record_fn的格式。</p><p>zlog_msg_t结构的各个成员描述如下：</p><p>path来自规则的逗号后的字符串，这个字符串会被动态的解析，输出当前的path，就像动态文件路径一样。</p><p>buf和len 是zlog格式化后的日志信息和长度。</p><p>所有zlog_set_record()做的绑定在zlog_reload()使用后继续有效。</p></dd><dt class="dt-list">返回值</dt><dd class="dd-list">&nbsp;<p>成功情况下zlog_set_record()返回0。失败情况下zlog_set_record()返回-1。详细错误会被写在由环境变量ZLOG_PROFILE_ERROR指定的错误日志里面。</p></dd></dl><!--TOC section 调试和诊断-->
+<h2 class="section"><!--SEC ANCHOR --><a name="htoc35">6.7</a>&nbsp;&nbsp;调试和诊断</h2><!--SEC END --><dl class="list"><dt class="dt-list">
+
+
+
+
+总览</dt><dd class="dd-list">&nbsp;<div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+void&nbsp;zlog_profile(void);
+</tt></dd></dl></div></dd><dt class="dt-list">描述</dt><dd class="dd-list">&nbsp;<p>环境变量ZLOG_PROFILE_ERROR指定zlog本身的错误日志。</p><p>环境变量ZLOG_PROFILE_DEBUG指定zlog本身的调试日志。</p><p>zlog_profile()打印所有内存中的配置信息到ZLOG_PROFILE_ERROR，在运行时。可以把这个和配置文件比较，看看有没有问题。</p></dd></dl><!--TOC chapter 高阶使用-->
+<h1 class="chapter"><!--SEC ANCHOR --><a name="htoc36">Chapter&nbsp;7</a>&nbsp;&nbsp;高阶使用</h1><!--SEC END --><!--TOC section MDC-->
+<h2 class="section"><!--SEC ANCHOR --><a name="htoc37">7.1</a>&nbsp;&nbsp;MDC<a name="sec:MDC"></a></h2><!--SEC END --><p>MDC是什么？在log4j里面解释为Mapped Diagnostic Context。听起来是个很复杂的技术，其实MDC就是一个键-值对表。一旦某次你设置了，后面库可以帮你自动打印出来，或者成为文件名的一部分。让我们看一个例子，来自于$(top_builddir)/test/test_mdc.c.
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+$&nbsp;cat&nbsp;test_mdc.c</tt><p><tt>#include&nbsp;&lt;stdio.h&gt;</tt></p><p><tt>#include&nbsp;&lt;stdlib.h&gt;</tt></p><p><tt>#include&nbsp;&lt;sys/types.h&gt;</tt></p><p><tt>#include&nbsp;&lt;unistd.h&gt;</tt></p><p><tt>#include&nbsp;&lt;string.h&gt;</tt></p><p><tt>#include&nbsp;"zlog.h"</tt></p><p><tt>int&nbsp;main(int&nbsp;argc,&nbsp;char</tt><tt>*</tt><tt>*</tt><tt>&nbsp;argv)</tt></p><p><tt>{
+</tt></p><div class="flushleft"><dl class="list"><dt class="dt-list"><tt>
+
+
+
+
+</tt><tt></tt></dt><dd class="dd-list"><tt>
+int&nbsp;rc;</tt><p><tt>zlog_category_t&nbsp;</tt><tt>*</tt><tt>zc;</tt></p><p><tt>rc&nbsp;=&nbsp;zlog_init("test_mdc.conf");
+</tt></p><div class="flushleft"><dl class="list"><dt class="dt-list"><tt>
+
+
+
+
+</tt><tt></tt></dt><dd class="dd-list"><tt>
+if&nbsp;(rc)&nbsp;{&nbsp;</tt><p><tt>printf("init&nbsp;failed\n");</tt></p><p><tt>return&nbsp;-1;
+</tt></p></dd></dl></div><p><tt>
+}</tt></p><p><tt>zc&nbsp;=&nbsp;zlog_get_category("my_cat");</tt></p><p><tt>if&nbsp;(!zc)&nbsp;{
+</tt></p><div class="flushleft"><dl class="list"><dt class="dt-list"><tt>
+
+
+
+
+</tt><tt></tt></dt><dd class="dd-list"><tt>
+printf("get&nbsp;cat&nbsp;fail\n");</tt><p><tt>zlog_fini();</tt></p><p><tt>return&nbsp;-2;
+</tt></p></dd></dl></div><p><tt>
+}</tt></p><p><tt>zlog_info(zc,&nbsp;"1.hello,&nbsp;zlog");</tt></p><p><tt>zlog_put_mdc("myname",&nbsp;"Zhang");</tt></p><p><tt>zlog_info(zc,&nbsp;"2.hello,&nbsp;zlog");</tt></p><p><tt>zlog_put_mdc("myname",&nbsp;"Li");</tt></p><p><tt>zlog_info(zc,&nbsp;"3.hello,&nbsp;zlog");&nbsp;</tt></p><p><tt>zlog_fini();&nbsp;</tt></p><p><tt>return&nbsp;0;
+</tt></p></dd></dl></div><p><tt>
+}&nbsp;
+</tt></p></dd></dl></div><p>
+配置文件
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+$&nbsp;cat&nbsp;test_mdc.conf</tt><p><tt>[</tt><tt>formats</tt><tt>]</tt></p><p><tt>mdc_format=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"%d(%F&nbsp;%X.%ms)&nbsp;%-6V&nbsp;(%c:%F:%L)&nbsp;</tt><tt>[</tt><tt>%M(myname)</tt><tt>]</tt><tt>&nbsp;-&nbsp;%m%n"</tt></p><p><tt>[</tt><tt>rules</tt><tt>]</tt></p><p><tt>*</tt><tt>.</tt><tt>*</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;stdout;&nbsp;mdc_format
+</tt></p></dd></dl></div><p>
+输出
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+$&nbsp;./test_mdc</tt><p><tt>2012-03-12&nbsp;09:26:37.740&nbsp;INFO&nbsp;&nbsp;&nbsp;(my_cat:test_mdc.c:47)&nbsp;</tt><tt>[</tt><tt>]</tt><tt>&nbsp;-&nbsp;1.hello,&nbsp;zlog&nbsp;</tt></p><p><tt>2012-03-12&nbsp;09:26:37.740&nbsp;INFO&nbsp;&nbsp;&nbsp;(my_cat:test_mdc.c:51)&nbsp;</tt><tt>[</tt><tt>Zhang</tt><tt>]</tt><tt>&nbsp;-&nbsp;2.hello,&nbsp;zlog&nbsp;</tt></p><p><tt>2012-03-12&nbsp;09:26:37.740&nbsp;INFO&nbsp;&nbsp;&nbsp;(my_cat:test_mdc.c:55)&nbsp;</tt><tt>[</tt><tt>Li</tt><tt>]</tt><tt>&nbsp;-&nbsp;3.hello,&nbsp;zlog
+</tt></p></dd></dl></div><p>
+你可以看到zlog_put_mdc()在表里面设置键"myname"对应值"Zhang"，然后在配置文件里面%M(myname)指出了在日志的哪个位置需要把值打出来。第二次，键"myname"的值被覆盖写成"Li"，然后日志里面也有相应的变化。</p><p>MDC什么时候有用呢？往往在用户需要在同样的日志行为区分不同的业务数据的时候。比如说，c源代码是
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+zlog_put_mdc("customer_name",&nbsp;get_customer_name_from_db()&nbsp;);</tt><p><tt>zlog_info("get&nbsp;in");&nbsp;</tt></p><p><tt>zlog_info("pick&nbsp;product");&nbsp;</tt></p><p><tt>zlog_info("pay");</tt></p><p><tt>zlog_info("get&nbsp;out");
+</tt></p></dd></dl></div><p>
+在配置文件里面是
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+&amp;format&nbsp;&nbsp;"%M(customer_name)&nbsp;%m%n"
+</tt></dd></dl></div><p>
+当程序同时处理两个用户的时候，打出来的日志可能是
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+Zhang&nbsp;get&nbsp;in</tt><p><tt>Li&nbsp;get&nbsp;in</tt></p><p><tt>Zhang&nbsp;pick&nbsp;product</tt></p><p><tt>Zhang&nbsp;pay</tt></p><p><tt>Li&nbsp;pick&nbsp;product</tt></p><p><tt>Li&nbsp;pay</tt></p><p><tt>Zhang&nbsp;get&nbsp;out</tt></p><p><tt>Li&nbsp;get&nbsp;out
+</tt></p></dd></dl></div><p>
+这样，你就可以用grep命令把这两个用户的日志分开来了
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+$&nbsp;grep&nbsp;Zhang&nbsp;aa.log&nbsp;&gt;&nbsp;Zhang.log</tt><p><tt>$&nbsp;grep&nbsp;Li&nbsp;aa.log&nbsp;&gt;Li.log
+</tt></p></dd></dl></div><p>
+或者，还有另外一条路，一开始在文件名里面做区分，看配置文件：
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+</tt><tt>*</tt><tt>.</tt><tt>*</tt><tt>&nbsp;"mdc_%M(customer_name).log";
+</tt></dd></dl></div><p>
+这就会产生3个日志文件。
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+mdc_.log&nbsp;mdc_Zhang.log&nbsp;mdc_Li.log
+</tt></dd></dl></div><p>
+这是一条近路，如果用户知道自己在干什么。</p><p>MDC是每个线程独有的，所以可以把一些线程专有的变量设置进去。如果单单为了区分线程，可以用转换字符里面的%t来搞定。
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt></dl></div><!--TOC section 诊断zlog本身-->
+<h2 class="section"><!--SEC ANCHOR --><a name="htoc38">7.2</a>&nbsp;&nbsp;诊断zlog本身<a name="sec:=008BCA=0065ADzlog=00672C=008EAB"></a></h2><!--SEC END --><p>OK，至今为止，我假定zlog库本身是不出毛病的。zlog帮助用户程序写日志，帮助程序员debug程序。但是如果zlog内部出错了呢？怎么知道错在哪里呢？其他的程序可以用日志库来debug，但日志库自己怎么debug？答案很简单，zlog有自己的日志——诊断日志。这个日志通常是关闭的，可以通过环境变量来打开。
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+$&nbsp;export&nbsp;ZLOG_PROFILE_DEBUG=/tmp/zlog.debug.log</tt><p><tt>$&nbsp;export&nbsp;ZLOG_PROFILE_ERROR=/tmp/zlog.error.log
+</tt></p></dd></dl></div><p>
+诊断日志只有两个级别debug和error。设置好环境变量后. 再跑test_hello程序<a href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#sec:Hello-World-=004EE3=007801">3.3</a>，然后debug日志为
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+$&nbsp;more&nbsp;zlog.debug.log&nbsp;</tt><p><tt>03-13&nbsp;09:46:56&nbsp;DEBUG&nbsp;(7503:zlog.c:115)&nbsp;------zlog_init&nbsp;start,&nbsp;compile&nbsp;time</tt><tt>[</tt><tt>Mar&nbsp;13&nbsp;2012&nbsp;11:28:56</tt><tt>]</tt><tt>------&nbsp;</tt></p><p><tt>03-13&nbsp;09:46:56&nbsp;DEBUG&nbsp;(7503:spec.c:825)&nbsp;spec:</tt><tt>[</tt><tt>0x7fdf96b7c010</tt><tt>]</tt><tt>[</tt><tt>%d(%F&nbsp;%T)</tt><tt>]</tt><tt>[</tt><tt>%F&nbsp;%T&nbsp;29</tt><tt>]</tt><tt>[</tt><tt>]</tt><tt>&nbsp;</tt></p><p><tt>03-13&nbsp;09:46:56&nbsp;DEBUG&nbsp;(7503:spec.c:825)&nbsp;spec:</tt><tt>[</tt><tt>0x7fdf96b52010</tt><tt>]</tt><tt>[</tt><tt>&nbsp;</tt><tt>]</tt><tt>[</tt><tt>&nbsp;0</tt><tt>]</tt><tt>[</tt><tt>]</tt><tt>&nbsp;</tt></p><p><tt>......</tt></p><p><tt>03-13&nbsp;09:52:40&nbsp;DEBUG&nbsp;(8139:zlog.c:291)&nbsp;------zlog_fini&nbsp;end------
+</tt></p></dd></dl></div><p>
+zlog.error.log日志没产生，因为没有错误发生。</p><p>你可以看出来，debug日志展示了zlog是怎么初始化还有清理的。不过在zlog_info()执行的时候没有日志打出来，这是为了效率。</p><p>如果zlog库有任何问题，都会打日志到ZLOG_PROFILE_ERROR所指向的错误日志。比如说，在zlog_info()上用一个错误的printf的语法：
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+zlog_info(zc,&nbsp;"%l",&nbsp;1);
+</tt></dd></dl></div><p>
+然后编译执行程序，ZLOG_PROFILE_ERROR的日志会是
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+$&nbsp;cat&nbsp;zlog.error.log&nbsp;</tt><p><tt>03-13&nbsp;10:04:58&nbsp;ERROR&nbsp;(10102:buf.c:189)&nbsp;vsnprintf&nbsp;fail,&nbsp;errno</tt><tt>[</tt><tt>0</tt><tt>]</tt><tt>&nbsp;</tt></p><p><tt>03-13&nbsp;10:04:58&nbsp;ERROR&nbsp;(10102:buf.c:191)&nbsp;nwrite</tt><tt>[</tt><tt>-1</tt><tt>]</tt><tt>,&nbsp;size_left</tt><tt>[</tt><tt>1024</tt><tt>]</tt><tt>,&nbsp;format</tt><tt>[</tt><tt>%l</tt><tt>]</tt><tt>&nbsp;</tt></p><p><tt>03-13&nbsp;10:04:58&nbsp;ERROR&nbsp;(10102:spec.c:329)&nbsp;zlog_buf_vprintf&nbsp;maybe&nbsp;fail&nbsp;or&nbsp;overflow&nbsp;</tt></p><p><tt>03-13&nbsp;10:04:58&nbsp;ERROR&nbsp;(10102:spec.c:467)&nbsp;a_spec-&gt;gen_buf&nbsp;fail&nbsp;</tt></p><p><tt>03-13&nbsp;10:04:58&nbsp;ERROR&nbsp;(10102:format.c:160)&nbsp;zlog_spec_gen_msg&nbsp;fail&nbsp;</tt></p><p><tt>03-13&nbsp;10:04:58&nbsp;ERROR&nbsp;(10102:rule.c:265)&nbsp;zlog_format_gen_msg&nbsp;fail&nbsp;</tt></p><p><tt>03-13&nbsp;10:04:58&nbsp;ERROR&nbsp;(10102:category.c:164)&nbsp;hzb_log_rule_output&nbsp;fail&nbsp;</tt></p><p><tt>03-13&nbsp;10:04:58&nbsp;ERROR&nbsp;(10102:zlog.c:632)&nbsp;zlog_output&nbsp;fail,&nbsp;srcfile</tt><tt>[</tt><tt>test_hello.c</tt><tt>]</tt><tt>,&nbsp;srcline</tt><tt>[</tt><tt>41</tt><tt>]</tt><tt>
+</tt></p></dd></dl></div><p>
+这样，用户就能知道为啥期待的输出没有产生，然后搞定这个问题。</p><p>运行时诊断会带来一定的性能损失。一般来说，我在生产环境把ZLOG_PROFILE_ERROR打开，ZLOG_PROFILE_DEBUG关闭。</p><p>还有另外一个办法来诊断zlog。我们都知道，zlog_init()会把配置信息读入内存。在整个写日志的过程中，这块内存保持不变。如果用户程序因为某种原因损坏了这块内存，那么就会造成问题。还有可能是内存中的信息和配置文件的信息不匹配。所以我设计了一个函数，把内存的信息展现到ZLOG_PROFILE_ERROR指向的错误日志。</p><p>代码见$(top_builddir)/test/test_profile.c
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+$&nbsp;cat&nbsp;test_profile.c</tt><p><tt>#include&nbsp;&lt;stdio.h&gt;</tt></p><p><tt>#include&nbsp;"zlog.h"</tt></p><p><tt>&nbsp;</tt></p><p><tt>int&nbsp;main(int&nbsp;argc,&nbsp;char</tt><tt>*</tt><tt>*</tt><tt>&nbsp;argv)</tt></p><p><tt>{
+</tt></p><div class="flushleft"><dl class="list"><dt class="dt-list"><tt>
+
+
+
+
+</tt><tt></tt></dt><dd class="dd-list"><tt>
+int&nbsp;rc;</tt><p><tt>rc&nbsp;=&nbsp;dzlog_init("test_profile.conf",&nbsp;"my_cat");</tt></p><p><tt>if&nbsp;(rc)&nbsp;{&nbsp;
+</tt></p><div class="flushleft"><dl class="list"><dt class="dt-list"><tt>
+
+
+
+
+</tt><tt></tt></dt><dd class="dd-list"><tt>
+printf("init&nbsp;failed\n");</tt><p><tt>return&nbsp;-1;
+</tt></p></dd></dl></div><p><tt>
+}</tt></p><p><tt>dzlog_info("hello,&nbsp;zlog");</tt></p><p><tt>zlog_profile();</tt></p><p><tt>zlog_fini();&nbsp;</tt></p><p><tt>return&nbsp;0;
+</tt></p></dd></dl></div><p><tt>
+}&nbsp;
+</tt></p></dd></dl></div><p>
+zlog_profile()就是这个函数。配置文件很简单。
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+$&nbsp;cat&nbsp;test_profile.conf&nbsp;</tt><p><tt>[</tt><tt>formats</tt><tt>]</tt><tt>&nbsp;</tt></p><p><tt>simple&nbsp;=&nbsp;"%m%n"&nbsp;&nbsp;&nbsp;</tt></p><p><tt>[</tt><tt>rules</tt><tt>]</tt></p><p><tt>my_cat.</tt><tt>*</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;stdout;&nbsp;simple
+</tt></p></dd></dl></div><p>
+然后zlog.error.log会是
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+$&nbsp;cat&nbsp;/tmp/zlog.error.log</tt><p><tt>06-01&nbsp;11:21:26&nbsp;WARN&nbsp;&nbsp;(7063:zlog.c:783)&nbsp;------zlog_profile&nbsp;start------&nbsp;</tt></p><p><tt>06-01&nbsp;11:21:26&nbsp;WARN&nbsp;&nbsp;(7063:zlog.c:784)&nbsp;init_flag:</tt><tt>[</tt><tt>1</tt><tt>]</tt><tt>&nbsp;</tt></p><p><tt>06-01&nbsp;11:21:26&nbsp;WARN&nbsp;&nbsp;(7063:conf.c:75)&nbsp;-conf</tt><tt>[</tt><tt>0x2333010</tt><tt>]</tt><tt>-&nbsp;</tt></p><p><tt>06-01&nbsp;11:21:26&nbsp;WARN&nbsp;&nbsp;(7063:conf.c:76)&nbsp;--global--&nbsp;</tt></p><p><tt>06-01&nbsp;11:21:26&nbsp;WARN&nbsp;&nbsp;(7063:conf.c:77)&nbsp;---file</tt><tt>[</tt><tt>test_profile.conf</tt><tt>]</tt><tt>,mtime</tt><tt>[</tt><tt>2012-06-01&nbsp;11:20:44</tt><tt>]</tt><tt>---&nbsp;</tt></p><p><tt>06-01&nbsp;11:21:26&nbsp;WARN&nbsp;&nbsp;(7063:conf.c:78)&nbsp;---strict&nbsp;init</tt><tt>[</tt><tt>1</tt><tt>]</tt><tt>---&nbsp;</tt></p><p><tt>06-01&nbsp;11:21:26&nbsp;WARN&nbsp;&nbsp;(7063:conf.c:79)&nbsp;---buffer&nbsp;min</tt><tt>[</tt><tt>1024</tt><tt>]</tt><tt>---&nbsp;</tt></p><p><tt>06-01&nbsp;11:21:26&nbsp;WARN&nbsp;&nbsp;(7063:conf.c:80)&nbsp;---buffer&nbsp;max</tt><tt>[</tt><tt>2097152</tt><tt>]</tt><tt>---&nbsp;</tt></p><p><tt>06-01&nbsp;11:21:26&nbsp;WARN&nbsp;&nbsp;(7063:conf.c:82)&nbsp;---default_format---&nbsp;</tt></p><p><tt>06-01&nbsp;11:21:26&nbsp;WARN&nbsp;&nbsp;(7063:format.c:48)&nbsp;---format</tt><tt>[</tt><tt>0x235ef60</tt><tt>]</tt><tt>[</tt><tt>default&nbsp;=&nbsp;%d(%F&nbsp;%T)&nbsp;%V&nbsp;</tt><tt>[</tt><tt>%p:%F:%L</tt><tt>]</tt><tt>&nbsp;%m%n(0x233b810)</tt><tt>]</tt><tt>---&nbsp;</tt></p><p><tt>06-01&nbsp;11:21:26&nbsp;WARN&nbsp;&nbsp;(7063:conf.c:85)&nbsp;---file&nbsp;perms</tt><tt>[</tt><tt>0600</tt><tt>]</tt><tt>---&nbsp;</tt></p><p><tt>06-01&nbsp;11:21:26&nbsp;WARN&nbsp;&nbsp;(7063:conf.c:87)&nbsp;---rotate&nbsp;lock&nbsp;file</tt><tt>[</tt><tt>/tmp/zlog.lock</tt><tt>]</tt><tt>---&nbsp;</tt></p><p><tt>06-01&nbsp;11:21:26&nbsp;WARN&nbsp;&nbsp;(7063:rotater.c:48)&nbsp;--rotater</tt><tt>[</tt><tt>0x233b7d0</tt><tt>]</tt><tt>[</tt><tt>0x233b7d0,/tmp/zlog.lock,4</tt><tt>]</tt><tt>--&nbsp;</tt></p><p><tt>06-01&nbsp;11:21:26&nbsp;WARN&nbsp;&nbsp;(7063:level_list.c:37)&nbsp;--level_list</tt><tt>[</tt><tt>0x2335490</tt><tt>]</tt><tt>--&nbsp;</tt></p><p><tt>06-01&nbsp;11:21:26&nbsp;WARN&nbsp;&nbsp;(7063:level.c:37)&nbsp;---level</tt><tt>[</tt><tt>0x23355c0</tt><tt>]</tt><tt>[</tt><tt>0,</tt><tt>*</tt><tt>,</tt><tt>*</tt><tt>,1,6</tt><tt>]</tt><tt>---&nbsp;</tt></p><p><tt>06-01&nbsp;11:21:26&nbsp;WARN&nbsp;&nbsp;(7063:level.c:37)&nbsp;---level</tt><tt>[</tt><tt>0x23375e0</tt><tt>]</tt><tt>[</tt><tt>20,DEBUG,debug,5,7</tt><tt>]</tt><tt>---&nbsp;</tt></p><p><tt>06-01&nbsp;11:21:26&nbsp;WARN&nbsp;&nbsp;(7063:level.c:37)&nbsp;---level</tt><tt>[</tt><tt>0x2339600</tt><tt>]</tt><tt>[</tt><tt>40,INFO,info,4,6</tt><tt>]</tt><tt>---&nbsp;</tt></p><p><tt>06-01&nbsp;11:21:26&nbsp;WARN&nbsp;&nbsp;(7063:level.c:37)&nbsp;---level</tt><tt>[</tt><tt>0x233b830</tt><tt>]</tt><tt>[</tt><tt>60,NOTICE,notice,6,5</tt><tt>]</tt><tt>---&nbsp;</tt></p><p><tt>06-01&nbsp;11:21:26&nbsp;WARN&nbsp;&nbsp;(7063:level.c:37)&nbsp;---level</tt><tt>[</tt><tt>0x233d850</tt><tt>]</tt><tt>[</tt><tt>80,WARN,warn,4,4</tt><tt>]</tt><tt>---&nbsp;</tt></p><p><tt>06-01&nbsp;11:21:26&nbsp;WARN&nbsp;&nbsp;(7063:level.c:37)&nbsp;---level</tt><tt>[</tt><tt>0x233fc80</tt><tt>]</tt><tt>[</tt><tt>100,ERROR,error,5,3</tt><tt>]</tt><tt>---&nbsp;
+</tt></p></dd></dl></div><!--TOC section 用户自定义等级-->
+<h2 class="section"><!--SEC ANCHOR --><a name="htoc39">7.3</a>&nbsp;&nbsp;用户自定义等级<a name="sec:=007528=006237=0081EA=005B9A=004E49=007B49=007EA7"></a></h2><!--SEC END --><p>这里我把用户自定义等级的几个步骤写下来。
+</p><ol class="enumerate" type="1"><li class="li-enumerate">
+在配置文件中定义新的等级<div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+$&nbsp;cat&nbsp;$(top_builddir)/test/test_level.conf</tt><p><tt>[</tt><tt>global</tt><tt>]</tt></p><p><tt>default&nbsp;format&nbsp;&nbsp;=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"%V&nbsp;%v&nbsp;%m%n"</tt></p><p><tt>[</tt><tt>levels</tt><tt>]</tt></p><p><tt>TRACE&nbsp;=&nbsp;30,&nbsp;LOG_DEBUG</tt></p><p><tt>[</tt><tt>rules</tt><tt>]</tt></p><p><tt>my_cat.TRACE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;stdout;
+</tt></p></dd></dl></div><p>内置的默认等级是(这些不需要写在配置文件里面)
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+DEBUG&nbsp;=&nbsp;20,&nbsp;LOG_DEBUG</tt><p><tt>INFO&nbsp;=&nbsp;40,&nbsp;LOG_INFO</tt></p><p><tt>NOTICE&nbsp;=&nbsp;60,&nbsp;LOG_NOTICE</tt></p><p><tt>WARN&nbsp;=&nbsp;80,&nbsp;LOG_WARNING</tt></p><p><tt>ERROR&nbsp;=&nbsp;100,&nbsp;LOG_ERR</tt></p><p><tt>FATAL&nbsp;=&nbsp;120,&nbsp;LOG_ALERT</tt></p><p><tt>UNKNOWN&nbsp;=&nbsp;254,&nbsp;LOG_ERR
+</tt></p></dd></dl></div><p>这样在zlog看来，一个整数(30)还有一个等级字符串(TRACE)代表了等级。这个整数必须位于[1,253]之间，其他数字是非法的。数字越大代表越重要。现在TRACE比DEBUG重要(30&gt;20)，比INFO等级低(30&lt;40)。在这样的定义后，TRACE就可以在下面的配置文件里面用了。例如这句话：
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+my_cat.TRACE		&gt;stdout;&nbsp;
+</tt></dd></dl></div><p>意味着等级&gt;=TRACE的，包括INFO, NOTICE, WARN, ERROR, FATAL会被写到标准输出。</p><p>格式里面的转换字符%V会产生等级字符串的大写输出，%v会产生小写的等级字符串输出。</p><p>另外，在等级的定义里面，LOG_DEBUG是指当需要输出到syslog的时候，自定义的TRACE等级会以LOG_DEBUG输出到syslog。</p></li><li class="li-enumerate">在源代码里面直接用新的等级是这么搞的<div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+zlog(cat,&nbsp;__FILE__,&nbsp;sizeof(__FILE__)-1,&nbsp;\</tt><p><tt>__func__,&nbsp;sizeof(__func__)-1,__LINE__,&nbsp;\</tt></p><p><tt>30,&nbsp;"test&nbsp;%d",&nbsp;1);
+</tt></p></dd></dl></div><p>为了简单使用，创建一个.h头文件
+</p><div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+$&nbsp;cat&nbsp;$(top_builddir)/test/test_level.h</tt><p><tt>#ifndef&nbsp;__test_level_h</tt></p><p><tt>#define&nbsp;__test_level_h</tt></p><p><tt>&nbsp;</tt></p><p><tt>#include&nbsp;"zlog.h"</tt></p><p><tt>&nbsp;</tt></p><p><tt>enum&nbsp;{
+</tt></p><div class="flushleft"><dl class="list"><dt class="dt-list"><tt>
+
+
+
+
+</tt><tt></tt></dt><dd class="dd-list"><tt>
+ZLOG_LEVEL_TRACE&nbsp;=&nbsp;30,</tt><p><tt>/</tt><tt>*</tt><tt>&nbsp;must&nbsp;equals&nbsp;conf&nbsp;file&nbsp;setting&nbsp;</tt><tt>*</tt><tt>/&nbsp;
+</tt></p></dd></dl></div><p><tt>
+};</tt></p><p><tt>#define&nbsp;zlog_trace(cat,&nbsp;format,&nbsp;...)&nbsp;\</tt></p><p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;zlog(cat,&nbsp;__FILE__,&nbsp;sizeof(__FILE__)-1,&nbsp;\</tt></p><p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;__func__,&nbsp;sizeof(__func__)-1,&nbsp;__LINE__,&nbsp;\</tt></p><p><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ZLOG_LEVEL_TRACE,&nbsp;format,&nbsp;##&nbsp;__VA_ARGS__)&nbsp;</tt></p><p><tt>#endif
+</tt></p></dd></dl></div></li><li class="li-enumerate">这样zlog_trace就能在.c文件里面用了<div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+$&nbsp;cat&nbsp;$(top_builddir)/test/test_level.c</tt><p><tt>#include&nbsp;&lt;stdio.h&gt;&nbsp;</tt></p><p><tt>#include&nbsp;"test_level.h"</tt></p><p><tt>int&nbsp;main(int&nbsp;argc,&nbsp;char</tt><tt>*</tt><tt>*</tt><tt>&nbsp;argv)</tt></p><p><tt>{
+</tt></p><div class="flushleft"><dl class="list"><dt class="dt-list"><tt>
+
+
+
+
+</tt><tt></tt></dt><dd class="dd-list"><tt>
+int&nbsp;rc;</tt><p><tt>zlog_category_t&nbsp;</tt><tt>*</tt><tt>zc;</tt></p><p><tt>&nbsp;</tt></p><p><tt>rc&nbsp;=&nbsp;zlog_init("test_level.conf");</tt></p><p><tt>if&nbsp;(rc)&nbsp;{
+</tt></p><div class="flushleft"><dl class="list"><dt class="dt-list"><tt>
+
+
+
+
+</tt><tt></tt></dt><dd class="dd-list"><tt>
+printf("init&nbsp;failed\n");</tt><p><tt>return&nbsp;-1;
+</tt></p></dd></dl></div><p><tt>
+}</tt></p><p><tt>zc&nbsp;=&nbsp;zlog_get_category("my_cat");</tt></p><p><tt>if&nbsp;(!zc)&nbsp;{
+</tt></p><div class="flushleft"><dl class="list"><dt class="dt-list"><tt>
+
+
+
+
+</tt><tt></tt></dt><dd class="dd-list"><tt>
+printf("get&nbsp;cat&nbsp;fail\n");</tt><p><tt>zlog_fini();</tt></p><p><tt>return&nbsp;-2;
+</tt></p></dd></dl></div><p><tt>
+}</tt></p><p><tt>zlog_trace(zc,&nbsp;"hello,&nbsp;zlog&nbsp;-&nbsp;trace");</tt></p><p><tt>zlog_debug(zc,&nbsp;"hello,&nbsp;zlog&nbsp;-&nbsp;debug");</tt></p><p><tt>zlog_info(zc,&nbsp;"hello,&nbsp;zlog&nbsp;-&nbsp;info");</tt></p><p><tt>zlog_fini();&nbsp;</tt></p><p><tt>return&nbsp;0;
+</tt></p></dd></dl></div><p><tt>
+}&nbsp;
+</tt></p></dd></dl></div></li><li class="li-enumerate">最后我们能看到输出<div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+$&nbsp;./test_level</tt><p><tt>TRACE&nbsp;trace&nbsp;hello,&nbsp;zlog&nbsp;-&nbsp;trace&nbsp;</tt></p><p><tt>INFO&nbsp;info&nbsp;hello,&nbsp;zlog&nbsp;-&nbsp;info&nbsp;
+</tt></p></dd></dl></div><p>正是我们所期待的，配置文件只允许&gt;=TRACE等级的日志输出到屏幕上。%V和%v也显示了正确的结果。</p></li></ol><!--TOC section 用户自定义输出-->
+<h2 class="section"><!--SEC ANCHOR --><a name="htoc40">7.4</a>&nbsp;&nbsp;用户自定义输出<a name="sec:=007528=006237=0081EA=005B9A=004E49=008F93=0051FA"></a></h2><!--SEC END --><p>用户自定义输出的意义是zlog放弃一些权力。zlog只负责动态生成单条日志和文件路径，但怎么输出、转档、清理等等工作由用户按照自己的需求自行写函数完成。写完函数只要绑定到某个规则就可以。这里我把用户自定义输出的几个步骤写下来。
+</p><ol class="enumerate" type="1"><li class="li-enumerate">
+在配置文件里面定义规则<div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+$&nbsp;cat&nbsp;test_record.conf</tt><p><tt>[</tt><tt>formats</tt><tt>]</tt></p><p><tt>simple&nbsp;=&nbsp;"%m%n"</tt></p><p><tt>[</tt><tt>rules</tt><tt>]</tt></p><p><tt>my_cat.</tt><tt>*</tt><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$myoutput,&nbsp;"&nbsp;mypath&nbsp;%c&nbsp;%d";simple
+</tt></p></dd></dl></div></li><li class="li-enumerate">绑定一个函数到$myoutput，并使用之<div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+#include&nbsp;&lt;stdio.h&gt;</tt><p><tt>#include&nbsp;"zlog.h"</tt></p><p><tt>int&nbsp;output(zlog_msg_t&nbsp;</tt><tt>*</tt><tt>msg)</tt></p><p><tt>{
+</tt></p><div class="flushleft"><dl class="list"><dt class="dt-list"><tt>
+
+
+
+
+</tt><tt></tt></dt><dd class="dd-list"><tt>
+printf("</tt><tt>[</tt><tt>mystd</tt><tt>]</tt><tt>:</tt><tt>[</tt><tt>%s</tt><tt>]</tt><tt>[</tt><tt>%s</tt><tt>]</tt><tt>[</tt><tt>%ld</tt><tt>]</tt><tt>\n",&nbsp;msg-&gt;path,&nbsp;msg-&gt;buf,&nbsp;(long)msg-&gt;len);</tt><p><tt>return&nbsp;0;
+</tt></p></dd></dl></div><p><tt>
+}</tt></p><p><tt>&nbsp;</tt></p><p><tt>int&nbsp;main(int&nbsp;argc,&nbsp;char</tt><tt>*</tt><tt>*</tt><tt>&nbsp;argv)</tt></p><p><tt>{
+</tt></p><div class="flushleft"><dl class="list"><dt class="dt-list"><tt>
+
+
+
+
+</tt><tt></tt></dt><dd class="dd-list"><tt>
+int&nbsp;rc;</tt><p><tt>zlog_category_t&nbsp;</tt><tt>*</tt><tt>zc;
+</tt></p><div class="flushleft"><dl class="list"><dt class="dt-list"><tt>
+
+
+
+
+</tt><tt></tt></dt><dd class="dd-list"><tt>
+rc&nbsp;=&nbsp;zlog_init("test_record.conf");</tt><p><tt>if&nbsp;(rc)&nbsp;{</tt></p><p><tt>printf("init&nbsp;failed\n");</tt></p><p><tt>return&nbsp;-1;
+</tt></p></dd></dl></div><p><tt>
+}</tt></p><p><tt>zlog_set_record("myoutput",&nbsp;output);</tt></p><p><tt>zc&nbsp;=&nbsp;zlog_get_category("my_cat");</tt></p><p><tt>if&nbsp;(!zc)&nbsp;{
+</tt></p><div class="flushleft"><dl class="list"><dt class="dt-list"><tt>
+
+
+
+
+</tt><tt></tt></dt><dd class="dd-list"><tt>
+printf("get&nbsp;cat&nbsp;fail\n");</tt><p><tt>zlog_fini();</tt></p><p><tt>return&nbsp;-2;
+</tt></p></dd></dl></div><p><tt>
+}</tt></p><p><tt>zlog_info(zc,&nbsp;"hello,&nbsp;zlog");</tt></p><p><tt>zlog_fini();</tt></p><p><tt>return&nbsp;0;
+</tt></p></dd></dl></div><p><tt>
+}&nbsp;
+</tt></p></dd></dl></div></li><li class="li-enumerate">最后我们发现用户自定义输出的函数能用了！<div class="flushleft"><dl class="list"><dt class="dt-list">
+
+
+
+
+<tt></tt></dt><dd class="dd-list"><tt>
+$&nbsp;./test_record&nbsp;&nbsp;</tt><p><tt>[</tt><tt>mystd</tt><tt>]</tt><tt>:</tt><tt>[</tt><tt>&nbsp;mypath&nbsp;my_cat&nbsp;2012-07-19&nbsp;12:23:08</tt><tt>]</tt><tt>[</tt><tt>hello,&nbsp;zlog</tt></p><p><tt>]</tt><tt>[</tt><tt>12</tt><tt>]</tt><tt>&nbsp;
+</tt></p></dd></dl></div><p>正如你所见，msglen是12，zlog生成的msg在最后有一个换行符。</p></li><li class="li-enumerate">用户自定义输出可以干很多神奇的事情，就像某个用户(flw@newsmth.net)的需求<ol class="enumerate" type="a"><li class="li-enumerate">
+日志文件名为 foo.log 
+</li><li class="li-enumerate">如果 foo.log 超过 100M，则生成一个新文件，其中包含的就是 foo.log 目前的内容 而 foo.log 则变为空，重新开始增长
+</li><li class="li-enumerate">如果距离上次生成文件时已经超过 5 分钟，则即使不到 100M，也应当生成一个新文件 
+</li><li class="li-enumerate">新文件名称可以自定义，比如加上设备名作为前缀、日期时间串作为后缀 
+</li><li class="li-enumerate">我希望这个新文件可以被压缩，以节省磁盘空间或者网络带宽。
+</li></ol><p>但愿他能顺利写出这个需求的代码！在多进程或者多线程的情况下！上帝保佑他！</p></li></ol><!--TOC chapter 尾声-->
+<h1 class="chapter"><!--SEC ANCHOR --><a name="htoc41">Chapter&nbsp;8</a>&nbsp;&nbsp;尾声</h1><!--SEC END --><p>好酒！所有人生问题的终极起源和终极答案。</p><table cellspacing="6" cellpadding="0"><tbody><tr><td align="left" nowrap="">荷马.辛普森</td></tr>
+</tbody></table><p>
+<br>
+
+</p><!--CUT END -->
+<!--BEGIN STICKYNOTES document-->
+<hr class="footnoterule"><dl class="thefootnotes"><dt class="dt-thefootnotes">
+<a name="note1" href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#text1">1</a></dt><dd class="dd-thefootnotes">星星之火，可以燎原——毛泽东
+</dd><dt class="dt-thefootnotes"><a name="note2" href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#text2">2</a></dt><dd class="dd-thefootnotes">适用于 zlog v1.2.*
+</dd><dt class="dt-thefootnotes"><a name="note3" href="http://hardysimpson.github.io/zlog/UsersGuide-CN.html#text3">3</a></dt><dd class="dd-thefootnotes">有问题，在github上<a href="mailto:https://github.com/HardySimpson/zlog/issues/new">开个issue</a>，或者写邮件到<a href="mailto:HardySimpson1984@gmail.com">HardySimpson1984@gmail.com</a>
+</dd></dl>
+<!--END NOTES-->
+<!--HTMLFOOT-->
+<!--ENDHTML-->
+<!--FOOTER-->
+<hr size="2"><blockquote class="quote"><em>This document was translated from L<sup>A</sup>T<sub>E</sub>X by
+</em><a href="http://hevea.inria.fr/index.html"><em>H</em><em><font size="2"><sup>E</sup></font></em><em>V</em><em><font size="2"><sup>E</sup></font></em><em>A</em></a><em>.</em></blockquote>
+
+</body></html>
