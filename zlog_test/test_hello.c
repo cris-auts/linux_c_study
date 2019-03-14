@@ -11,10 +11,13 @@ int main(int argc, char** argv)
 		printf("init failed\n");
 		return -1;
 	}
+	while(1)
+	{
+		dzlog_info("2.hello, zlog,xxxxxxxxxxxxxxxxxxxxx");
 
-	dzlog_info("hello, zlog");
-
+		
+		sleep(1);
+	}
 	zlog_fini();
-
 	return 0;
 } 

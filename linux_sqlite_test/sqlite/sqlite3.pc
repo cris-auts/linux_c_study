@@ -1,6 +1,6 @@
 # Package Information for pkg-config
 
-prefix=/home/cris/My_Projects/linux_c_study/linux_sqlite_test/installed_arm_tmp
+prefix=/usr/local
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include
@@ -9,5 +9,5 @@ Name: SQLite
 Description: SQL database engine
 Version: 3.26.0
 Libs: -L${libdir} -lsqlite3
-Libs.private: -ldl -lpthread 
+Libs.private: -ldl -lz -lpthread 
 Cflags: -I${includedir}

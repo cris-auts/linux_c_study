@@ -20,7 +20,7 @@ TOP = /home/cris/My_Projects/linux_c_study/linux_sqlite_test/sqlite
 # C Compiler and options for use in building executables that
 # will run on the platform that is doing the build.
 #
-BCC = gcc  -g
+BCC = gcc  -g -O2
 
 # TCC is the C Compile and options for use in building executables that
 # will run on the target platform.  (BCC and TCC are usually the
@@ -28,7 +28,7 @@ BCC = gcc  -g
 # are provide so that these aspects of the build process can be changed
 # on the "make" command-line.  Ex:  "make CC=clang CFLAGS=-fsanitize=undefined"
 #
-CC = arm-linux-gnueabi-gcc
+CC = gcc
 CFLAGS =   -g -O2 -DSQLITE_OS_UNIX=1
 TCC = ${CC} ${CFLAGS} -I. -I${TOP}/src -I${TOP}/ext/rtree -I${TOP}/ext/icu
 TCC += -I${TOP}/ext/fts3 -I${TOP}/ext/async -I${TOP}/ext/session
@@ -68,7 +68,7 @@ TCC += -DSQLITE_THREADSAFE=1
 
 # Any target libraries which libsqlite must be linked against
 #
-TLIBS = -ldl -lpthread  $(LIBS)
+TLIBS = -ldl -lz -lpthread  $(LIBS)
 
 # Flags controlling use of the in memory btree implementation
 #
@@ -91,7 +91,7 @@ TCC += $(OPT_FEATURE_FLAGS)
 TCC += $(OPTS)
 
 # Add in compile-time options for some libraries used by extensions
-TCC += 
+TCC += -DSQLITE_HAVE_ZLIB=1
 
 # Version numbers and release number for the SQLite being compiled.
 #
@@ -146,7 +146,7 @@ LTLINK_EXTRAS += $(GCOV_LDFLAGS$(USE_GCOV))
 
 # Some standard variables and programs
 #
-prefix = /home/cris/My_Projects/linux_c_study/linux_sqlite_test/installed_arm_tmp
+prefix = /usr/local
 exec_prefix = ${prefix}
 libdir = ${exec_prefix}/lib
 pkgconfigdir = $(libdir)/pkgconfig
