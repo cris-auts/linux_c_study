@@ -20,15 +20,10 @@
 int main(int argc, char** argv)
 {   
 	char interface[128];
-	printf("1\r\n");
-	COMM_InterfaceRegister(interface, 128);
-	printf("2\r\n");
 
 	while(1){
-	
-		sleep(5);
-	
-	printf("r\r\n");
+		sleep(1);
+		COMM_InterfaceRegister(interface, 128);
 	}
 	return 0;
 }
