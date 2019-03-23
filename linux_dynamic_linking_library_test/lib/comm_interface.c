@@ -49,29 +49,27 @@
 
 
 /*-----------------------模块内宏定义-------------------------*/
-#define    COMM_ID_INFO_MAP_SIZE              (8)
+#define  MSG_BUF_SIZE 			(1024)
 
+#define  MSG_TYPE_REG 			(1)
+#define  MSG_TYPE_ACK 			(2)
 
 
 
 /*----------------------模块内类定义--------------------------*/
 
-typedef struct comm_id_info_map_t
+ 
+ 
+typedef struct msg_t
 {
-	INT32_T	if_id;
-	INT8_T* pif_info;
-}COMM_ID_INFO_MAP_T;
+    long msg_type;
+    char msg_text[MSG_BUF_SIZE];
+}MSG_T;
+
 
 /*----------------------变量常量定义--------------------------*/
 
 
-COMM_ID_INFO_MAP_T comm_id_info_map[COMM_ID_INFO_MAP_SIZE]={0};
-/*
-1.首先要建立一个映射表格,绑定IF_ID和IF_INFO的关系
-2.通信进程启动以后，需要，需要对这个映射表格进行初始化
-3.需要从数据库中加载物理端口的具体信息。
-4.启动各个端口线程
-*/
 /*****************************************************************************/
                          /* 函数定义 */
 /*****************************************************************************/
@@ -87,15 +85,51 @@ COMM_ID_INFO_MAP_T comm_id_info_map[COMM_ID_INFO_MAP_SIZE]={0};
 ******************************************************************************/
 INT32_T  COMM_InterfaceRegister(void *p_if,INT32_T len)
 {
-/*
-	1.从映射表格表格中查询，p_if是否已经存在，如果已经存在直接对应的id
-	2.如果表格中不存在，则需要按照这个端口信息，查询是否有对应的端口线程
-	3.如果有端口线程，并在在运行，，则分配对应的ID，并记录到映射表格中。返回成功信息
-	4.如果如果端口线程不存在，则返回错误信息。
-*/
+	int qid;
+	key_t key;
+	MSG_T msg;
+	INT32_T comm_id=-1;
+	#if 1	//测试代码
+	p_if=malloc(MSG_BUF_SIZE);
+	len=MSG_BUF_SIZE;
+	memset(p_if,0,len);
+	memcpy(p_if,"Please Register Port RS485-1\r\n",len);
+	#endif
 
-	printf("%s:%d\r\n",__func__,__LINE__);
-	return 1;
+	printf("%s:%04d\r\n",__func__,__LINE__);
+	if ((key = ftok("/", 'a')) == -1)
+	{
+		perror("ftok");
+		return -1;
+	}
+	 
+	/*创建消息队列*/
+	if ((qid = msgget(key, IPC_CREAT|0666)) == -1)
+	{
+		perror("msgget");
+		return -1;
+	}
+
+	memcpy(msg.msg_text,p_if,len);
+	msg.msg_type=MSG_TYPE_REG;
+	
+	printf("Snd message from process %ld : %s\r\n", msg.msg_type, msg.msg_text);	
+	if ((msgsnd(qid, &msg, strlen(msg.msg_text), 0)) < 0)
+	{
+		perror("message posted");
+		return -1;
+	}
+
+	memset(msg.msg_text, 0, MSG_BUF_SIZE);
+	msg.msg_type=MSG_TYPE_ACK;
+	if (msgrcv(qid, (void*)&msg, MSG_BUF_SIZE, MSG_TYPE_ACK, 0) < 0)   //读取消息不管是谁发的
+	{
+		perror("msgrcv");
+		exit(1);
+	}
+	printf("RCV message from process %ld : %s\r\n", msg.msg_type, msg.msg_text);	
+	 
+	return comm_id;
 
 }
 
