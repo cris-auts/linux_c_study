@@ -94,7 +94,7 @@ INT32_T  COMM_InterfaceRegister(void *p_if,INT32_T len)
 	4.如果如果端口线程不存在，则返回错误信息。
 */
 
-	printf("%s:%d",__func__,__LINE__);
+	printf("%s:%d\r\n",__func__,__LINE__);
 	return 1;
 
 }
@@ -110,7 +110,7 @@ INT32_T  COMM_InterfaceRegister(void *p_if,INT32_T len)
 ******************************************************************************/
 INT32_T  COMM_InterfaceUnRegister(INT32_T if_id)
 {
-	printf("%s:%d",__func__,__LINE__);
+	printf("%s:%d\r\n",__func__,__LINE__);
 	return 1;
 
 }
@@ -126,8 +126,7 @@ INT32_T  COMM_InterfaceUnRegister(INT32_T if_id)
 ******************************************************************************/
 INT32_T  COMM_InterfaceReadDat(INT32_T if_id,void *pbuf,INT32_T rlen)
 {
-
-	printf("%s:%d",__func__,__LINE__);
+	printf("%s:%d\r\n",__func__,__LINE__);
 	return 1;
 }
 
@@ -143,16 +142,11 @@ INT32_T  COMM_InterfaceReadDat(INT32_T if_id,void *pbuf,INT32_T rlen)
 ******************************************************************************/
 INT32_T  COMM_InterfaceWriteDat(INT32_T if_id,void *pbuf,INT32_T wlen)
 {
-	printf("%s:%d",__func__,__LINE__);
+	printf("%s:%d\r\n",__func__,__LINE__);
 	return 1;
-
 }
 
 
-void Hello_Word(void)
-{
-	printf ("Hello,World!\r\n");
-}
 #endif//#if __XXX_xxx__
 
 

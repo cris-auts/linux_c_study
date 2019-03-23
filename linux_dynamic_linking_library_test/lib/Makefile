@@ -20,6 +20,7 @@ OBJS = $(patsubst %.c, %.o, $(FILES))
 $(TARGET):$(OBJS)
 	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS) $(LDFLAGS)
 	-$(RM) $(OBJS)
+	sudo cp -f ./$(TARGET) /usr/local/lib/
 	#please sudo cp ./$(TARGET) /usr/local/lib/
 	#please sudo ln -s /usr/local/lib/libcomm.so.0.0.1   /usr/local/lib/libcomm.so
 	#please sudo ldconfig
