@@ -40,8 +40,8 @@
 * Others:
 *
 ********************************************************************************************************/
-#ifndef __XXX_XXX_H__
-#define __XXX_XXX_H__
+#ifndef __COMM_INTERFACE_H__
+#define __COMM_INTERFACE_H__
 
 #ifdef __cplusplus
 extern "C" {
@@ -85,7 +85,7 @@ extern  INT32_T  COMM_InterfaceWriteDat(INT32_T if_id,void *pbuf,INT32_T wlen);
 #ifdef __cplusplus
 }
 #endif
-#endif //#ifndef __XXX_XXX_H__
+#endif //#ifndef __COMM_INTERFACE_H__
 
 
 

@@ -40,8 +40,8 @@
 * Others:
 *
 ********************************************************************************************************/
-#ifndef __XXX_XXX_H__
-#define __XXX_XXX_H__
+#ifndef __PORT_H__
+#define __PORT_H__
 
 #ifdef __cplusplus
 extern "C" {
@@ -50,9 +50,10 @@ extern "C" {
 
 /*----------------------公共头文件----------------------------*/
 #include "std_globals.h"
-#if __XXX_xxx__
+#if 1//__XXX_xxx__
 
-//#include "xxx_xxx.h"
+#include "port_rs485_func.h"
+#include "port_rs232_func.h"
 
 
 /*----------------------公共宏定义----------------------------*/
@@ -102,14 +103,17 @@ typedef struct port_t{
 
 /*-----------------模块对外接口函数声明-----------------------*/
 //extern    xxxxx;
-
+INT32_T PORT_CreatePortThread(PORT_ID_T port_id,PORT_TYPE_T port_type,PORT_CFG_T *p_port_cfg);
+INT32_T PORT_GetPortThreadStatus(PORT_ID_T port_id);
+INT32_T PORT_GetPortCfg(PORT_ID_T port_id,PORT_CFG_T *p_port_cfg);
+INT32_T PORT_SetPortCfg(PORT_ID_T port_id,PORT_CFG_T *p_port_cfg);
 
 #endif//#if __XXX_xxxx__
 
 #ifdef __cplusplus
 }
 #endif
-#endif //#ifndef __XXX_XXX_H__
+#endif //#ifndef __PORT_H__
 
 
 

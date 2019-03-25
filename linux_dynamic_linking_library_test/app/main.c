@@ -101,6 +101,20 @@ INT32_T PutNewMsg(INT32_T qid, MSG_T* pmsg)
 
 INT32_T HandleNewMsg(MSG_T* msg)
 {
+/*
+	1.创建对应的管道
+	2.更新MAP表格
+	3.创建端口线程
+*/
+	static UINT32_T create_flg=1;
+	PORT_CFG_T port_rs485;
+
+	if(create_flg)
+	{
+		create_flg=0;
+		PORT_CreatePortThread(PORT_RS485_1, PORT_RS485, &port_rs485);
+
+	}
 
 	return 0;
 }
@@ -144,6 +158,9 @@ int main(int argc, char** argv)
 {   
 	memset (reg_map,0,sizeof(reg_map));
 
+	g_dev_prm.nvram.debug_log_st.rs485_log=1;
+
+	
 	while(1)
 	{
 		COMM_MsgHandle();

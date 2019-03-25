@@ -42,8 +42,8 @@
 ********************************************************************************************************/
 /*------------------------------------------------------------------*/
 #include "std_globals.h"
-#if __XXX_xxx__
-//#include "xxx_xxx.h"
+#if 1//__XXX_xxx__
+#include "port.h"
 //#include "xxx_xxx.h"
 
 
@@ -75,7 +75,7 @@
 *
 *
 ******************************************************************************/
-SINT32_T PORT_CreatePortThread(PORT_ID_T port_id,PORT_TYPE_T port_type,PORT_CFG_T *p_port_cfg)
+INT32_T PORT_CreatePortThread(PORT_ID_T port_id,PORT_TYPE_T port_type,PORT_CFG_T *p_port_cfg)
 {
 	static pthread_t thread_port_rs485;
 	static pthread_attr_t pthread_port_rs485_attr;
@@ -97,6 +97,7 @@ SINT32_T PORT_CreatePortThread(PORT_ID_T port_id,PORT_TYPE_T port_type,PORT_CFG_
 	memcpy(port_rs485.port_cfg.rs485_cfg.dev_path,PORT_RS485_PATH,sizeof(PORT_RS485_PATH));
 	port_rs485.port_write_func = PORT_Rs485WrTxBuf;
 	port_rs485.port_read_func  = PORT_Rs485RdRxBuf;
+	printf("%s:%ld\r\n",__func__,__LINE__);
 
 	rc=pthread_create(&thread_port_rs485,&pthread_port_rs485_attr,PORT_Rs485Thread,&(port_rs485.port_cfg.rs485_cfg));
 	if(rc != 0)
@@ -107,6 +108,7 @@ SINT32_T PORT_CreatePortThread(PORT_ID_T port_id,PORT_TYPE_T port_type,PORT_CFG_
 	else
 		METER_PrintLog("Create port RS485 thread successfully\r\n");
 
+#if 0
 	port_rs232.port_type = PORT_RS232;
 	port_rs232.port_cfg.rs232_cfg.band_rate = 115200;
 	port_rs232.port_cfg.rs232_cfg.flow_ctrl = 0;
@@ -124,7 +126,7 @@ SINT32_T PORT_CreatePortThread(PORT_ID_T port_id,PORT_TYPE_T port_type,PORT_CFG_
 	}
 	else
 		METER_PrintLog("Create port RS232 thread successfully\r\n");
-
+#endif
 }
 
 
@@ -139,7 +141,7 @@ SINT32_T PORT_CreatePortThread(PORT_ID_T port_id,PORT_TYPE_T port_type,PORT_CFG_
 *
 *
 ******************************************************************************/
-SINT32_T PORT_GetPortThreadStatus(PORT_ID_T port_id)
+INT32_T PORT_GetPortThreadStatus(PORT_ID_T port_id)
 {
 
 
@@ -155,7 +157,7 @@ SINT32_T PORT_GetPortThreadStatus(PORT_ID_T port_id)
 *
 *
 ******************************************************************************/
-SINT32_T PORT_GetPortCfg(PORT_ID_T port_id,PORT_CFG_T *p_port_cfg)
+INT32_T PORT_GetPortCfg(PORT_ID_T port_id,PORT_CFG_T *p_port_cfg)
 {
 
 
@@ -170,7 +172,7 @@ SINT32_T PORT_GetPortCfg(PORT_ID_T port_id,PORT_CFG_T *p_port_cfg)
 *
 *
 ******************************************************************************/
-SINT32_T PORT_SetPortCfg(PORT_ID_T port_id,PORT_CFG_T *p_port_cfg)
+INT32_T PORT_SetPortCfg(PORT_ID_T port_id,PORT_CFG_T *p_port_cfg)
 {
 
 

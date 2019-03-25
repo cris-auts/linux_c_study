@@ -498,7 +498,7 @@ UINT32_T PORT_Rs485RdRxBuf(UINT8_T *pbuf, UINT32_T rlen)
 ******************************************************************************/
 void* PORT_Rs485Thread(void *p_arg)
 {
-	//UINT32_T i;
+	UINT32_T i;
 	SINT_T fd;
 	UINT32_T rcv_len=0;
 	UINT32_T	snd_len=0;
@@ -507,20 +507,22 @@ void* PORT_Rs485Thread(void *p_arg)
 	PORT_RS485_CFG_T *pcfg=p_arg;
 	memset(&rs485_rx_ringbuf,0,sizeof(rs485_rx_ringbuf));
 	memset(&rs485_tx_ringbuf,0,sizeof(rs485_tx_ringbuf));
+	
+	printf("%s:%ld\r\n",__func__,__LINE__);
 	fd=PORT_Rs485Init(pcfg->dev_path);
 	if(fd<0)
 	{
-		RS485_PrintLog("PORT RS485 Init failed!\r\n");
+		printf("PORT RS485 Init failed!\r\n");
 		pthread_exit(NULL); 
 	}
 
 	if(PORT_Rs485Cfg(fd,pcfg->band_rate,pcfg->flow_ctrl,pcfg->data_bits,pcfg->stop_bits,pcfg->parity) == FALSE)
 	{
-		RS485_PrintLog("PORT RS485 Cfg failed!\r\n");
+		printf("PORT RS485 Cfg failed!\r\n");
 		pthread_exit(NULL); 
 	}
 
-	#if 0
+	#if 1
 	memcpy(snd_buf,"Hello,APP_Rs485Thread!\r\n",sizeof("Hello,APP_Rs485Thread!\r\n"));
 	snd_len=sizeof("Hello,APP_Rs485Thread!\r\n");
 
@@ -535,14 +537,14 @@ void* PORT_Rs485Thread(void *p_arg)
 		snd_len=PORT_Rs485Write(fd,snd_buf,snd_len);
 		if(snd_len)
 		{
-			RS485_PrintLog("Snd New Dat:%d\r\n",snd_len);
+			RS485_PrintLog("********************Snd New Dat:%d\r\n",snd_len);
 			RS485_PrintHex((unsigned char*)snd_buf,snd_len);
 		}
 		sleep(1);
 		rcv_len=PORT_Rs485Read(fd, rcv_buf,300);
 		if(rcv_len)
 		{
-			RS485_PrintLog("Rcv New Dat:%d\r\n",rcv_len);
+			RS485_PrintLog("=====================Rcv New Dat:%d\r\n",rcv_len);
 			RS485_PrintHex((unsigned char*)rcv_buf,rcv_len);
 		}
 		
@@ -550,19 +552,20 @@ void* PORT_Rs485Thread(void *p_arg)
 	#else
 	while(1)
 	{
+	
 		snd_len=RS485_RdTxBufToSnd(snd_buf,RS485_TX_DAT_BUF_SIZE);
 		snd_len=PORT_Rs485Write(fd,snd_buf,snd_len);
 		if(snd_len)
 		{
-			RS485_PrintLog("Snd New Dat:%d\r\n",snd_len);
-			RS485_PrintHex(snd_buf,snd_len);
+			printf("Snd New Dat:%d\r\n",snd_len);
+			//RS485_PrintHex(snd_buf,snd_len);
 		}
 		rcv_len=PORT_Rs485Read(fd,rcv_buf,RS485_RX_DAT_BUF_SIZE);
 		rcv_len=RS485_WrRcvToRxBuf(rcv_buf,rcv_len);
 		if(rcv_len)
 		{
-			RS485_PrintLog("Rcv New Dat:%d\r\n",rcv_len);
-			RS485_PrintHex(rcv_buf,rcv_len);
+			printf("Rcv New Dat:%d\r\n",rcv_len);
+			//RS485_PrintHex(rcv_buf,rcv_len);
 		}
 
 
