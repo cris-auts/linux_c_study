@@ -75,6 +75,11 @@ typedef struct msg_t
 
 
 /*-----------------模块对外接口函数声明-----------------------*/
+extern INT32_T OpenMsgQ(INT32_T* pqid,char* ppath, char id);
+extern INT32_T CloseMsgQ(INT32_T qid);
+extern INT32_T GetNewMsg(INT32_T qid, MSG_T* pmsg, INT32_T wait_ms);
+extern INT32_T PutNewMsg(INT32_T qid, MSG_T* pmsg);
+
 extern  INT32_T  COMM_InterfaceRegister(void *p_if,INT32_T len,INT32_T wait_ms);
 extern  INT32_T  COMM_InterfaceUnRegister(INT32_T if_id);
 extern  INT32_T  COMM_InterfaceReadDat(INT32_T if_id,void *pbuf,INT32_T rlen);

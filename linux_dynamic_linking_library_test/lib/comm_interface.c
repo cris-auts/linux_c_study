@@ -69,6 +69,75 @@
 /*****************************************************************************/
                          /* º¯Êý¶¨Òå */
 /*****************************************************************************/
+INT32_T OpenMsgQ(INT32_T* pqid,char* ppath, char id)
+{
+	key_t key;
+	INT32_T err=0;
+
+	if ((key = ftok(ppath, id)) == -1)
+	{
+		perror("ftok");
+		err=-1;
+	}
+
+	if ((*pqid = msgget(key, IPC_CREAT|0666)) == -1)
+	{
+		perror("msgget");
+		//printf("qid=%d,line=%d\r\n",*pqid,__LINE__);
+		*pqid=0;
+		err=-1;
+	}
+	//printf("qid=%d,line=%d\r\n",*pqid,__LINE__);
+	return err;
+}
+
+INT32_T CloseMsgQ(INT32_T qid)
+{
+	INT32_T err=0;
+	return err;
+}
+
+
+INT32_T GetNewMsg(INT32_T qid, MSG_T* pmsg, INT32_T wait_ms)
+{
+	INT32_T wait_cnt=0;
+
+	wait_cnt=wait_ms;
+	while(wait_cnt--)
+	{
+		usleep(1000);
+		if (msgrcv(qid, (void*)pmsg, MSG_BUF_SIZE, pmsg->msg_type, IPC_NOWAIT) < 0) 
+		{
+			//perror("msgrcv");
+			return -1;
+		}
+		else
+		{
+			
+			return 0;
+		}
+	}
+	return -1;
+
+}
+
+
+
+INT32_T PutNewMsg(INT32_T qid, MSG_T* pmsg)
+{
+	if ((msgsnd(qid, pmsg, strlen(pmsg->msg_text), 0)) < 0)
+	{
+		perror("message posted");
+		return -1;
+	}
+	return 0;
+}
+
+
+
+
+
+
 
 /******************************************************************************
 * Function:    COMM_InterfaceRegister
