@@ -43,7 +43,7 @@
 /*------------------------------------------------------------------*/
 #include "std_globals.h"
 #if 1//__XXX_xxx__
-//#include "xxx_xxx.h"
+#include "comm_interface.h"
 //#include "xxx_xxx.h"
 
 
@@ -54,17 +54,13 @@
 #define  MSG_TYPE_REG 			(1)
 #define  MSG_TYPE_ACK 			(2)
 
+#define  MSG_RCV_WAIT_CYC 		(1000)
+
 
 
 /*----------------------模块内类定义--------------------------*/
 
  
- 
-typedef struct msg_t
-{
-    long msg_type;
-    char msg_text[MSG_BUF_SIZE];
-}MSG_T;
 
 
 /*----------------------变量常量定义--------------------------*/
@@ -88,7 +84,10 @@ INT32_T  COMM_InterfaceRegister(void *p_if,INT32_T len)
 	int qid;
 	key_t key;
 	MSG_T msg;
+	int msg_wait_cnt=1000;
 	INT32_T comm_id=-1;
+
+	
 	#if 1	//测试代码
 	p_if=malloc(MSG_BUF_SIZE);
 	len=MSG_BUF_SIZE;
@@ -96,7 +95,6 @@ INT32_T  COMM_InterfaceRegister(void *p_if,INT32_T len)
 	memcpy(p_if,"Please Register Port RS485-1\r\n",len);
 	#endif
 
-	printf("%s:%04d\r\n",__func__,__LINE__);
 	if ((key = ftok("/", 'a')) == -1)
 	{
 		perror("ftok");
@@ -120,14 +118,25 @@ INT32_T  COMM_InterfaceRegister(void *p_if,INT32_T len)
 		return -1;
 	}
 
-	memset(msg.msg_text, 0, MSG_BUF_SIZE);
-	msg.msg_type=MSG_TYPE_ACK;
-	if (msgrcv(qid, (void*)&msg, MSG_BUF_SIZE, MSG_TYPE_ACK, 0) < 0)   //读取消息不管是谁发的
+
+	msg_wait_cnt=5000;
+	while(msg_wait_cnt--)
 	{
-		perror("msgrcv");
-		exit(1);
+		memset(msg.msg_text, 0, MSG_BUF_SIZE);
+		msg.msg_type=MSG_TYPE_ACK;
+		usleep(MSG_RCV_WAIT_CYC);
+		if (msgrcv(qid, (void*)&msg, MSG_BUF_SIZE, MSG_TYPE_ACK, IPC_NOWAIT) < 0) 
+		{
+			//perror("msgrcv");
+			comm_id=-1;
+		}
+		else
+		{
+			printf("RCV message from process %ld : %s\r\n", msg.msg_type, msg.msg_text);
+			comm_id=1;
+			break;
+		}
 	}
-	printf("RCV message from process %ld : %s\r\n", msg.msg_type, msg.msg_text);	
 	 
 	return comm_id;
 

@@ -56,10 +56,18 @@ extern "C" {
 
 
 /*----------------------公共宏定义----------------------------*/
-//#define    xxxxxx                (xxxxxxxx)
+#define  MSG_BUF_SIZE 			(1024)
+
+#define  MSG_TYPE_REG 			(1)
+#define  MSG_TYPE_ACK 			(2)
 
 
 /*----------------------公共类定义----------------------------*/
+typedef struct msg_t
+{
+    long msg_type;
+    char msg_text[MSG_BUF_SIZE];
+}MSG_T;
 
 
 /*-----------------模块对外接口变量声明-----------------------*/
