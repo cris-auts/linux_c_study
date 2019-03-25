@@ -10,7 +10,7 @@
 *
 *********************************************************************************************************
 *
-* File name: comm_interface.c
+* File name: xxx_xxx.c
 * -------------------------------------
 *
 * Module: xxx
@@ -42,28 +42,24 @@
 ********************************************************************************************************/
 /*------------------------------------------------------------------*/
 #include "std_globals.h"
-#if 1//__XXX_xxx__
-#include "comm_interface.h"
+#if __XXX_xxx__
+//#include "xxx_xxx.h"
 //#include "xxx_xxx.h"
 
 
 
 /*-----------------------模块内宏定义-------------------------*/
-#define  MSG_BUF_SIZE 			(1024)
-
-#define  MSG_TYPE_REG 			(1)
-#define  MSG_TYPE_ACK 			(2)
-
-#define  MSG_RCV_WAIT_CYC 		(1000)
+//#define    xxxxxx              (xxxxxxxx)
 
 
 
 /*----------------------模块内类定义--------------------------*/
 
- 
 
 
 /*----------------------变量常量定义--------------------------*/
+
+
 
 
 /*****************************************************************************/
@@ -71,7 +67,7 @@
 /*****************************************************************************/
 
 /******************************************************************************
-* Function:    COMM_InterfaceRegister
+* Function:    PORT_CreatePortThread
 * Input:       xxx
 * Output:      xxx
 * Return:      xxx
@@ -79,71 +75,63 @@
 *
 *
 ******************************************************************************/
-INT32_T  COMM_InterfaceRegister(void *p_if,INT32_T len,INT32_T wait_ms)
+SINT32_T PORT_CreatePortThread(PORT_ID_T port_id,PORT_TYPE_T port_type,PORT_CFG_T *p_port_cfg)
 {
-	int qid;
-	key_t key;
-	MSG_T msg;
-	int msg_wait_cnt=0;
-	INT32_T comm_id=-1;
+	static pthread_t thread_port_rs485;
+	static pthread_attr_t pthread_port_rs485_attr;
+	static PORT_T port_rs485;
 
 	
-	#if 1	//测试代码
-	p_if=malloc(MSG_BUF_SIZE);
-	len=MSG_BUF_SIZE;
-	memset(p_if,0,len);
-	memcpy(p_if,"Please Register Port RS485-1\r\n",len);
-	#endif
-
-	if ((key = ftok("/", 'a')) == -1)
-	{
-		perror("ftok");
-		return -1;
-	}
-	 
-	/*创建消息队列*/
-	if ((qid = msgget(key, IPC_CREAT|0666)) == -1)
-	{
-		perror("msgget");
-		return -1;
-	}
-
-	memcpy(msg.msg_text,p_if,len);
-	msg.msg_type=MSG_TYPE_REG;
+	static pthread_t thread_port_rs232;
+	static pthread_attr_t pthread_port_rs232_attr;
+	static PORT_T port_rs232;
 	
-	printf("Snd message from process %ld : %s\r\n", msg.msg_type, msg.msg_text);	
-	if ((msgsnd(qid, &msg, strlen(msg.msg_text), 0)) < 0)
+	int rc = 0;
+
+	port_rs485.port_type = PORT_RS485;
+	port_rs485.port_cfg.rs485_cfg.band_rate = 9600;
+	port_rs485.port_cfg.rs485_cfg.flow_ctrl = 0;
+	port_rs485.port_cfg.rs485_cfg.data_bits = 8;
+	port_rs485.port_cfg.rs485_cfg.stop_bits = 1;
+	port_rs485.port_cfg.rs485_cfg.parity = 'N';
+	memcpy(port_rs485.port_cfg.rs485_cfg.dev_path,PORT_RS485_PATH,sizeof(PORT_RS485_PATH));
+	port_rs485.port_write_func = PORT_Rs485WrTxBuf;
+	port_rs485.port_read_func  = PORT_Rs485RdRxBuf;
+
+	rc=pthread_create(&thread_port_rs485,&pthread_port_rs485_attr,PORT_Rs485Thread,&(port_rs485.port_cfg.rs485_cfg));
+	if(rc != 0)
 	{
-		perror("message posted");
-		return -1;
+		pthread_detach(thread_port_rs485);
+		METER_PrintLog("create port RS485 thread failed!\r\n");
 	}
+	else
+		METER_PrintLog("Create port RS485 thread successfully\r\n");
 
-
-	msg_wait_cnt=wait_ms;
-	while(msg_wait_cnt--)
+	port_rs232.port_type = PORT_RS232;
+	port_rs232.port_cfg.rs232_cfg.band_rate = 115200;
+	port_rs232.port_cfg.rs232_cfg.flow_ctrl = 0;
+	port_rs232.port_cfg.rs232_cfg.data_bits = 8;
+	port_rs232.port_cfg.rs232_cfg.stop_bits = 1;
+	port_rs232.port_cfg.rs232_cfg.parity = 'N';
+	memcpy(port_rs232.port_cfg.rs232_cfg.dev_path,PORT_RS232_PATH,sizeof(PORT_RS232_PATH));
+	port_rs232.port_write_func = PORT_Rs232WrTxBuf;
+	port_rs232.port_read_func  = PORT_Rs232RdRxBuf;
+	rc=pthread_create(&thread_port_rs232,&pthread_port_rs232_attr,PORT_Rs232Thread,&port_rs232.port_cfg.rs232_cfg);
+	if(rc != 0)
 	{
-		memset(msg.msg_text, 0, MSG_BUF_SIZE);
-		msg.msg_type=MSG_TYPE_ACK;
-		usleep(MSG_RCV_WAIT_CYC);
-		if (msgrcv(qid, (void*)&msg, MSG_BUF_SIZE, MSG_TYPE_ACK, IPC_NOWAIT) < 0) 
-		{
-			//perror("msgrcv");
-			comm_id=-1;
-		}
-		else
-		{
-			printf("RCV message from process %ld : %s\r\n", msg.msg_type, msg.msg_text);
-			comm_id=1;
-			break;
-		}
+		pthread_detach(thread_port_rs232);
+		METER_PrintLog("create port RS232 thread failed!\r\n");
 	}
-	 
-	return comm_id;
+	else
+		METER_PrintLog("Create port RS232 thread successfully\r\n");
 
 }
 
+
+
+
 /******************************************************************************
-* Function:    COMM_InterfaceUnRegister
+* Function:    PORT_GetPortThreadStatus
 * Input:       xxx
 * Output:      xxx
 * Return:      xxx
@@ -151,15 +139,15 @@ INT32_T  COMM_InterfaceRegister(void *p_if,INT32_T len,INT32_T wait_ms)
 *
 *
 ******************************************************************************/
-INT32_T  COMM_InterfaceUnRegister(INT32_T if_id)
+SINT32_T PORT_GetPortThreadStatus(PORT_ID_T port_id)
 {
-	printf("%s:%d\r\n",__func__,__LINE__);
-	return 1;
+
 
 }
 
+
 /******************************************************************************
-* Function:    COMM_InterfaceReadDat
+* Function:    PORT_GetPortCfg
 * Input:       xxx
 * Output:      xxx
 * Return:      xxx
@@ -167,15 +155,14 @@ INT32_T  COMM_InterfaceUnRegister(INT32_T if_id)
 *
 *
 ******************************************************************************/
-INT32_T  COMM_InterfaceReadDat(INT32_T if_id,void *pbuf,INT32_T rlen)
+SINT32_T PORT_GetPortCfg(PORT_ID_T port_id,PORT_CFG_T *p_port_cfg)
 {
-	printf("%s:%d\r\n",__func__,__LINE__);
-	return 1;
+
+
 }
 
-
 /******************************************************************************
-* Function:    COMM_InterfaceWriteDat
+* Function:    PORT_SetPortCfg
 * Input:       xxx
 * Output:      xxx
 * Return:      xxx
@@ -183,15 +170,13 @@ INT32_T  COMM_InterfaceReadDat(INT32_T if_id,void *pbuf,INT32_T rlen)
 *
 *
 ******************************************************************************/
-INT32_T  COMM_InterfaceWriteDat(INT32_T if_id,void *pbuf,INT32_T wlen)
+SINT32_T PORT_SetPortCfg(PORT_ID_T port_id,PORT_CFG_T *p_port_cfg)
 {
-	printf("%s:%d\r\n",__func__,__LINE__);
-	return 1;
-}
 
+
+}
 
 #endif//#if __XXX_xxx__
-
 
 
 

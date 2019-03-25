@@ -17,6 +17,124 @@
 #include <stdlib.h>
 #include <string.h>   
 #include "comm_interface.h"
+#include "port.h"
+
+
+
+
+
+typedef struct reg_map_t {
+	UINT32_T if_id;
+	UINT32_T port_type;
+	UINT8_T  valid_flg;
+}REG_MAP_T;
+
+
+
+REG_MAP_T reg_map[32];
+
+
+INT32_T OpenMsgQ(INT32_T* pqid,char* ppath, char id)
+{
+	key_t key;
+	INT32_T err=0;
+
+	if ((key = ftok(ppath, id)) == -1)
+	{
+		perror("ftok");
+		err=-1;
+	}
+
+	if ((*pqid = msgget(key, IPC_CREAT|0666)) == -1)
+	{
+		perror("msgget");
+		//printf("qid=%d,line=%d\r\n",*pqid,__LINE__);
+		*pqid=0;
+		err=-1;
+	}
+	//printf("qid=%d,line=%d\r\n",*pqid,__LINE__);
+	return err;
+}
+
+INT32_T CloseMsgQ(INT32_T qid)
+{
+	INT32_T err=0;
+	return err;
+}
+
+
+INT32_T GetNewMsg(INT32_T qid, MSG_T* pmsg, INT32_T wait_ms)
+{
+	INT32_T wait_cnt=0;
+
+	wait_cnt=wait_ms;
+	while(wait_cnt--)
+	{
+		usleep(1000);
+		if (msgrcv(qid, (void*)pmsg, MSG_BUF_SIZE, pmsg->msg_type, IPC_NOWAIT) < 0) 
+		{
+			//perror("msgrcv");
+			return -1;
+		}
+		else
+		{
+			
+			return 0;
+		}
+	}
+	return -1;
+
+}
+
+
+
+INT32_T PutNewMsg(INT32_T qid, MSG_T* pmsg)
+{
+	if ((msgsnd(qid, pmsg, strlen(pmsg->msg_text), 0)) < 0)
+	{
+		perror("message posted");
+		return -1;
+	}
+	return 0;
+}
+
+
+INT32_T HandleNewMsg(MSG_T* msg)
+{
+
+	return 0;
+}
+
+
+
+INT32_T COMM_MsgHandle(void)
+{
+	int qid;
+	MSG_T msg;
+	
+	if(OpenMsgQ(&qid, "/", 'a')==0)
+	{
+		memset(&msg,0,sizeof(msg));
+		msg.msg_type=MSG_TYPE_REG;
+		if(GetNewMsg(qid, &msg, 5000)==0)
+		{
+			printf("GetNewMsg[%ld]:%s\r\n", msg.msg_type, msg.msg_text);	
+			if(strncmp(msg.msg_text, "Please Register Port RS485-1\r\n", strlen("Please Register Port RS485-1\r\n"))==0)
+			{
+				HandleNewMsg(&msg);
+				sleep(5);
+				msg.msg_type=MSG_TYPE_ACK;
+				memcpy(msg.msg_text,"Register Port RS485-1 Sucessful\r\n",sizeof("Register Port RS485-1 Successful\r\n"));
+				PutNewMsg(qid, &msg);
+				printf("PutNewMsg[%ld]:%s\r\n", msg.msg_type, msg.msg_text); 
+			}
+		}
+	}
+
+	return 0;
+}
+
+
 
 
 
@@ -24,54 +142,11 @@
 
 int main(int argc, char** argv)
 {   
+	memset (reg_map,0,sizeof(reg_map));
 
-	int qid;
-	key_t key;
-	MSG_T msg;
-	
-	/*根据不同的路径和关键表示产生标准的key*/
-	if ((key = ftok("/", 'a')) == -1)
-	{
-		perror("ftok");
-		exit(1);
-	}
-	
-	/*创建消息队列*/
-	if ((qid = msgget(key, IPC_CREAT|0666)) == -1)
-	{
-		perror("msgget");
-		exit(1);
-	}
-	printf("Open queue %d\n", qid);
 	while(1)
 	{
-		do
-		{
-			/*读取消息队列*/
-			memset(msg.msg_text, 0, MSG_BUF_SIZE);
-			if (msgrcv(qid, (void*)&msg, MSG_BUF_SIZE, MSG_TYPE_REG, 0) < 0) 
-			{
-				perror("msgrcv");
-				exit(1);
-			}
-			printf("The message from process %ld : %s", msg.msg_type, msg.msg_text);		
-			
-		} while(strncmp(msg.msg_text, "Please Register Port RS485-1\r\n", strlen("Please Register Port RS485-1\r\n")));
-		
-		sleep(5);
-		
-		
-		memset(msg.msg_text, 0, MSG_BUF_SIZE);
-		msg.msg_type=MSG_TYPE_ACK;
-		
-		memcpy(msg.msg_text,"Register Port RS485-1 Sucessful\r\n",sizeof("Register Port RS485-1 Successful\r\n"));
-		if ((msgsnd(qid, &msg, strlen(msg.msg_text), 0)) < 0)
-		{
-			perror("message posted");
-			return -1;
-		}
-
-
+		COMM_MsgHandle();
 	}
 
 	return 0;
