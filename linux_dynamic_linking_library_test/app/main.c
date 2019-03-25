@@ -19,15 +19,6 @@
 #include "comm_interface.h"
 
 
-#define  BUFFER_SIZE		1024
-#define  MSG_TYPE_REG 			(1)
-#define  MSG_TYPE_ACK 			(2)
- 
-struct message
-{
-	long msg_type;
-	char msg_text[BUFFER_SIZE];
-};
 
 
 
@@ -36,7 +27,7 @@ int main(int argc, char** argv)
 
 	int qid;
 	key_t key;
-	struct message msg;
+	MSG_T msg;
 	
 	/*根据不同的路径和关键表示产生标准的key*/
 	if ((key = ftok("/", 'a')) == -1)
@@ -57,8 +48,8 @@ int main(int argc, char** argv)
 		do
 		{
 			/*读取消息队列*/
-			memset(msg.msg_text, 0, BUFFER_SIZE);
-			if (msgrcv(qid, (void*)&msg, BUFFER_SIZE, 0, 0) < 0)   //读取消息不管是谁发的
+			memset(msg.msg_text, 0, MSG_BUF_SIZE);
+			if (msgrcv(qid, (void*)&msg, MSG_BUF_SIZE, MSG_TYPE_REG, 0) < 0) 
 			{
 				perror("msgrcv");
 				exit(1);
@@ -70,7 +61,7 @@ int main(int argc, char** argv)
 		sleep(5);
 		
 		
-		memset(msg.msg_text, 0, BUFFER_SIZE);
+		memset(msg.msg_text, 0, MSG_BUF_SIZE);
 		msg.msg_type=MSG_TYPE_ACK;
 		
 		memcpy(msg.msg_text,"Register Port RS485-1 Sucessful\r\n",sizeof("Register Port RS485-1 Successful\r\n"));

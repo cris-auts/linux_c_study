@@ -79,12 +79,12 @@
 *
 *
 ******************************************************************************/
-INT32_T  COMM_InterfaceRegister(void *p_if,INT32_T len)
+INT32_T  COMM_InterfaceRegister(void *p_if,INT32_T len,INT32_T wait_ms)
 {
 	int qid;
 	key_t key;
 	MSG_T msg;
-	int msg_wait_cnt=1000;
+	int msg_wait_cnt=0;
 	INT32_T comm_id=-1;
 
 	
@@ -119,7 +119,8 @@ INT32_T  COMM_InterfaceRegister(void *p_if,INT32_T len)
 	}
 
 
-	msg_wait_cnt=5000;
+	msg_wait_cnt=wait_ms;
+	printf ("msg_wait_cnt=%d\r\n",msg_wait_cnt);
 	while(msg_wait_cnt--)
 	{
 		memset(msg.msg_text, 0, MSG_BUF_SIZE);
