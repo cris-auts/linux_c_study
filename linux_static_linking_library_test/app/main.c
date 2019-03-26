@@ -26,10 +26,13 @@ int main(int argc, char** argv)
 		{
 			//COMM_InterfaceRegister(interface,1024,5000);
 			memset(pipe_rbuf,0,128);
-COMM_InterfaceWriteDat(1,pipe_wbuf,128);
-//			COMM_InterfaceReadDat(1,pipe_rbuf,128);
-			//printf("%s",pipe_rbuf);
-			sleep(3);
+			#if 1
+			COMM_InterfaceWriteDat(1,pipe_wbuf,128);
+			#else
+			COMM_InterfaceReadDat(1,pipe_rbuf,128);
+			#endif
+			printf("%s",pipe_rbuf);
+			sleep(5);
 		}
 
 	return 0;

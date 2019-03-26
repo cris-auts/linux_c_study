@@ -20,6 +20,7 @@ $(TARGET):$(OBJS)
 	$(AR) cr -o $(TARGET) $(OBJS) 
 	-$(RM) $(OBJS)
 	sudo cp ./$(TARGET) /home/cris/My_Projects/linux_c_study/linux_static_linking_library_test/app/LIB -f
+	sudo cp ./comm_interface.h /home/cris/My_Projects/linux_c_study/linux_static_linking_library_test/app/comm_interface.h -f
 clean:
 	-$(RM) $(TARGET)
 	-$(RM) $(OBJS)
