@@ -10,10 +10,10 @@
 *
 *********************************************************************************************************
 *
-* File name: xxx_xxx.h
+* File name: xxx_xxx.c
 * -------------------------------------
 *
-* Module: all
+* Module: xxx
 * -------------------------------------
 *
 * Project: xxx
@@ -28,7 +28,7 @@
 *
 * History:
 *
-* Date                Author             Change Id             Release Description Of Change
+* Date                   Author             Change Id             Release Description Of Change
 * ------------------------------------------------------------------------------------------------------
 *
 *
@@ -40,65 +40,47 @@
 * Others:
 *
 ********************************************************************************************************/
-#ifndef __XXX_XXX_H__
-#define __XXX_XXX_H__
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-
-/*----------------------公共头文件----------------------------*/
+/*------------------------------------------------------------------*/
 #include "std_globals.h"
-#if 1//__XXX_xxx__
-
+#if __XXX_xxx__
+//#include "xxx_xxx.h"
 //#include "xxx_xxx.h"
 
 
-/*----------------------公共宏定义----------------------------*/
-#define  MSG_BUF_SIZE 			(1024)
 
-#define  MSG_TYPE_REG 			(1)
-#define  MSG_TYPE_ACK 			(2)
+/*-----------------------模块内宏定义-------------------------*/
+//#define    xxxxxx              (xxxxxxxx)
 
 
-/*----------------------公共类定义----------------------------*/
-typedef struct msg_t
-{
-    long msg_type;
-    char msg_text[MSG_BUF_SIZE];
-}MSG_T;
+
+/*----------------------模块内类定义--------------------------*/
 
 
-/*-----------------模块对外接口变量声明-----------------------*/
-//extern    xxxxx;
+
+/*----------------------变量常量定义--------------------------*/
 
 
-/*-----------------模块对外接口函数声明-----------------------*/
-extern INT32_T OpenMsgQ(INT32_T* pqid,char* ppath, char id);
-extern INT32_T CloseMsgQ(INT32_T qid);
-extern INT32_T GetNewMsg(INT32_T qid, MSG_T* pmsg, INT32_T wait_ms);
-extern INT32_T PutNewMsg(INT32_T qid, MSG_T* pmsg);
 
-extern  INT32_T  COMM_InterfaceRegister(void *p_if,INT32_T len,INT32_T wait_ms);
-extern  INT32_T  COMM_InterfaceUnRegister(INT32_T if_id);
-extern  INT32_T  COMM_InterfaceReadDat(INT32_T if_id,void *pbuf,INT32_T rlen);
-extern  INT32_T  COMM_InterfaceWriteDat(INT32_T if_id,void *pbuf,INT32_T wlen);
 
-#endif//#if __XXX_xxxx__
+/*****************************************************************************/
+                         /* 函数定义 */
+/*****************************************************************************/
 
-#ifdef __cplusplus
-}
-#endif
-#endif //#ifndef __XXX_XXX_H__
+/******************************************************************************
+* Function:    XXX_XxxXxx
+* Input:       xxx
+* Output:      xxx
+* Return:      xxx
+* Description: xxxxx
+*
+*
+******************************************************************************/
 
 
 
 
 
-
-
-
+#endif//#if __XXX_xxx__
 
 
 

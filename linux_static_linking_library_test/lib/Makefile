@@ -5,7 +5,7 @@ DIRS = $(shell find $(SRC_PATH) -maxdepth 5 -type d)
 
 #DIRS = DBASE PRTC STD USR .
 
-TARGET = libscomm.a
+TARGET = libscomms.a
 
 
 
@@ -19,9 +19,7 @@ OBJS = $(patsubst %.c, %.o, $(FILES))
 $(TARGET):$(OBJS)
 	$(AR) cr -o $(TARGET) $(OBJS) 
 	-$(RM) $(OBJS)
-	#please sudo cp ./$(TARGET) /usr/local/lib/
-	#please sudo ln -s /usr/local/lib/libcomm.so.0.0.1   /usr/local/lib/libcomm.so
-	#please sudo ldconfig
+	sudo cp ./$(TARGET) /home/cris/My_Projects/linux_c_study/linux_static_linking_library_test/app/LIB -f
 clean:
 	-$(RM) $(TARGET)
 	-$(RM) $(OBJS)

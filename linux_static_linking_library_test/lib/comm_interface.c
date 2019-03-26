@@ -43,38 +43,169 @@
 /*------------------------------------------------------------------*/
 #include "std_globals.h"
 #if 1//__XXX_xxx__
-//#include "xxx_xxx.h"
+#include "comm_interface.h"
 //#include "xxx_xxx.h"
 
 
 
 /*-----------------------模块内宏定义-------------------------*/
-#define    COMM_ID_INFO_MAP_SIZE              (8)
+#define  MSG_BUF_SIZE 			(1024)
 
+#define  MSG_TYPE_REG 			(1)
+#define  MSG_TYPE_ACK 			(2)
+
+#define  MSG_RCV_WAIT_CYC 		(1000)
 
 
 
 /*----------------------模块内类定义--------------------------*/
 
-typedef struct comm_id_info_map_t
-{
-	INT32_T	if_id;
-	INT8_T* pif_info;
-}COMM_ID_INFO_MAP_T;
+ 
+
 
 /*----------------------变量常量定义--------------------------*/
 
 
-COMM_ID_INFO_MAP_T comm_id_info_map[COMM_ID_INFO_MAP_SIZE]={0};
-/*
-1.首先要建立一个映射表格,绑定IF_ID和IF_INFO的关系
-2.通信进程启动以后，需要，需要对这个映射表格进行初始化
-3.需要从数据库中加载物理端口的具体信息。
-4.启动各个端口线程
-*/
 /*****************************************************************************/
                          /* 函数定义 */
 /*****************************************************************************/
+INT32_T OpenMsgQ(INT32_T* pqid,char* ppath, char id)
+{
+	key_t key;
+	INT32_T err=0;
+
+	if ((key = ftok(ppath, id)) == -1)
+	{
+		perror("ftok");
+		err=-1;
+	}
+
+	if ((*pqid = msgget(key, IPC_CREAT|0666)) == -1)
+	{
+		perror("msgget");
+		//printf("qid=%d,line=%d\r\n",*pqid,__LINE__);
+		*pqid=0;
+		err=-1;
+	}
+	//printf("qid=%d,line=%d\r\n",*pqid,__LINE__);
+	return err;
+}
+
+INT32_T CloseMsgQ(INT32_T qid)
+{
+	INT32_T err=0;
+	return err;
+}
+
+
+INT32_T GetNewMsg(INT32_T qid, MSG_T* pmsg, INT32_T wait_ms)
+{
+	INT32_T wait_cnt=0;
+
+	wait_cnt=wait_ms;
+	while(wait_cnt--)
+	{
+		usleep(1000);
+		if (msgrcv(qid, (void*)pmsg, MSG_BUF_SIZE, pmsg->msg_type, IPC_NOWAIT) < 0) 
+		{
+			//perror("msgrcv");
+			return -1;
+		}
+		else
+		{
+			
+			return 0;
+		}
+	}
+	return -1;
+
+}
+
+
+
+
+INT32_T OpenPipe(char* pname, int*ppipe_fd, int mode)
+{
+	int err=-1;
+	int pipe_fd = -1;
+	int open_mode = mode;
+    if(access(pname, F_OK) == -1)
+    {
+        printf ("Create the fifo pipe.\n");
+        err = mkfifo(pname, 0777);
+        if(err != 0)
+        {
+            fprintf(stderr, "Could not create fifo %s\n", pname);
+			return -1;
+        }
+    }
+	*ppipe_fd = open(pname, open_mode);
+	 printf("Process %d result %d\n", getpid(), *ppipe_fd);
+	 return err;
+}
+
+
+
+INT32_T ClosePipe(int pipe_fd)
+{
+	close(pipe_fd);
+	return 0;
+}
+
+
+INT32_T ReadPipe(char* pname,char* pbuf, INT32_T rlen)
+{
+	int err=-1;
+	
+	int len=0;
+	int pipe_fd = -1;
+	if(OpenPipe(pname, &pipe_fd,O_RDONLY)==0)
+	{
+		len = read(pipe_fd, pbuf, rlen);
+//		ClosePipe(pipe_fd);
+	}
+	return len;
+
+}
+
+
+
+INT32_T WritePipe(char* pname,char* pbuf,INT32_T wlen)
+{	
+	int err=-1;
+	
+	int len=0;
+	int pipe_fd = -1;
+	if(OpenPipe(pname, &pipe_fd,O_WRONLY)==0)
+	{
+		len = write(pipe_fd, pbuf, wlen);
+//		ClosePipe(pipe_fd);
+	}
+	return len;
+}
+
+
+
+
+
+
+
+
+INT32_T PutNewMsg(INT32_T qid, MSG_T* pmsg)
+{
+	if ((msgsnd(qid, pmsg, strlen(pmsg->msg_text), 0)) < 0)
+	{
+		perror("message posted");
+		return -1;
+	}
+	return 0;
+}
+
+
+
+
+
+
 
 /******************************************************************************
 * Function:    COMM_InterfaceRegister
@@ -85,17 +216,66 @@ COMM_ID_INFO_MAP_T comm_id_info_map[COMM_ID_INFO_MAP_SIZE]={0};
 *
 *
 ******************************************************************************/
-INT32_T  COMM_InterfaceRegister(void *p_if,INT32_T len)
+INT32_T  COMM_InterfaceRegister(void *p_if,INT32_T len,INT32_T wait_ms)
 {
-/*
-	1.从映射表格表格中查询，p_if是否已经存在，如果已经存在直接对应的id
-	2.如果表格中不存在，则需要按照这个端口信息，查询是否有对应的端口线程
-	3.如果有端口线程，并在在运行，，则分配对应的ID，并记录到映射表格中。返回成功信息
-	4.如果如果端口线程不存在，则返回错误信息。
-*/
+	int qid;
+	key_t key;
+	MSG_T msg;
+	int msg_wait_cnt=0;
+	INT32_T comm_id=-1;
 
-	printf("%s:%d",__func__,__LINE__);
-	return 1;
+	
+	#if 1	//测试代码
+	p_if=malloc(MSG_BUF_SIZE);
+	len=MSG_BUF_SIZE;
+	memset(p_if,0,len);
+	memcpy(p_if,"Please Register Port RS485-1\r\n",len);
+	#endif
+
+	if ((key = ftok("/", 'a')) == -1)
+	{
+		perror("ftok");
+		return -1;
+	}
+	 
+	/*创建消息队列*/
+	if ((qid = msgget(key, IPC_CREAT|0666)) == -1)
+	{
+		perror("msgget");
+		return -1;
+	}
+
+	memcpy(msg.msg_text,p_if,len);
+	msg.msg_type=MSG_TYPE_REG;
+	
+	printf("Snd message from process %ld : %s\r\n", msg.msg_type, msg.msg_text);	
+	if ((msgsnd(qid, &msg, strlen(msg.msg_text), 0)) < 0)
+	{
+		perror("message posted");
+		return -1;
+	}
+
+
+	msg_wait_cnt=wait_ms;
+	while(msg_wait_cnt--)
+	{
+		memset(msg.msg_text, 0, MSG_BUF_SIZE);
+		msg.msg_type=MSG_TYPE_ACK;
+		usleep(MSG_RCV_WAIT_CYC);
+		if (msgrcv(qid, (void*)&msg, MSG_BUF_SIZE, MSG_TYPE_ACK, IPC_NOWAIT) < 0) 
+		{
+			//perror("msgrcv");
+			comm_id=-1;
+		}
+		else
+		{
+			printf("RCV message from process %ld : %s\r\n", msg.msg_type, msg.msg_text);
+			comm_id=1;
+			break;
+		}
+	}
+	 
+	return comm_id;
 
 }
 
@@ -110,7 +290,7 @@ INT32_T  COMM_InterfaceRegister(void *p_if,INT32_T len)
 ******************************************************************************/
 INT32_T  COMM_InterfaceUnRegister(INT32_T if_id)
 {
-	printf("%s:%d",__func__,__LINE__);
+	printf("%s:%d\r\n",__func__,__LINE__);
 	return 1;
 
 }
@@ -126,9 +306,14 @@ INT32_T  COMM_InterfaceUnRegister(INT32_T if_id)
 ******************************************************************************/
 INT32_T  COMM_InterfaceReadDat(INT32_T if_id,void *pbuf,INT32_T rlen)
 {
+	INT32_T len=0;
+	char fifo_name[64];
 
-	printf("%s:%d",__func__,__LINE__);
-	return 1;
+	memset(fifo_name,0,sizeof(fifo_name));
+	sprintf(fifo_name,"/pipe/%03d",if_id);
+	printf("fifo_name:%s\r\n",fifo_name);
+	len=ReadPipe(fifo_name, pbuf, rlen);
+	return len;
 }
 
 
@@ -143,16 +328,16 @@ INT32_T  COMM_InterfaceReadDat(INT32_T if_id,void *pbuf,INT32_T rlen)
 ******************************************************************************/
 INT32_T  COMM_InterfaceWriteDat(INT32_T if_id,void *pbuf,INT32_T wlen)
 {
-	printf("%s:%d",__func__,__LINE__);
-	return 1;
-
+	INT32_T len=0;
+	char fifo_name[64];
+	memset(fifo_name,0,sizeof(fifo_name));
+	sprintf(fifo_name,"/pipe/%03d",if_id);
+	printf("fifo_name:%s\r\n",fifo_name);
+	len=WritePipe(fifo_name, pbuf, wlen);
+	return len;
 }
 
 
-void Hello_Word(void)
-{
-	printf ("Hello,World!\r\n");
-}
 #endif//#if __XXX_xxx__
 
 

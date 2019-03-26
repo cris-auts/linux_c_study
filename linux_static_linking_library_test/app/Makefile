@@ -12,7 +12,7 @@ CC = gcc
 CFLAGS = -Wall -g
 CFLAGS += $(patsubst %,-I%,$(DIRS))
 
-LDFLAGS := -Wl,-Bstatic -lscomm -Wl,-Bdynamic -lsqlite3 -lpthread -lpaho-mqtt3c -L./LIB
+LDFLAGS := -Wl,-Bstatic -lscomms -Wl,-Bdynamic -lsqlite3 -lpthread -lpaho-mqtt3c -L./LIB
 
 FILES = $(foreach dir, $(DIRS), $(wildcard $(dir)/*.c))
 OBJS = $(patsubst %.c, %.o, $(FILES))

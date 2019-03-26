@@ -19,17 +19,19 @@
 
 int main(int argc, char** argv)
 {   
-	char interface[128];
-	printf("1\r\n");
-	COMM_InterfaceRegister(interface, 128);
-	printf("2\r\n");
+	char interface[1024];
+	char pipe_wbuf[128]={"hello,pipe!\r\n"};
+	char pipe_rbuf[128];
+		while(1)
+		{
+			//COMM_InterfaceRegister(interface,1024,5000);
+			memset(pipe_rbuf,0,128);
+COMM_InterfaceWriteDat(1,pipe_wbuf,128);
+//			COMM_InterfaceReadDat(1,pipe_rbuf,128);
+			//printf("%s",pipe_rbuf);
+			sleep(3);
+		}
 
-	while(1){
-	
-		sleep(5);
-	
-	printf("r\r\n");
-	}
 	return 0;
 }
  

@@ -50,24 +50,16 @@ extern "C" {
 
 /*----------------------公共头文件----------------------------*/
 #include "std_globals.h"
-#if 1//__XXX_xxx__
+#if __XXX_xxx__
 
 //#include "xxx_xxx.h"
 
 
 /*----------------------公共宏定义----------------------------*/
-#define  MSG_BUF_SIZE 			(1024)
-
-#define  MSG_TYPE_REG 			(1)
-#define  MSG_TYPE_ACK 			(2)
+//#define    xxxxxx                (xxxxxxxx)
 
 
 /*----------------------公共类定义----------------------------*/
-typedef struct msg_t
-{
-    long msg_type;
-    char msg_text[MSG_BUF_SIZE];
-}MSG_T;
 
 
 /*-----------------模块对外接口变量声明-----------------------*/
@@ -75,15 +67,8 @@ typedef struct msg_t
 
 
 /*-----------------模块对外接口函数声明-----------------------*/
-extern INT32_T OpenMsgQ(INT32_T* pqid,char* ppath, char id);
-extern INT32_T CloseMsgQ(INT32_T qid);
-extern INT32_T GetNewMsg(INT32_T qid, MSG_T* pmsg, INT32_T wait_ms);
-extern INT32_T PutNewMsg(INT32_T qid, MSG_T* pmsg);
+//extern    xxxxx;
 
-extern  INT32_T  COMM_InterfaceRegister(void *p_if,INT32_T len,INT32_T wait_ms);
-extern  INT32_T  COMM_InterfaceUnRegister(INT32_T if_id);
-extern  INT32_T  COMM_InterfaceReadDat(INT32_T if_id,void *pbuf,INT32_T rlen);
-extern  INT32_T  COMM_InterfaceWriteDat(INT32_T if_id,void *pbuf,INT32_T wlen);
 
 #endif//#if __XXX_xxxx__
 
@@ -91,13 +76,6 @@ extern  INT32_T  COMM_InterfaceWriteDat(INT32_T if_id,void *pbuf,INT32_T wlen);
 }
 #endif
 #endif //#ifndef __XXX_XXX_H__
-
-
-
-
-
-
-
 
 
 
