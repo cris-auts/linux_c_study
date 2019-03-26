@@ -167,13 +167,13 @@ INT32_T ReadPipe(char* pname,char* pbuf, INT32_T rlen)
 	int pipe_fd = -1;
 	
 	printf("%s:%d\r\n",__func__,__LINE__);
-	if(OpenPipe(pname, &pipe_fd,O_RDONLY)==0)
+	if(OpenPipe(pname, &pipe_fd,O_RDONLY|O_NONBLOCK)==0)
 	{
 	
 		printf("%s:%d\r\n",__func__,__LINE__);
 		len = read(pipe_fd, pbuf, rlen);
 		printf("pipe_fd=%d,read len=%d\r\n",pipe_fd,len);
-		ClosePipe(pipe_fd);
+		//ClosePipe(pipe_fd);
 	}
 	printf("%s:%d\r\n",__func__,__LINE__);
 	return len;
@@ -190,11 +190,11 @@ INT32_T WritePipe(char* pname,char* pbuf,INT32_T wlen)
 	int pipe_fd = -1;
 	
 	printf("%s:%d\r\n",__func__,__LINE__);
-	if(OpenPipe(pname, &pipe_fd,O_WRONLY)==0)
+	if(OpenPipe(pname, &pipe_fd,O_WRONLY|O_NONBLOCK)==0)
 	{
 		printf("%s:%d\r\n",__func__,__LINE__);
 		len = write(pipe_fd, pbuf, wlen);
-		printf("pipe_fd=%d,read len=%d\r\n",pipe_fd,len);
+		printf("pipe_fd=%d,write len=%d\r\n",pipe_fd,len);
 		ClosePipe(pipe_fd);
 	}
 	printf("%s:%d\r\n",__func__,__LINE__);

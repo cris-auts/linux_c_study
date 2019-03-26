@@ -26,7 +26,7 @@ int main(int argc, char** argv)
 		{
 			//COMM_InterfaceRegister(interface,1024,5000);
 			memset(pipe_rbuf,0,128);
-			#if 1
+			#if 0
 			COMM_InterfaceWriteDat(1,pipe_wbuf,128);
 			#else
 			COMM_InterfaceReadDat(1,pipe_rbuf,128);
