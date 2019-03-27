@@ -130,24 +130,27 @@ INT32_T OpenPipe(char* pname, int*ppipe_fd, int mode)
 	int pipe_fd = -1;
 	int open_mode = mode;
 	
-	printf("%s:%d\r\n",__func__,__LINE__);
     if(access(pname, F_OK) == -1)
     {
-    	printf("%s:%d\r\n",__func__,__LINE__);
         printf ("Create the fifo pipe.\n");
         err = mkfifo(pname, 0777);
         if(err != 0)
         {
-    		printf("%s:%d\r\n",__func__,__LINE__);
             fprintf(stderr, "Could not create fifo %s\n", pname);
 			return -1;
         }
     }
-	
-	printf("%s:%d\r\n",__func__,__LINE__);
 	*ppipe_fd = open(pname, open_mode);
-	 printf("Process %d result %d,err:%d\n", getpid(), *ppipe_fd,err);
-	 return err;
+	if(*ppipe_fd > 0)
+	{
+		printf("Process %d fd:%d,err:%d\n", getpid(), *ppipe_fd,err);
+		return 0;
+	}
+	else
+	{
+		printf("Process %d open %s fail,fd:%d!\n", getpid(), pname,*ppipe_fd);
+		return -1;
+	}
 }
 
 
@@ -164,20 +167,29 @@ INT32_T ReadPipe(char* pname,char* pbuf, INT32_T rlen)
 	int err=-1;
 	
 	int len=0;
-	int pipe_fd = -1;
+	static int pipe_fd = -1;
 	
 	printf("%s:%d\r\n",__func__,__LINE__);
-	if(OpenPipe(pname, &pipe_fd,O_RDONLY|O_NONBLOCK)==0)
+	if(pipe_fd != -1)
 	{
-	
 		printf("%s:%d\r\n",__func__,__LINE__);
 		len = read(pipe_fd, pbuf, rlen);
 		printf("pipe_fd=%d,read len=%d\r\n",pipe_fd,len);
-		//ClosePipe(pipe_fd);
+		return len;
 	}
-	printf("%s:%d\r\n",__func__,__LINE__);
-	return len;
-
+	else
+	{
+		if(OpenPipe(pname, &pipe_fd,O_RDONLY|O_NONBLOCK)==0)
+		{
+		
+			printf("%s:%d\r\n",__func__,__LINE__);
+			len = read(pipe_fd, pbuf, rlen);
+			printf("pipe_fd=%d,read len=%d\r\n",pipe_fd,len);
+			//ClosePipe(pipe_fd);
+		}
+		//ClosePipe(pipe_fd);
+		return len;
+	}
 }
 
 
@@ -185,19 +197,22 @@ INT32_T ReadPipe(char* pname,char* pbuf, INT32_T rlen)
 INT32_T WritePipe(char* pname,char* pbuf,INT32_T wlen)
 {	
 	int err=-1;
-	
 	int len=0;
 	int pipe_fd = -1;
 	
-	printf("%s:%d\r\n",__func__,__LINE__);
 	if(OpenPipe(pname, &pipe_fd,O_WRONLY|O_NONBLOCK)==0)
 	{
 		printf("%s:%d\r\n",__func__,__LINE__);
 		len = write(pipe_fd, pbuf, wlen);
-		printf("pipe_fd=%d,write len=%d\r\n",pipe_fd,len);
-		ClosePipe(pipe_fd);
+		if((len > 0)&&(len==wlen))
+		{
+			printf("WritePipe %d sucess, %d bytes writed\r\n",pipe_fd,len);
+			ClosePipe(pipe_fd);
+			return len;
+		}
 	}
-	printf("%s:%d\r\n",__func__,__LINE__);
+	ClosePipe(pipe_fd);
+	printf("WritePipe fail, %d bytes writed\r\n",pipe_fd,len);
 	return len;
 }
 
@@ -328,7 +343,7 @@ INT32_T  COMM_InterfaceReadDat(INT32_T if_id,void *pbuf,INT32_T rlen)
 
 	memset(fifo_name,0,sizeof(fifo_name));
 	sprintf(fifo_name,"/pipe/%03d",if_id);
-	printf("fifo_name:%s\r\n",fifo_name);
+	//printf("fifo_name:%s\r\n",fifo_name);
 	len=ReadPipe(fifo_name, pbuf, rlen);
 	return len;
 }
