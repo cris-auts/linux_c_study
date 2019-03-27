@@ -10,7 +10,7 @@
 *
 *********************************************************************************************************
 *
-* File name: xxx_xxx.h
+* File name: comm.h
 * -------------------------------------
 *
 * Module: all
@@ -40,8 +40,8 @@
 * Others:
 *
 ********************************************************************************************************/
-#ifndef __COMM_INTERFACE_H__
-#define __COMM_INTERFACE_H__
+#ifndef __XXX_XXX_H__
+#define __XXX_XXX_H__
 
 #ifdef __cplusplus
 extern "C" {
@@ -90,7 +90,7 @@ extern  INT32_T  COMM_InterfaceWriteDat(INT32_T if_id,void *pbuf,INT32_T wlen);
 #ifdef __cplusplus
 }
 #endif
-#endif //#ifndef __COMM_INTERFACE_H__
+#endif //#ifndef __XXX_XXX_H__
 
 
 
