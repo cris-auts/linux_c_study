@@ -24,18 +24,26 @@
 
 int main(int argc, char** argv)
 {   
-	char interface[1024];
-	char pipe_wbuf[128]={"hello,pipe!\r\n"};
+	UINT32_T rlen=0;
+	UINT32_T wlen=0;
+	char pipe_wbuf[128]={"APP:1234567890!\r\n"};
 	char pipe_rbuf[128];
-		while(1)
-		{
-			//COMM_InterfaceRegister(interface,1024,5000);
-			memset(pipe_rbuf,0,128);
-			//COMM_InterfaceWriteDat(1,pipe_wbuf,128);
-			COMM_InterfaceReadDat(1,pipe_rbuf,128);
-			printf("%s\r\n",pipe_rbuf);
-			usleep(500);
-		}
+	char interface[1024];
+	
+	COMM_InterfaceRegister(interface,1024,5000);
+	sleep(10);
+	while(1)
+	{
+		memset(pipe_rbuf,0,128);
+		rlen=COMM_AppReadDat(1,pipe_rbuf,128);
+		if(rlen)
+			printf("@@@@@@@@@@APP RCV[%d]:%s\r\n",rlen,pipe_rbuf);
+		usleep(500);
+		
+		wlen=COMM_AppWriteDat(1,pipe_wbuf,128);
+		if(wlen == 128)
+			printf("**********APP SND[%d]:%s\r\n",wlen,pipe_wbuf);
+	}
 
 	return 0;
 }

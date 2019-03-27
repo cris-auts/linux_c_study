@@ -169,10 +169,10 @@ INT32_T ReadPipe(char* pname,char* pbuf, INT32_T rlen)
 	int len=0;
 	static int pipe_fd = -1;
 	
-	printf("%s:%d\r\n",__func__,__LINE__);
+	//printf("%s:%d\r\n",__func__,__LINE__);
 	if(pipe_fd != -1)
 	{
-		printf("%s:%d\r\n",__func__,__LINE__);
+		//printf("%s:%d\r\n",__func__,__LINE__);
 		len = read(pipe_fd, pbuf, rlen);
 		printf("pipe_fd=%d,read len=%d\r\n",pipe_fd,len);
 		return len;
@@ -306,7 +306,10 @@ INT32_T  COMM_InterfaceRegister(void *p_if,INT32_T len,INT32_T wait_ms)
 			break;
 		}
 	}
-	 
+	/*
+	1.更新映射表格
+	2.创建对应管道
+	*/ 
 	return comm_id;
 
 }
@@ -328,6 +331,48 @@ INT32_T  COMM_InterfaceUnRegister(INT32_T if_id)
 }
 
 /******************************************************************************
+* Function:    COMM_ReadRxFrRxPipe
+* Input:       xxx
+* Output:      xxx
+* Return:      xxx
+* Description: xxxxx
+*
+*
+******************************************************************************/
+INT32_T  COMM_ReadRxFrRxPipe(INT32_T if_id,void *pbuf,INT32_T rlen)
+{
+	INT32_T len=0;
+	char fifo_name[64];
+
+	memset(fifo_name,0,sizeof(fifo_name));
+	sprintf(fifo_name,"/pipe/rx%05d",if_id);
+	//printf("fifo_name:%s\r\n",fifo_name);
+	len=ReadPipe(fifo_name, pbuf, rlen);
+	return len;
+}
+
+
+/******************************************************************************
+* Function:    COMM_WriteTxToTxPipe
+* Input:       xxx
+* Output:      xxx
+* Return:      xxx
+* Description: xxxxx
+*
+*
+******************************************************************************/
+INT32_T  COMM_WriteTxToTxPipe(INT32_T if_id,void *pbuf,INT32_T wlen)
+{
+	INT32_T len=0;
+	char fifo_name[64];
+	memset(fifo_name,0,sizeof(fifo_name));
+	sprintf(fifo_name,"/pipe/tx%05d",if_id);
+	printf("fifo_name:%s\r\n",fifo_name);
+	len=WritePipe(fifo_name, pbuf, wlen);
+	return len;
+}
+
+/******************************************************************************
 * Function:    COMM_InterfaceReadDat
 * Input:       xxx
 * Output:      xxx
@@ -336,15 +381,15 @@ INT32_T  COMM_InterfaceUnRegister(INT32_T if_id)
 *
 *
 ******************************************************************************/
-INT32_T  COMM_InterfaceReadDat(INT32_T if_id,void *pbuf,INT32_T rlen)
+INT32_T  COMM_WriteRxToRxPipe(INT32_T if_id,void *pbuf,INT32_T wlen)
 {
 	INT32_T len=0;
 	char fifo_name[64];
 
 	memset(fifo_name,0,sizeof(fifo_name));
-	sprintf(fifo_name,"/pipe/%03d",if_id);
+	sprintf(fifo_name,"/pipe/rx%05d",if_id);
 	//printf("fifo_name:%s\r\n",fifo_name);
-	len=ReadPipe(fifo_name, pbuf, rlen);
+	len=WritePipe(fifo_name, pbuf, wlen);
 	return len;
 }
 
@@ -358,15 +403,37 @@ INT32_T  COMM_InterfaceReadDat(INT32_T if_id,void *pbuf,INT32_T rlen)
 *
 *
 ******************************************************************************/
-INT32_T  COMM_InterfaceWriteDat(INT32_T if_id,void *pbuf,INT32_T wlen)
+INT32_T  COMM_ReadTxFrTxPipe(INT32_T if_id,void *pbuf,INT32_T rlen)
 {
 	INT32_T len=0;
 	char fifo_name[64];
 	memset(fifo_name,0,sizeof(fifo_name));
-	sprintf(fifo_name,"/pipe/%03d",if_id);
+	sprintf(fifo_name,"/pipe/tx%05d",if_id);
 	printf("fifo_name:%s\r\n",fifo_name);
-	len=WritePipe(fifo_name, pbuf, wlen);
+	len=ReadPipe(fifo_name, pbuf, rlen);
 	return len;
+}
+
+
+INT32_T  COMM_AppReadDat(INT32_T if_id,void *pbuf,INT32_T rlen)
+{
+	return COMM_ReadRxFrRxPipe(if_id, pbuf, rlen);
+}
+
+INT32_T  COMM_AppWriteDat(INT32_T if_id,void *pbuf,INT32_T wlen)
+{
+	return COMM_WriteTxToTxPipe(if_id, pbuf, wlen);
+}
+
+
+INT32_T  COMM_CommReadDat(INT32_T if_id,void *pbuf,INT32_T rlen)
+{
+	return COMM_ReadTxFrTxPipe(if_id, pbuf, rlen);
+}
+
+INT32_T  COMM_CommWriteDat(INT32_T if_id,void *pbuf,INT32_T wlen)
+{
+	return COMM_WriteRxToRxPipe(if_id, pbuf, wlen);
 }
 
 

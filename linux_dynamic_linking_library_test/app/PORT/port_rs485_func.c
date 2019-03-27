@@ -505,6 +505,14 @@ void* PORT_Rs485Thread(void *p_arg)
 	UINT8_T rcv_buf[RS485_RX_DAT_BUF_SIZE];
 	UINT8_T snd_buf[RS485_TX_DAT_BUF_SIZE];
 	PORT_RS485_CFG_T *pcfg=p_arg;
+	UINT32_T rlen=0;
+	UINT32_T wlen=0;
+	char pipe_wbuf[128]={"COM:ABCDEFGHIJ!\r\n"};
+	char pipe_rbuf[128];
+	char interface[1024];
+
+
+	
 	memset(&rs485_rx_ringbuf,0,sizeof(rs485_rx_ringbuf));
 	memset(&rs485_tx_ringbuf,0,sizeof(rs485_tx_ringbuf));
 	
@@ -533,7 +541,7 @@ void* PORT_Rs485Thread(void *p_arg)
 	while (1)
 	{
 		//RS485_PrintLog("Hello,APP_Rs485Thread!\r\n");
-
+		#if 0
 		snd_len=PORT_Rs485Write(fd,snd_buf,snd_len);
 		if(snd_len)
 		{
@@ -547,7 +555,18 @@ void* PORT_Rs485Thread(void *p_arg)
 			RS485_PrintLog("=====================Rcv New Dat:%d\r\n",rcv_len);
 			RS485_PrintHex((unsigned char*)rcv_buf,rcv_len);
 		}
+
+		#endif
 		
+		wlen=COMM_CommWriteDat(1,pipe_wbuf,128);
+		if(wlen == 128)
+			printf("=============COM SND[%d]:%s\r\n",wlen,pipe_wbuf);
+		usleep(500);
+
+		memset(pipe_rbuf,0,128);
+		rlen=COMM_CommReadDat(1,pipe_rbuf,128);
+		if(rlen)
+			printf("&&&&&&&&&&&&&COM RCV[%d]:%s\r\n",rlen,pipe_rbuf);
 	}
 	#else
 	while(1)

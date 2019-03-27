@@ -49,7 +49,6 @@ INT32_T HandleNewMsg(MSG_T* msg)
 	{
 		create_flg=0;
 		PORT_CreatePortThread(PORT_RS485_1, PORT_RS485, &port_rs485);
-
 	}
 
 	return 0;
@@ -72,7 +71,7 @@ INT32_T COMM_MsgHandle(void)
 			if(strncmp(msg.msg_text, "Please Register Port RS485-1\r\n", strlen("Please Register Port RS485-1\r\n"))==0)
 			{
 				HandleNewMsg(&msg);
-				sleep(5);
+				sleep(1);
 				msg.msg_type=MSG_TYPE_ACK;
 				memcpy(msg.msg_text,"Register Port RS485-1 Sucessful\r\n",sizeof("Register Port RS485-1 Successful\r\n"));
 				PutNewMsg(qid, &msg);
@@ -92,6 +91,7 @@ INT32_T COMM_MsgHandle(void)
 
 int main(int argc, char** argv)
 {   
+
 	memset (reg_map,0,sizeof(reg_map));
 
 	g_dev_prm.nvram.debug_log_st.rs485_log=1;

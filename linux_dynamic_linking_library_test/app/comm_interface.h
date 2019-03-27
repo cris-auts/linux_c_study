@@ -40,8 +40,8 @@
 * Others:
 *
 ********************************************************************************************************/
-#ifndef __XXX_XXX_H__
-#define __XXX_XXX_H__
+#ifndef __COMM_INTERFACE_H__
+#define __COMM_INTERFACE_H__
 
 #ifdef __cplusplus
 extern "C" {
@@ -82,15 +82,18 @@ extern INT32_T PutNewMsg(INT32_T qid, MSG_T* pmsg);
 
 extern  INT32_T  COMM_InterfaceRegister(void *p_if,INT32_T len,INT32_T wait_ms);
 extern  INT32_T  COMM_InterfaceUnRegister(INT32_T if_id);
-extern  INT32_T  COMM_InterfaceReadDat(INT32_T if_id,void *pbuf,INT32_T rlen);
-extern  INT32_T  COMM_InterfaceWriteDat(INT32_T if_id,void *pbuf,INT32_T wlen);
+extern INT32_T  COMM_AppReadDat(INT32_T if_id,void *pbuf,INT32_T rlen);
+extern INT32_T  COMM_AppWriteDat(INT32_T if_id,void *pbuf,INT32_T wlen);
+extern INT32_T  COMM_CommReadDat(INT32_T if_id,void *pbuf,INT32_T rlen);
+extern INT32_T  COMM_CommWriteDat(INT32_T if_id,void *pbuf,INT32_T wlen);
+
 
 #endif//#if __XXX_xxxx__
 
 #ifdef __cplusplus
 }
 #endif
-#endif //#ifndef __XXX_XXX_H__
+#endif //#ifndef __COMM_INTERFACE_H__
 
 
 
