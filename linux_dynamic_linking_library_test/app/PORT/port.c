@@ -65,6 +65,18 @@
 /*****************************************************************************/
                          /* º¯Êý¶¨Òå */
 /*****************************************************************************/
+/******************************************************************************
+* Function:    PORT_InitPortInfo
+* Input:       xxx
+* Output:      xxx
+* Return:      xxx
+* Description: xxxxx
+*
+*
+******************************************************************************/
+INT32_T PORT_InitPortInfo(PORT_T *p_port)
+{
+}
 
 /******************************************************************************
 * Function:    PORT_CreatePortThread
@@ -75,8 +87,9 @@
 *
 *
 ******************************************************************************/
-INT32_T PORT_CreatePortThread(PORT_ID_T port_id,PORT_TYPE_T port_type,PORT_CFG_T *p_port_cfg)
+INT32_T PORT_CreatePortThread(PORT_T *p_port)
 {
+#if 0
 	static pthread_t thread_port_rs485;
 	static pthread_attr_t pthread_port_rs485_attr;
 	static PORT_T port_rs485;
@@ -103,33 +116,19 @@ INT32_T PORT_CreatePortThread(PORT_ID_T port_id,PORT_TYPE_T port_type,PORT_CFG_T
 	if(rc != 0)
 	{
 		pthread_detach(thread_port_rs485);
+		p_tid=thread_port_rs485;
 		METER_PrintLog("create port RS485 thread failed!\r\n");
 	}
 	else
 		METER_PrintLog("Create port RS485 thread successfully\r\n");
-
-#if 0
-	port_rs232.port_type = PORT_RS232;
-	port_rs232.port_cfg.rs232_cfg.band_rate = 115200;
-	port_rs232.port_cfg.rs232_cfg.flow_ctrl = 0;
-	port_rs232.port_cfg.rs232_cfg.data_bits = 8;
-	port_rs232.port_cfg.rs232_cfg.stop_bits = 1;
-	port_rs232.port_cfg.rs232_cfg.parity = 'N';
-	memcpy(port_rs232.port_cfg.rs232_cfg.dev_path,PORT_RS232_PATH,sizeof(PORT_RS232_PATH));
-	port_rs232.port_write_func = PORT_Rs232WrTxBuf;
-	port_rs232.port_read_func  = PORT_Rs232RdRxBuf;
-	rc=pthread_create(&thread_port_rs232,&pthread_port_rs232_attr,PORT_Rs232Thread,&port_rs232.port_cfg.rs232_cfg);
-	if(rc != 0)
-	{
-		pthread_detach(thread_port_rs232);
-		METER_PrintLog("create port RS232 thread failed!\r\n");
-	}
-	else
-		METER_PrintLog("Create port RS232 thread successfully\r\n");
 #endif
+	return 0;
 }
 
-
+INT32_T PORT_DestroyPortThread(PORT_T *p_port)
+{
+	return 0;
+}
 
 
 /******************************************************************************
@@ -141,41 +140,24 @@ INT32_T PORT_CreatePortThread(PORT_ID_T port_id,PORT_TYPE_T port_type,PORT_CFG_T
 *
 *
 ******************************************************************************/
-INT32_T PORT_GetPortThreadStatus(PORT_ID_T port_id)
+INT32_T PORT_GetPortThreadStatus(PORT_T *p_port)
 {
+	SINT_T err = pthread_kill(p_port->thread,0);
+	
+	if(err == ESRCH){
+		printf("the specified thread did not exists or already quit/n");
+		return 0;
+	}
+	else if(err == EINVAL)
+	{
+		printf("signal is invalid/n");
+		return 0;
 
-
-}
-
-
-/******************************************************************************
-* Function:    PORT_GetPortCfg
-* Input:       xxx
-* Output:      xxx
-* Return:      xxx
-* Description: xxxxx
-*
-*
-******************************************************************************/
-INT32_T PORT_GetPortCfg(PORT_ID_T port_id,PORT_CFG_T *p_port_cfg)
-{
-
-
-}
-
-/******************************************************************************
-* Function:    PORT_SetPortCfg
-* Input:       xxx
-* Output:      xxx
-* Return:      xxx
-* Description: xxxxx
-*
-*
-******************************************************************************/
-INT32_T PORT_SetPortCfg(PORT_ID_T port_id,PORT_CFG_T *p_port_cfg)
-{
-
-
+	}
+	else
+		printf("threadis alive/n");
+	
+	return 1;
 }
 
 #endif//#if __XXX_xxx__

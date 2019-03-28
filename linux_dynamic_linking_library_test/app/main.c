@@ -16,73 +16,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>   
-#include "comm_interface.h"
-#include "port.h"
+#include "msg_handle.h"
 
 
 
-
-
-typedef struct reg_map_t {
-	UINT32_T if_id;
-	UINT32_T port_type;
-	UINT8_T  valid_flg;
-}REG_MAP_T;
-
-
-
-REG_MAP_T reg_map[32];
-
-
-
-INT32_T HandleNewMsg(MSG_T* msg)
+int LoadDbasePortCfg(void)
 {
+
 /*
-	1.创建对应的管道
-	2.更新MAP表格
-	3.创建端口线程
+	1. 从数据库中加载设备所有物理端口的参数
+	2.将这些参数存放在一张大的表格中
+	3.在创建各个同型端口线程时，需要从这个表格中查询出端口应该配置的参数
+	4.将这个参数传入到端口线程里面。端口线程自己去初始化端口。
 */
-	static UINT32_T create_flg=1;
-	PORT_CFG_T port_rs485;
-
-	if(create_flg)
-	{
-		create_flg=0;
-		PORT_CreatePortThread(PORT_RS485_1, PORT_RS485, &port_rs485);
-	}
-
-	return 0;
 }
-
-
-
-INT32_T COMM_MsgHandle(void)
-{
-	int qid;
-	MSG_T msg;
-	
-	if(OpenMsgQ(&qid, "/", 'a')==0)
-	{
-		memset(&msg,0,sizeof(msg));
-		msg.msg_type=MSG_TYPE_REG;
-		if(GetNewMsg(qid, &msg, 5000)==0)
-		{
-			printf("GetNewMsg[%ld]:%s\r\n", msg.msg_type, msg.msg_text);	
-			if(strncmp(msg.msg_text, "Please Register Port RS485-1\r\n", strlen("Please Register Port RS485-1\r\n"))==0)
-			{
-				HandleNewMsg(&msg);
-				sleep(1);
-				msg.msg_type=MSG_TYPE_ACK;
-				memcpy(msg.msg_text,"Register Port RS485-1 Sucessful\r\n",sizeof("Register Port RS485-1 Successful\r\n"));
-				PutNewMsg(qid, &msg);
-				printf("PutNewMsg[%ld]:%s\r\n", msg.msg_type, msg.msg_text); 
-			}
-		}
-	}
-
-	return 0;
-}
-
 
 
 
@@ -91,15 +38,19 @@ INT32_T COMM_MsgHandle(void)
 
 int main(int argc, char** argv)
 {   
-
-	memset (reg_map,0,sizeof(reg_map));
-
 	g_dev_prm.nvram.debug_log_st.rs485_log=1;
+	/*
+		1.进程启动第一步，将两个表格初始化为0
+		2.从数据库中读出端口参数信息,存储到一张表格
+		3.监听端口消息，创建对应的端口线程，并维护ch_port_map表格
+	*/
+	memset (ch_port_map,0,sizeof(ch_port_map));
 
+	LoadDbasePortCfg();
 	
 	while(1)
 	{
-		COMM_MsgHandle();
+		MSG_MonitorHandle();
 	}
 
 	return 0;

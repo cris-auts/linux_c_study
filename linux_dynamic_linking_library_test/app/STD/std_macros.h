@@ -96,6 +96,7 @@
 
 
 
+#define VALID_FLG			(0x5A)
 
 
 

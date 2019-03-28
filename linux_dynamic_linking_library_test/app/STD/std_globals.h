@@ -48,6 +48,7 @@
 #include <stdint.h>
 #include <stdarg.h>
 #include <unistd.h>
+#include <stdlib.h>
 #include <pthread.h>
 #include <fcntl.h>      /*文件控制定义*/  
 #include <termios.h>    /*PPSIX 终端控制定义*/  

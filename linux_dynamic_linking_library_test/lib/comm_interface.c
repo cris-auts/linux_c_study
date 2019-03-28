@@ -212,7 +212,7 @@ INT32_T WritePipe(char* pname,char* pbuf,INT32_T wlen)
 		}
 	}
 	ClosePipe(pipe_fd);
-	printf("WritePipe fail, %d bytes writed\r\n",pipe_fd,len);
+	printf("WritePipe %d fail, %d bytes writed\r\n",pipe_fd,len);
 	return len;
 }
 
