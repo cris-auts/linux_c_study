@@ -22,13 +22,13 @@
 
 int LoadDbasePortCfg(void)
 {
-
-/*
-	1. 从数据库中加载设备所有物理端口的参数
-	2.将这些参数存放在一张大的表格中
-	3.在创建各个同型端口线程时，需要从这个表格中查询出端口应该配置的参数
-	4.将这个参数传入到端口线程里面。端口线程自己去初始化端口。
-*/
+	/*
+		1. 从数据库中加载设备所有物理端口的参数
+		2.将这些参数存放在一张大的表格中
+		3.在创建各个同型端口线程时，需要从这个表格中查询出端口应该配置的参数
+		4.将这个参数传入到端口线程里面。端口线程自己去初始化端口。
+	*/
+	return 0;
 }
 
 
@@ -39,11 +39,7 @@ int LoadDbasePortCfg(void)
 int main(int argc, char** argv)
 {   
 	g_dev_prm.nvram.debug_log_st.rs485_log=1;
-	/*
-		1.进程启动第一步，将两个表格初始化为0
-		2.从数据库中读出端口参数信息,存储到一张表格
-		3.监听端口消息，创建对应的端口线程，并维护ch_port_map表格
-	*/
+
 	memset (ch_port_map,0,sizeof(ch_port_map));
 
 	LoadDbasePortCfg();
@@ -52,8 +48,6 @@ int main(int argc, char** argv)
 	{
 		MSG_MonitorHandle();
 	}
-
-	return 0;
 }
  
 

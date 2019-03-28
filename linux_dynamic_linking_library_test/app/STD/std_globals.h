@@ -55,6 +55,7 @@
 #include <errno.h>      /*错误号定义*/  
 #include <sys/types.h>   
 #include <sys/stat.h>     
+#include <signal.h>
 
 
 /*-------------------公共头文件----------------*/
@@ -65,6 +66,7 @@
 #include "std_debug.h"
 
 /*--------------自定义公共头文件-------------*/
+#include "comm_interface.h"
 
 
 /*------------------- 接口头文件----------------*/

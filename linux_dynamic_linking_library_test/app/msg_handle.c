@@ -43,7 +43,6 @@
 /*------------------------------------------------------------------*/
 #include "std_globals.h"
 //#if __XXX_xxx__
-#include "comm_interface.h"
 #include "port.h"
 #include "dbase.h"
 #include "msg.h"
@@ -92,7 +91,7 @@ INT32_T MSG_ChkSameItemCfgs(MSG_T* p_msg, PORT_T 		*p_port)
 	/*
 		除了规约类型不判，其他的都要判
 	*/
-
+	return 0;
 }
 
 
@@ -108,6 +107,7 @@ INT32_T MSG_ChkSameItemCfgs(MSG_T* p_msg, PORT_T 		*p_port)
 INT32_T MSG_ChkSameItemPrtcCfgs(MSG_T* p_msg, PORT_T 		*p_port)
 {
 	  /*检测规约是否相同*/
+	return 0;
 }
 
 
@@ -312,7 +312,6 @@ INT32_T MSG_MonitorHandle(void)
 	int qid;
 	MSG_T msg;
 	INT32_T ch_id;
-	P_TABLE_COMM_PRM_T p_msg;
 	if(OpenMsgQ(&qid, "/", 'a')==0)
 	{
 		memset(&msg,0,sizeof(msg));
