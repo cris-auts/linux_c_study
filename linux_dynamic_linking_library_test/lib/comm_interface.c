@@ -58,10 +58,19 @@
 
 /*----------------------模块内类定义--------------------------*/
 
- 
+ typedef struct ch_fd_tab_t
+{
+	UINT8_T valid_flg;
+	INT32_T ch;
+	INT32_T fd;
+}CH_FD_TAB_T;
 
 
 /*----------------------变量常量定义--------------------------*/
+
+
+CH_FD_TAB_T ch_fd_tab[COMM_PIPE_CH_SIZE];
+
 
 
 /*****************************************************************************/
@@ -227,6 +236,19 @@ INT32_T WritePipe(char* pname,char* pbuf,INT32_T wlen)
 
 
 
+/******************************************************************************
+* Function:    COMM_InterfaceInit
+* Input:       xxx
+* Output:      xxx
+* Return:      xxx
+* Description: xxxxx
+*
+*
+******************************************************************************/
+void  COMM_InterfaceInit(void  )
+{
+	memset(ch_fd_tab,0,sizeof(ch_fd_tab));
+}
 
 
 
@@ -329,25 +351,33 @@ INT32_T  COMM_ReadRxFrRxPipe(INT32_T if_id,void *pbuf,INT32_T rlen)
 {
 	INT32_T len=0;
 	char fifo_name[64];
-	int pipe_wfd=-1;
 	int pipe_rfd=-1;
+
 	memset(fifo_name,0,sizeof(fifo_name));
 	sprintf(fifo_name,"/pipe/rx%05d",if_id);
-	if(OpenPipe(fifo_name, &pipe_rfd,O_RDONLY|O_NONBLOCK)==0)
-	{
-		if(OpenPipe(fifo_name, &pipe_wfd,O_WRONLY|O_NONBLOCK)==0)
-		{
-			len = read(pipe_rfd, pbuf, rlen);
-			ClosePipe(pipe_rfd);
-		}
-		ClosePipe(pipe_wfd);
-	}
 	
+	printf("1func:%s:%d.fifo_name=%s\r\n",__func__,__LINE__,fifo_name);
+
+	if(ch_fd_tab[if_id].valid_flg != VALID_FLG)
+	{
+		if(OpenPipe(fifo_name, &pipe_rfd,O_RDONLY|O_NONBLOCK)==0)
+		{
+			ch_fd_tab[if_id].valid_flg=VALID_FLG;
+			ch_fd_tab[if_id].fd=pipe_rfd;
+		}
+	}
+	else
+	{
+		len = read(ch_fd_tab[if_id].fd, pbuf, rlen);
+
+	}
+
 	if(len >0)
 		return len;
 	else
 		return 0;
 }
+
 
 
 /******************************************************************************
@@ -367,7 +397,7 @@ INT32_T  COMM_WriteTxToTxPipe(INT32_T if_id,void *pbuf,INT32_T wlen)
 	int pipe_wfd=-1;
 	memset(fifo_name,0,sizeof(fifo_name));
 	sprintf(fifo_name,"/pipe/tx%05d",if_id);
-	printf("%s:%d,fifo_name=%s\r\n",fifo_name);
+	
 	if(OpenPipe(fifo_name, &pipe_rfd,O_RDONLY|O_NONBLOCK)==0)
 	{	
 		if(OpenPipe(fifo_name, &pipe_wfd,O_WRONLY|O_NONBLOCK)==0)
@@ -429,25 +459,27 @@ INT32_T  COMM_ReadTxFrTxPipe(INT32_T if_id,void *pbuf,INT32_T rlen)
 {
 	INT32_T len=0;
 	char fifo_name[64];
-	int pipe_wfd=-1;
 	int pipe_rfd=-1;
+
 	memset(fifo_name,0,sizeof(fifo_name));
 	sprintf(fifo_name,"/pipe/tx%05d",if_id);
 	
 	printf("1func:%s:%d.fifo_name=%s\r\n",__func__,__LINE__,fifo_name);
-	if(OpenPipe(fifo_name, &pipe_rfd,O_RDONLY|O_NONBLOCK)==0)
+
+	if(ch_fd_tab[if_id].valid_flg != VALID_FLG)
 	{
-		printf("open write ok\r\n");
-		if(OpenPipe(fifo_name, &pipe_wfd,O_WRONLY|O_NONBLOCK)==0)
+		if(OpenPipe(fifo_name, &pipe_rfd,O_RDONLY|O_NONBLOCK)==0)
 		{
-			printf("open read ok\r\n");
-			len = read(pipe_rfd, pbuf, rlen);
-			ClosePipe(pipe_rfd);
+			ch_fd_tab[if_id].valid_flg=VALID_FLG;
+			ch_fd_tab[if_id].fd=pipe_rfd;
 		}
-		ClosePipe(pipe_wfd);
 	}
-	
-	printf("2func:%s:%d.fifo_name=%s\r\n",__func__,__LINE__,fifo_name);
+	else
+	{
+		len = read(ch_fd_tab[if_id].fd, pbuf, rlen);
+
+	}
+
 	if(len >0)
 		return len;
 	else

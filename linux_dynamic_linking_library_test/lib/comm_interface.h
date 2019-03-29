@@ -56,6 +56,11 @@ extern "C" {
 
 
 /*----------------------公共宏定义----------------------------*/
+
+#define  COMM_PIPE_CH_SIZE 			(32)
+
+
+
 #define  MSG_TYPE_REG 			(1)
 #define  MSG_TYPE_ACK 			(2)
 
@@ -95,6 +100,7 @@ extern INT32_T CloseMsgQ(INT32_T qid);
 extern INT32_T GetNewMsg(INT32_T qid, MSG_T* pmsg, INT32_T wait_ms);
 extern INT32_T PutNewMsg(INT32_T qid, MSG_T* pmsg);
 
+extern void  COMM_InterfaceInit(void);
 extern  INT32_T  COMM_InterfaceRegister(void *p_if,INT32_T len,INT32_T wait_ms);
 extern  INT32_T  COMM_InterfaceUnRegister(INT32_T if_id);
 extern INT32_T  COMM_AppReadDat(INT32_T if_id,void *pbuf,INT32_T rlen);

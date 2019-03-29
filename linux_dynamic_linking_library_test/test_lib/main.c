@@ -34,16 +34,18 @@ int main(int argc, char** argv)
 	
 	INT32_T ch_id1=0;
 	PRM_MAIN_T usr_cfg;
+	
+	COMM_InterfaceInit();
 
 	
 	ch_id=COMM_InterfaceRegister(&usr_cfg,sizeof(usr_cfg),5000);
 	printf("$$$$$$$$$$$$$$$$$$ch_id=%d\r\n",ch_id);
 	sleep(5);
 	
-	//ch_id1=COMM_InterfaceRegister(&usr_cfg,sizeof(usr_cfg),5000);
-	//printf("$$$$$$$$$$$$$$$$$$ch_id=%d\r\n",ch_id1);
-	//if((ch_id<0)||(ch_id1<0))
-		//return 0;
+	ch_id1=COMM_InterfaceRegister(&usr_cfg,sizeof(usr_cfg),5000);
+	printf("$$$$$$$$$$$$$$$$$$ch_id=%d\r\n",ch_id1);
+	if((ch_id<0)||(ch_id1<0))
+		return 0;
 	
 	while(1)
 	{
@@ -58,7 +60,7 @@ int main(int argc, char** argv)
 		if(wlen == 128)
 			printf("ch_id=%d**********APP SND[%d]:%s\r\n",ch_id,wlen,pipe_wbuf);
 
-		#else
+		//#else
 		memset(pipe_rbuf,0,128);
 		rlen=COMM_AppReadDat(ch_id1,pipe_rbuf,128);
 		if(rlen)
