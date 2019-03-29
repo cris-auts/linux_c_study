@@ -88,16 +88,13 @@ PORT_DEV_CFG_T *p_dev_cfg_map;
 *
 *
 ******************************************************************************/
-INT32_T MSG_ChkSameItemCfgs(MSG_T *p_msg, PORT_T *p_port)
+INT32_T MSG_ChkSameItemCfgs(PORT_USR_CFG_T *p_usr_cfg, PORT_T *p_port)
 {
 	/*
 		除了规约类型不判，其他的都要判
 	*/
 
 	PRTC_TYPE_T usr_port_prtc;
-	PORT_USR_CFG_T* p_usr_cfg=(PORT_USR_CFG_T*)p_msg->msg_text;
-
-	
 	usr_port_prtc = p_usr_cfg->comm_prm.prtc_type;
 	p_usr_cfg->comm_prm.prtc_type = p_port->port_cfg.usr_cfg.comm_prm.prtc_type;
 
@@ -124,10 +121,9 @@ INT32_T MSG_ChkSameItemCfgs(MSG_T *p_msg, PORT_T *p_port)
 *
 *
 ******************************************************************************/
-INT32_T MSG_ChkSameItemPrtcCfgs(MSG_T* p_msg, PORT_T 		*p_port)
+INT32_T MSG_ChkSameItemPrtcCfgs(PORT_USR_CFG_T* p_usr_cfg, PORT_T *p_port)
 {
 	/*检测规约是否相同*/
-	PORT_USR_CFG_T* p_usr_cfg=(PORT_USR_CFG_T*)p_msg->msg_text;
 	if(p_usr_cfg->comm_prm.prtc_type == p_port->port_cfg.usr_cfg.comm_prm.prtc_type)
 		return 1;
 	else
@@ -144,7 +140,7 @@ INT32_T MSG_ChkSameItemPrtcCfgs(MSG_T* p_msg, PORT_T 		*p_port)
 *
 *
 ******************************************************************************/
-INT32_T MSG_ChkSameMapTabItems(MSG_T* p_msg,INT32_T *p_map_tab_idx)
+INT32_T MSG_ChkSameMapTabItems(PORT_USR_CFG_T* p_usr_cfg,INT32_T *p_map_tab_idx)
 {
 
 	UINT32_T i=0;
@@ -152,7 +148,7 @@ INT32_T MSG_ChkSameMapTabItems(MSG_T* p_msg,INT32_T *p_map_tab_idx)
 	{
 		if(ch_port_map[i].valid_flg==VALID_FLG)
 		{
-			if(MSG_ChkSameItemCfgs(p_msg, ch_port_map[i].p_port))
+			if(MSG_ChkSameItemCfgs(p_usr_cfg, ch_port_map[i].p_port))
 			{
 				*p_map_tab_idx=i;
 				return 1;
@@ -246,15 +242,16 @@ INT32_T MSG_HandleNewMsg(MSG_T* p_msg,INT32_T *p_ch_id)
 	INT32_T map_tab_idx;
 	INT32_T map_tab_new_idx;
 	PORT_T  *p_port=NULL;
-	PORT_USR_CFG_T *p_usr_cfg=(PORT_USR_CFG_T*)p_msg->msg_text;
-
+	static INT32_T prtc_cnt=0;
+	PORT_USR_CFG_T *p_usr_cfg=(PORT_USR_CFG_T*)&(p_msg->msg_text.reg_text.usr_cfg);
 	#if 1//测试代码
+	
 	p_usr_cfg->comm_prm.comm_port=COMM_RS485_1;
-	p_usr_cfg->comm_prm.prtc_type=PRTC_DLT698;
+	p_usr_cfg->comm_prm.prtc_type=prtc_cnt++;
 	#endif
-	if(MSG_ChkSameMapTabItems(p_msg,&map_tab_idx))
+	if(MSG_ChkSameMapTabItems(p_usr_cfg,&map_tab_idx))
 	{// 存在相同的参数
-		if(MSG_ChkSameItemPrtcCfgs(p_msg,ch_port_map[map_tab_idx].p_port))
+		if(MSG_ChkSameItemPrtcCfgs(p_usr_cfg,ch_port_map[map_tab_idx].p_port))
 		{//完全相同，重复注册，返回表格中的通道ID
 			*p_ch_id=ch_port_map[map_tab_idx].ch_id;
 			return 0;
@@ -358,25 +355,27 @@ INT32_T MSG_MonitorHandle(void)
 		msg.msg_type=MSG_TYPE_REG;
 		if(GetNewMsg(qid, &msg, 5000)==0)
 		{
-			printf("GetNewMsg[%ld]:%s\r\n", msg.msg_type, msg.msg_text);	
-			if(strncmp(msg.msg_text, "Please Register Port RS485-1\r\n", strlen("Please Register Port RS485-1\r\n"))==0)
+			printf("GetNewMsg[%ld]:%s\r\n", msg.msg_type, msg.msg_text.reg_text.tips);	
+			if(strncmp(msg.msg_text.reg_text.tips, "Please Register Port RS485-1\r\n", strlen("Please Register Port RS485-1\r\n"))==0)
 			{
 				if(MSG_HandleNewMsg(&msg,&ch_id)==0)
 				{
 					sleep(1);
 					msg.msg_type=MSG_TYPE_ACK;
-					memcpy(msg.msg_text,"Register Port RS485-1 Sucessful\r\n",sizeof("Register Port RS485-1 Successful\r\n"));
+					msg.msg_text.ack_text.ch_id=ch_id;
+					memcpy(msg.msg_text.ack_text.tips,"Register Port RS485-1 Sucessful\r\n",sizeof("Register Port RS485-1 Successful\r\n"));
 					PutNewMsg(qid, &msg);
-					printf("PutNewMsg[%ld]:%s\r\n", msg.msg_type, msg.msg_text); 
+					printf("PutNewMsg[%ld]:%s\r\n", msg.msg_type, msg.msg_text.ack_text.tips); 
 
 				}
 				else
 				{
 					sleep(1);
 					msg.msg_type=MSG_TYPE_ACK;
-					memcpy(msg.msg_text,"Register Port RS485-1 Failed!\r\n",sizeof("Register Port RS485-1 Failed!\r\n"));
+					msg.msg_text.ack_text.ch_id=-1;
+					memcpy(msg.msg_text.ack_text.tips,"Register Port RS485-1 Failed!\r\n",sizeof("Register Port RS485-1 Failed!\r\n"));
 					PutNewMsg(qid, &msg);
-					printf("PutNewMsg[%ld]:%s\r\n", msg.msg_type, msg.msg_text); 
+					printf("PutNewMsg[%ld]:%s\r\n", msg.msg_type, msg.msg_text.ack_text.tips); 
 				}
 			}
 		}

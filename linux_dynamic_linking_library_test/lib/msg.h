@@ -4,13 +4,13 @@
 *  This software is protected by Copyright and the information contained
 *  herein is confidential. The software may not be copied and the information
 *  contained herein may not be used or disclosed except with the written
-*  permission of WAN XING Tech. Co., Ltd.(C) 2020.
+*  permission of  WAN XING Tech. Co., Ltd.(C) 2012.
 *
 *  Copyright (C), 2018-2030, WAN XING Tech. Co., Ltd.
 *
 *********************************************************************************************************
 *
-* File name: comm.h
+* File name: app_monitor_master_station.h
 * -------------------------------------
 *
 * Module: all
@@ -40,81 +40,91 @@
 * Others:
 *
 ********************************************************************************************************/
-#ifndef __COMM_INTERFACE_H__
-#define __COMM_INTERFACE_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+
+#ifndef __MAIN_H__
+#define __MAIN_H__
+
+
 
 
 /*----------------------公共头文件----------------------------*/
+
 #include "std_globals.h"
-#if 1//__XXX_xxx__
-#include "msg.h"
 #include "dbase.h"
 
 
+
 /*----------------------公共宏定义----------------------------*/
-#define  MSG_TYPE_REG 			(1)
-#define  MSG_TYPE_ACK 			(2)
 
-#define  MSG_TIPS_SIZE 			(128)
+#define ID_NUM_MAX 20
 
-/*----------------------公共类定义----------------------------*/
-typedef union msg_text_t
-{
-	struct reg_text_t{
-		PRM_MAIN_T usr_cfg;
-		char tips[MSG_TIPS_SIZE];
-	}reg_text;
-	struct ack_text_t{
-		INT32_T ch_id;
-		char tips[MSG_TIPS_SIZE];
-	}ack_text;
-}MSG_TEXT_T;
+#define UVAL_USELESS 0XFFFF
+#define SVAL_USELESS (-1)
 
 
-typedef struct msg_t
-{
-    long msg_type;
-    MSG_TEXT_T msg_text;
-}MSG_T;
+#define DL698_BUFF_SIZE 4096
+#define MAINT_BUFF_SIZE 1024
+
+#define PRTC_BUFF_SIZE_MIN 500
+
+
 
 
 
 /*-----------------模块对外接口变量声明-----------------------*/
-//extern    xxxxx;
+extern UINT32_T comm_prm_num;                      //通信参数条目
+
+//主线程传递参数
+typedef struct prm_main
+{
+	UINT8_T   slaver_run_mode;       //分解后运行模式
+	UINT8_T   slaver_run_ip_index;   //分解后运行ip索引
+	TABLE_COMM_PRM_T comm_prm;
+}PRM_MAIN_T,*pM_MAIN_T;
+
+
+typedef struct user_comm_prm_t
+{
+	PRM_MAIN_T comm_prm_info;
+	UINT8_T * commdata_space;    //通信数据空间
+	UINT8_T * prtc_buff_space;   //规约缓存空间
+	pthread_t thread_sever;      //单模式使用/混合模式下服务器模式
+}USER_COMM_PRM_T,*pUSER_COMM_PRM_T;
+
+
+//参数映射表
+typedef struct map_list_prm
+{
+	INT32_T   comm_id;               //通信id
+	UINT8_T   status;
+	UINT32_T  buff_size;
+	UINT8_T * buff_rx;
+	UINT32_T  buff_rx_len;
+	UINT8_T * buff_tx;
+	UINT32_T  buff_tx_len;
+	USER_COMM_PRM_T user_comm_prm;
+}MAP_LIST_PRM_T,*pMAP_LIST_PRM_T;
+
+
+
+//参数映射表控制器
+typedef struct map_list_ctrl
+{
+	INT32_T   prm_master_id;         //参数主id
+	UINT32_T  prm_map_list_num;      //引射表参数数目
+	MAP_LIST_PRM_T * prm_map_list;   //映射表地址
+}MAP_LIST_CTRL_T,*pMAP_LIST_CTRL_T;
+
 
 
 /*-----------------模块对外接口函数声明-----------------------*/
-extern INT32_T OpenMsgQ(INT32_T* pqid,char* ppath, char id);
-extern INT32_T CloseMsgQ(INT32_T qid);
-extern INT32_T GetNewMsg(INT32_T qid, MSG_T* pmsg, INT32_T wait_ms);
-extern INT32_T PutNewMsg(INT32_T qid, MSG_T* pmsg);
-
-extern  INT32_T  COMM_InterfaceRegister(void *p_if,INT32_T len,INT32_T wait_ms);
-extern  INT32_T  COMM_InterfaceUnRegister(INT32_T if_id);
-extern INT32_T  COMM_AppReadDat(INT32_T if_id,void *pbuf,INT32_T rlen);
-extern INT32_T  COMM_AppWriteDat(INT32_T if_id,void *pbuf,INT32_T wlen);
-extern INT32_T  COMM_CommReadDat(INT32_T if_id,void *pbuf,INT32_T rlen);
-extern INT32_T  COMM_CommWriteDat(INT32_T if_id,void *pbuf,INT32_T wlen);
 
 
-#endif//#if __XXX_xxxx__
+extern MAP_LIST_PRM_T g_prm_map_list[ID_NUM_MAX];	
+extern UINT32_T Main_FindID_Map(unsigned int s_id);
 
-#ifdef __cplusplus
-}
+
 #endif
-#endif //#ifndef __COMM_INTERFACE_H__
-
-
-
-
-
-
-
-
-
 
 

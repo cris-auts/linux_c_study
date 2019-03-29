@@ -45,6 +45,7 @@
 #if __SYS_RS485_ENABLE__
 #include "port_rs485_func.h"
 
+#include "port.h"
 
 
 /*-----------------------模块内宏定义-------------------------*/
@@ -498,7 +499,7 @@ UINT32_T PORT_Rs485RdRxBuf(UINT8_T *pbuf, UINT32_T rlen)
 ******************************************************************************/
 void* PORT_Rs485Thread(void *p_arg)
 {
-	//UINT32_T i;
+	UINT32_T i;
 	//UINT32_T rcv_len=0;
 	//UINT32_T	snd_len=0;
 	//UINT8_T rcv_buf[RS485_RX_DAT_BUF_SIZE];
@@ -508,9 +509,9 @@ void* PORT_Rs485Thread(void *p_arg)
 	char pipe_wbuf[128]={"COM:ABCDEFGHIJ!\r\n"};
 	char pipe_rbuf[128];
 	//char interface[1024];
+	PORT_T *p_port= p_arg;
 
-
-	
+	printf("p_port->prtc_tab[0].ch_id=%d\r\n",p_port->prtc_tab[0].ch_id);
 	#if 1
 		
 	while (1)
@@ -532,16 +533,28 @@ void* PORT_Rs485Thread(void *p_arg)
 		}
 
 		#endif
+		for(i=0;i<PORT_MULTI_CH_MAX;i++)
+		{
+			if(p_port->prtc_tab[i].valid_flg==VALID_FLG)
+			{
+				wlen=COMM_CommWriteDat(p_port->prtc_tab[i].ch_id,pipe_wbuf,128);
+				if(wlen == 128)
+					printf("=============ch_id=%d,COM SND[%d]:%s\r\n",p_port->prtc_tab[i].ch_id,wlen,pipe_wbuf);
+			}
+		}
+		sleep(1);
 		
-		wlen=COMM_CommWriteDat(1,pipe_wbuf,128);
-		if(wlen == 128)
-			printf("=============COM SND[%d]:%s\r\n",wlen,pipe_wbuf);
-		usleep(500);
+		for(i=0;i<PORT_MULTI_CH_MAX;i++)
+		{
+			if(p_port->prtc_tab[i].valid_flg==VALID_FLG)
+			{
+				memset(pipe_rbuf,0,128);
+				rlen=COMM_CommReadDat(p_port->prtc_tab[i].ch_id,pipe_rbuf,128);
+				if(rlen)
+					printf("&&&&&&&&&&&&&ch_id=%dCOM RCV[%d]:%s\r\n",p_port->prtc_tab[i].ch_id,rlen,pipe_rbuf);
+			}
+		}
 
-		memset(pipe_rbuf,0,128);
-		rlen=COMM_CommReadDat(1,pipe_rbuf,128);
-		if(rlen)
-			printf("&&&&&&&&&&&&&COM RCV[%d]:%s\r\n",rlen,pipe_rbuf);
 	}
 	#else
 	while(1)

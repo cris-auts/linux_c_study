@@ -49,8 +49,6 @@
 
 
 /*-----------------------模块内宏定义-------------------------*/
-#define  MSG_BUF_SIZE 			(1024)
-
 #define  MSG_TYPE_REG 			(1)
 #define  MSG_TYPE_ACK 			(2)
 
@@ -106,7 +104,7 @@ INT32_T GetNewMsg(INT32_T qid, MSG_T* pmsg, INT32_T wait_ms)
 	while(wait_cnt--)
 	{
 		usleep(1000);
-		if (msgrcv(qid, (void*)pmsg, MSG_BUF_SIZE, pmsg->msg_type, IPC_NOWAIT) < 0) 
+		if (msgrcv(qid, (void*)pmsg, sizeof(MSG_T), pmsg->msg_type, IPC_NOWAIT) < 0) 
 		{
 			//perror("msgrcv");
 			return -1;
@@ -122,6 +120,17 @@ INT32_T GetNewMsg(INT32_T qid, MSG_T* pmsg, INT32_T wait_ms)
 }
 
 
+
+
+INT32_T PutNewMsg(INT32_T qid, MSG_T* pmsg)
+{
+	if ((msgsnd(qid, pmsg, sizeof(MSG_T), 0)) < 0)
+	{
+		perror("message posted");
+		return -1;
+	}
+	return 0;
+}
 
 
 INT32_T OpenPipe(char* pname, int*ppipe_fd, int mode)
@@ -143,12 +152,12 @@ INT32_T OpenPipe(char* pname, int*ppipe_fd, int mode)
 	*ppipe_fd = open(pname, open_mode);
 	if(*ppipe_fd > 0)
 	{
-		printf("Process %d fd:%d,err:%d\n", getpid(), *ppipe_fd,err);
+		//printf("Process %d fd:%d,err:%d\n", getpid(), *ppipe_fd,err);
 		return 0;
 	}
 	else
 	{
-		printf("Process %d open %s fail,fd:%d!\n", getpid(), pname,*ppipe_fd);
+		//printf("Process %d open %s fail,fd:%d!\n", getpid(), pname,*ppipe_fd);
 		return -1;
 	}
 }
@@ -174,7 +183,7 @@ INT32_T ReadPipe(char* pname,char* pbuf, INT32_T rlen)
 	{
 		//printf("%s:%d\r\n",__func__,__LINE__);
 		len = read(pipe_fd, pbuf, rlen);
-		printf("pipe_fd=%d,read len=%d\r\n",pipe_fd,len);
+		//printf("pipe_fd=%d,read len=%d\r\n",pipe_fd,len);
 		return len;
 	}
 	else
@@ -182,9 +191,9 @@ INT32_T ReadPipe(char* pname,char* pbuf, INT32_T rlen)
 		if(OpenPipe(pname, &pipe_fd,O_RDONLY|O_NONBLOCK)==0)
 		{
 		
-			printf("%s:%d\r\n",__func__,__LINE__);
+			//printf("%s:%d\r\n",__func__,__LINE__);
 			len = read(pipe_fd, pbuf, rlen);
-			printf("pipe_fd=%d,read len=%d\r\n",pipe_fd,len);
+			//printf("pipe_fd=%d,read len=%d\r\n",pipe_fd,len);
 			//ClosePipe(pipe_fd);
 		}
 		//ClosePipe(pipe_fd);
@@ -206,31 +215,14 @@ INT32_T WritePipe(char* pname,char* pbuf,INT32_T wlen)
 		len = write(pipe_fd, pbuf, wlen);
 		if((len > 0)&&(len==wlen))
 		{
-			printf("WritePipe %d sucess, %d bytes writed\r\n",pipe_fd,len);
+			//printf("WritePipe %d sucess, %d bytes writed\r\n",pipe_fd,len);
 			ClosePipe(pipe_fd);
 			return len;
 		}
 	}
 	ClosePipe(pipe_fd);
-	printf("WritePipe %d fail, %d bytes writed\r\n",pipe_fd,len);
+	//printf("WritePipe %d fail, %d bytes writed\r\n",pipe_fd,len);
 	return len;
-}
-
-
-
-
-
-
-
-
-INT32_T PutNewMsg(INT32_T qid, MSG_T* pmsg)
-{
-	if ((msgsnd(qid, pmsg, strlen(pmsg->msg_text), 0)) < 0)
-	{
-		perror("message posted");
-		return -1;
-	}
-	return 0;
 }
 
 
@@ -248,21 +240,14 @@ INT32_T PutNewMsg(INT32_T qid, MSG_T* pmsg)
 *
 *
 ******************************************************************************/
-INT32_T  COMM_InterfaceRegister(void *p_if,INT32_T len,INT32_T wait_ms)
+INT32_T  COMM_InterfaceRegister(void *p_usr_cfg,INT32_T len,INT32_T wait_ms)
 {
 	int qid;
 	key_t key;
 	MSG_T msg;
 	int msg_wait_cnt=0;
 	INT32_T comm_id=-1;
-
 	
-	#if 1	//测试代码
-	p_if=malloc(MSG_BUF_SIZE);
-	len=MSG_BUF_SIZE;
-	memset(p_if,0,len);
-	memcpy(p_if,"Please Register Port RS485-1\r\n",len);
-	#endif
 
 	if ((key = ftok("/", 'a')) == -1)
 	{
@@ -276,12 +261,13 @@ INT32_T  COMM_InterfaceRegister(void *p_if,INT32_T len,INT32_T wait_ms)
 		perror("msgget");
 		return -1;
 	}
-
-	memcpy(msg.msg_text,p_if,len);
-	msg.msg_type=MSG_TYPE_REG;
 	
-	printf("Snd message from process %ld : %s\r\n", msg.msg_type, msg.msg_text);	
-	if ((msgsnd(qid, &msg, strlen(msg.msg_text), 0)) < 0)
+	msg.msg_type=MSG_TYPE_REG;
+	memcpy(&msg.msg_text.reg_text.usr_cfg,p_usr_cfg,len);
+	memcpy(&msg.msg_text.reg_text.tips[0],"Please Register Port RS485-1\r\n",MSG_TIPS_SIZE);
+	
+	printf("Snd message[%ld]: %s\r\n", msg.msg_type, msg.msg_text.reg_text.tips);	
+	if ((msgsnd(qid, &msg, sizeof(MSG_T), 0)) < 0)
 	{
 		perror("message posted");
 		return -1;
@@ -291,18 +277,18 @@ INT32_T  COMM_InterfaceRegister(void *p_if,INT32_T len,INT32_T wait_ms)
 	msg_wait_cnt=wait_ms;
 	while(msg_wait_cnt--)
 	{
-		memset(msg.msg_text, 0, MSG_BUF_SIZE);
+		memset(&msg, 0, sizeof(MSG_T));
 		msg.msg_type=MSG_TYPE_ACK;
 		usleep(MSG_RCV_WAIT_CYC);
-		if (msgrcv(qid, (void*)&msg, MSG_BUF_SIZE, MSG_TYPE_ACK, IPC_NOWAIT) < 0) 
+		if (msgrcv(qid, (void*)&msg, sizeof(MSG_T), MSG_TYPE_ACK, IPC_NOWAIT) < 0) 
 		{
 			//perror("msgrcv");
 			comm_id=-1;
 		}
 		else
 		{
-			printf("RCV message from process %ld : %s\r\n", msg.msg_type, msg.msg_text);
-			comm_id=1;
+			printf("RCV message[%ld]: %s\r\n", msg.msg_type, msg.msg_text.ack_text.tips);
+			comm_id=msg.msg_text.ack_text.ch_id;
 			break;
 		}
 	}
@@ -367,7 +353,7 @@ INT32_T  COMM_WriteTxToTxPipe(INT32_T if_id,void *pbuf,INT32_T wlen)
 	char fifo_name[64];
 	memset(fifo_name,0,sizeof(fifo_name));
 	sprintf(fifo_name,"/pipe/tx%05d",if_id);
-	printf("fifo_name:%s\r\n",fifo_name);
+	//printf("fifo_name:%s\r\n",fifo_name);
 	len=WritePipe(fifo_name, pbuf, wlen);
 	return len;
 }
@@ -409,7 +395,7 @@ INT32_T  COMM_ReadTxFrTxPipe(INT32_T if_id,void *pbuf,INT32_T rlen)
 	char fifo_name[64];
 	memset(fifo_name,0,sizeof(fifo_name));
 	sprintf(fifo_name,"/pipe/tx%05d",if_id);
-	printf("fifo_name:%s\r\n",fifo_name);
+	//printf("fifo_name:%s\r\n",fifo_name);
 	len=ReadPipe(fifo_name, pbuf, rlen);
 	return len;
 }

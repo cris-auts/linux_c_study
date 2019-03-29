@@ -17,6 +17,8 @@
 #include <stdlib.h>
 #include <string.h>   
 #include "comm_interface.h"
+#include "msg.h"
+#include "dbase.h"
 
 
 
@@ -28,19 +30,24 @@ int main(int argc, char** argv)
 	UINT32_T wlen=0;
 	char pipe_wbuf[128]={"APP:1234567890!\r\n"};
 	char pipe_rbuf[128];
-	char interface[1024];
+	INT32_T ch_id=0;
+	PRM_MAIN_T usr_cfg;
+
 	
-	COMM_InterfaceRegister(interface,1024,5000);
+	ch_id=COMM_InterfaceRegister(&usr_cfg,sizeof(usr_cfg),5000);
+	printf("$$$$$$$$$$$$$$$$$$ch_id=%d\r\n",ch_id);
 	sleep(1);
+	if(ch_id<0)
+		return 0;
 	while(1)
 	{
 		memset(pipe_rbuf,0,128);
-		rlen=COMM_AppReadDat(1,pipe_rbuf,128);
+		rlen=COMM_AppReadDat(ch_id,pipe_rbuf,128);
 		if(rlen)
 			printf("@@@@@@@@@@APP RCV[%d]:%s\r\n",rlen,pipe_rbuf);
-		usleep(500);
+		sleep(1);
 		
-		wlen=COMM_AppWriteDat(1,pipe_wbuf,128);
+		wlen=COMM_AppWriteDat(ch_id,pipe_wbuf,128);
 		if(wlen == 128)
 			printf("**********APP SND[%d]:%s\r\n",wlen,pipe_wbuf);
 	}

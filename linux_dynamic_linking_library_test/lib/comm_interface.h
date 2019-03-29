@@ -51,23 +51,36 @@ extern "C" {
 /*----------------------公共头文件----------------------------*/
 #include "std_globals.h"
 #if 1//__XXX_xxx__
-
-//#include "xxx_xxx.h"
+#include "msg.h"
+#include "dbase.h"
 
 
 /*----------------------公共宏定义----------------------------*/
-#define  MSG_BUF_SIZE 			(1024)
-
 #define  MSG_TYPE_REG 			(1)
 #define  MSG_TYPE_ACK 			(2)
 
+#define  MSG_TIPS_SIZE 			(128)
 
 /*----------------------公共类定义----------------------------*/
+typedef union msg_text_t
+{
+	struct reg_text_t{
+		PRM_MAIN_T usr_cfg;
+		char tips[MSG_TIPS_SIZE];
+	}reg_text;
+	struct ack_text_t{
+		INT32_T ch_id;
+		char tips[MSG_TIPS_SIZE];
+	}ack_text;
+}MSG_TEXT_T;
+
+
 typedef struct msg_t
 {
     long msg_type;
-    char msg_text[MSG_BUF_SIZE];
+    MSG_TEXT_T msg_text;
 }MSG_T;
+
 
 
 /*-----------------模块对外接口变量声明-----------------------*/
