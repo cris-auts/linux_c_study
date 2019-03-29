@@ -17,6 +17,8 @@ LDFLAGS := -l sqlite3 -l pthread -lpaho-mqtt3c
 
 FILES = $(foreach dir, $(DIRS), $(wildcard $(dir)/*.c))
 OBJS = $(patsubst %.c, %.o, $(FILES))
+all: clean $(TARGET)
+
 $(TARGET):$(OBJS)
 	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS) $(LDFLAGS)
 	-$(RM) $(OBJS)
