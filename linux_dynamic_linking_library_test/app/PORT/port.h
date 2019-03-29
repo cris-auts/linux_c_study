@@ -137,6 +137,7 @@ typedef struct port_t{
 	UINT32_T 	(*port_write_func)(UINT8_T *p_buf, UINT32_T w_len);
 	UINT32_T 	(*port_read_func) (UINT8_T *p_buf, UINT32_T r_len);
 	pthread_t 	thread;
+	pthread_attr_t 	thread_attr;
 }PORT_T;
 
 

@@ -202,7 +202,7 @@ INT32_T WritePipe(char* pname,char* pbuf,INT32_T wlen)
 	
 	if(OpenPipe(pname, &pipe_fd,O_WRONLY|O_NONBLOCK)==0)
 	{
-		printf("%s:%d\r\n",__func__,__LINE__);
+		//printf("%s:%d\r\n",__func__,__LINE__);
 		len = write(pipe_fd, pbuf, wlen);
 		if((len > 0)&&(len==wlen))
 		{

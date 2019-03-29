@@ -499,12 +499,10 @@ UINT32_T PORT_Rs485RdRxBuf(UINT8_T *pbuf, UINT32_T rlen)
 void* PORT_Rs485Thread(void *p_arg)
 {
 	//UINT32_T i;
-	SINT_T fd;
 	//UINT32_T rcv_len=0;
 	//UINT32_T	snd_len=0;
 	//UINT8_T rcv_buf[RS485_RX_DAT_BUF_SIZE];
 	//UINT8_T snd_buf[RS485_TX_DAT_BUF_SIZE];
-	PORT_RS485_CFG_T *pcfg=p_arg;
 	UINT32_T rlen=0;
 	UINT32_T wlen=0;
 	char pipe_wbuf[128]={"COM:ABCDEFGHIJ!\r\n"};
@@ -513,23 +511,6 @@ void* PORT_Rs485Thread(void *p_arg)
 
 
 	
-	memset(&rs485_rx_ringbuf,0,sizeof(rs485_rx_ringbuf));
-	memset(&rs485_tx_ringbuf,0,sizeof(rs485_tx_ringbuf));
-	
-	printf("%s:%d\r\n",__func__,__LINE__);
-	fd=PORT_Rs485Init(pcfg->dev_path);
-	if(fd<0)
-	{
-		printf("PORT RS485 Init failed!\r\n");
-		pthread_exit(NULL); 
-	}
-
-	if(PORT_Rs485Cfg(fd,pcfg->band_rate,pcfg->flow_ctrl,pcfg->data_bits,pcfg->stop_bits,pcfg->parity) == FALSE)
-	{
-		printf("PORT RS485 Cfg failed!\r\n");
-		pthread_exit(NULL); 
-	}
-
 	#if 1
 		
 	while (1)

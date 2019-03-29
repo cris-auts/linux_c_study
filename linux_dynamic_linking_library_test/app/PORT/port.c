@@ -158,40 +158,33 @@ INT32_T PORT_InitPortInfo(PORT_T *p_port,UINT32_T ch_id,PORT_DEV_CFG_T *p_dev_cf
 ******************************************************************************/
 INT32_T PORT_CreatePortThread(PORT_T *p_port)
 {
-#if 0
-	static pthread_t thread_port_rs485;
-	static pthread_attr_t pthread_port_rs485_attr;
-	static PORT_T port_rs485;
+	int err = 0;
+	int ret = 0;
 
-	
-	static pthread_t thread_port_rs232;
-	static pthread_attr_t pthread_port_rs232_attr;
-	static PORT_T port_rs232;
-	
-	int rc = 0;
-
-	port_rs485.port_type = PORT_RS485;
-	port_rs485.port_cfg.rs485_cfg.band_rate = 9600;
-	port_rs485.port_cfg.rs485_cfg.flow_ctrl = 0;
-	port_rs485.port_cfg.rs485_cfg.data_bits = 8;
-	port_rs485.port_cfg.rs485_cfg.stop_bits = 1;
-	port_rs485.port_cfg.rs485_cfg.parity = 'N';
-	memcpy(port_rs485.port_cfg.rs485_cfg.dev_path,PORT_RS485_PATH,sizeof(PORT_RS485_PATH));
-	port_rs485.port_write_func = PORT_Rs485WrTxBuf;
-	port_rs485.port_read_func  = PORT_Rs485RdRxBuf;
-	printf("%s:%ld\r\n",__func__,__LINE__);
-
-	rc=pthread_create(&thread_port_rs485,&pthread_port_rs485_attr,PORT_Rs485Thread,&(port_rs485.port_cfg.rs485_cfg));
-	if(rc != 0)
+	switch (p_port->port_id)
 	{
-		pthread_detach(thread_port_rs485);
-		p_tid=thread_port_rs485;
-		METER_PrintLog("create port RS485 thread failed!\r\n");
+		case PORT_ID_RS485_1:
+			ret=pthread_create(&(p_port->thread)  ,&(p_port->thread_attr),PORT_Rs485Thread,p_port);
+			if(ret != 0)
+			{
+				err = -1;
+				printf("create port RS485 thread failed!\r\n");
+			}
+			else
+			{
+				err = 0;
+				printf("Create port RS485 thread successfully\r\n");
+			}
+			
+			break;
+
+		case PORT_ID_RS485_2:
+			break;
+		default:
+			break;
 	}
-	else
-		METER_PrintLog("Create port RS485 thread successfully\r\n");
-#endif
-	return 0;
+
+	return err;
 }
 
 INT32_T PORT_DestroyPortThread(PORT_T *p_port)

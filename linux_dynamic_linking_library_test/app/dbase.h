@@ -106,7 +106,7 @@ typedef enum comm_port
 
 typedef enum prtc_type
 {
-	PRTC_DLT689, //DLT698.45规约
+	PRTC_DLT698, //DLT698.45规约
 	PRTC_MAINT	  //maint维护规约
 }PRTC_TYPE_T;//规约类型
 

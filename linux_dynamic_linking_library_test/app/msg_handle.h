@@ -51,8 +51,7 @@ extern "C" {
 /*----------------------公共头文件----------------------------*/
 #include "std_globals.h"
 #if 1//__XXX_xxx__
-
-//#include "xxx_xxx.h"
+#include "port.h"
 
 
 /*----------------------公共宏定义----------------------------*/
@@ -70,6 +69,7 @@ typedef struct ch_port_map_t {
 
 /*-----------------模块对外接口变量声明-----------------------*/
 extern CH_PORT_MAP_T ch_port_map[32];
+extern PORT_DEV_CFG_T *p_dev_cfg_map;
 
 
 

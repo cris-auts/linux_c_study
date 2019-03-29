@@ -31,7 +31,7 @@ int main(int argc, char** argv)
 	char interface[1024];
 	
 	COMM_InterfaceRegister(interface,1024,5000);
-	sleep(10);
+	sleep(1);
 	while(1)
 	{
 		memset(pipe_rbuf,0,128);

@@ -28,6 +28,7 @@ int LoadDbasePortCfg(void)
 		3.在创建各个同型端口线程时，需要从这个表格中查询出端口应该配置的参数
 		4.将这个参数传入到端口线程里面。端口线程自己去初始化端口。
 	*/
+	p_dev_cfg_map=malloc(sizeof(PORT_DEV_CFG_T)*8);
 	return 0;
 }
 

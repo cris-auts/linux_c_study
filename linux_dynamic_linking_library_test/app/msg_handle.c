@@ -248,6 +248,10 @@ INT32_T MSG_HandleNewMsg(MSG_T* p_msg,INT32_T *p_ch_id)
 	PORT_T  *p_port=NULL;
 	PORT_USR_CFG_T *p_usr_cfg=(PORT_USR_CFG_T*)p_msg->msg_text;
 
+	#if 1//测试代码
+	p_usr_cfg->comm_prm.comm_port=COMM_RS485_1;
+	p_usr_cfg->comm_prm.prtc_type=PRTC_DLT698;
+	#endif
 	if(MSG_ChkSameMapTabItems(p_msg,&map_tab_idx))
 	{// 存在相同的参数
 		if(MSG_ChkSameItemPrtcCfgs(p_msg,ch_port_map[map_tab_idx].p_port))
