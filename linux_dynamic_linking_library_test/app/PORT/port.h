@@ -53,15 +53,25 @@ extern "C" {
 #if 1//__XXX_xxx__
 #include "port_rs485_func.h"
 #include "port_rs232_func.h"
+#include "msg.h"
 
 
 /*----------------------公共宏定义----------------------------*/
-#define    PORT_RS485_1_PATH              "/dev/ttyUSB0"
-#define    PORT_RS485_2_PATH              "/dev/ttyUSB1"
-#define    PORT_RS232_1_PATH              "/dev/ttyUSB2"
-#define    PORT_RS232_2_PATH              "/dev/ttyUSB3"
+#define	PORT_RS485_1_PATH              "/dev/ttyUSB0"
+#define PORT_RS485_2_PATH              "/dev/ttyUSB1"
+#define PORT_RS232_1_PATH              "/dev/ttyUSB2"
+#define PORT_RS232_2_PATH              "/dev/ttyUSB3"
 
-#define    PORT_MULTI_CH_MAX              (8)
+#define	PORT_MULTI_CH_MAX              (8)
+
+
+#define PORT_RS485_BUF_SIZE				(512)
+#define PORT_RS232_BUF_SIZE				(512)
+#define PORT_ETH_BUF_SIZE				(1024*2)
+#define PORT_WIFI_BUF_SIZE				(1024*2)
+#define PORT_GPRS_BUF_SIZE				(1024*1)
+#define PORT_4GLTE_BUF_SIZE				(1024*2)
+
 
 /*----------------------公共类定义----------------------------*/
 typedef enum port_id_t{
@@ -91,34 +101,41 @@ typedef enum port_type_t{
 	PORT_TYPE_MAX
 }PORT_TYPE_T;
 
+#if 0
 typedef struct port_dev_cfg_t{
 	
 }PORT_DEV_CFG_T;
 
 typedef struct port_usr_cfg_t{
+	TABLE_COMM_PRM_T comm_prm;  
 }PORT_USR_CFG_T;
-
+#else
+typedef TABLE_COMM_CFG_T PORT_DEV_CFG_T;
+typedef PRM_MAIN_T 		 PORT_USR_CFG_T;
+#endif
 
 typedef struct port_cfg_t{
 	PORT_DEV_CFG_T dev_cfg;
 	PORT_USR_CFG_T usr_cfg;
 }PORT_CFG_T;
 
-typedef struct prtc_cfg_t{
+typedef struct prtc_tab_t{
 	UINT8_T  valid_flg;
 	UINT32_T prtc;
 	UINT32_T ch_id; 
-}PRTC_CFG_T;
+}PRTC_TAB_T;
 
 typedef struct port_t{
+	PORT_ID_T 	port_id;
+	PORT_TYPE_T port_type;
 	PORT_CFG_T 	port_cfg;
+	PRTC_TAB_T  prtc_tab[PORT_MULTI_CH_MAX];
 	UINT8_T*	p_port_rx_buf;
 	UINT8_T*	p_port_tx_buf;
 	UINT32_T	port_rx_bufsize;
 	UINT32_T	port_tx_bufsize;
 	UINT32_T 	(*port_write_func)(UINT8_T *p_buf, UINT32_T w_len);
 	UINT32_T 	(*port_read_func) (UINT8_T *p_buf, UINT32_T r_len);
-	PRTC_CFG_T  prtc_cfg[PORT_MULTI_CH_MAX];
 	pthread_t 	thread;
 }PORT_T;
 
@@ -129,7 +146,7 @@ typedef struct port_t{
 
 /*-----------------模块对外接口函数声明-----------------------*/
 //extern    xxxxx;
-extern INT32_T PORT_InitPortInfo(PORT_T *p_port);
+extern INT32_T PORT_InitPortInfo(PORT_T *p_port,UINT32_T ch_id,PORT_DEV_CFG_T *p_dev_cfg,PORT_USR_CFG_T *p_usr_cfg);
 extern INT32_T PORT_CreatePortThread(PORT_T *p_port);
 
 extern INT32_T PORT_CreatePortThread(PORT_T *p_port);

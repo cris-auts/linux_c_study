@@ -78,18 +78,18 @@ extern UINT32_T comm_prm_num;                      //通信参数条目
 //主线程传递参数
 typedef struct prm_main
 {
+	UINT8_T   slaver_run_mode;       //分解后运行模式
+	UINT8_T   slaver_run_ip_index;   //分解后运行ip索引
 	TABLE_COMM_PRM_T comm_prm;
-	UINT8_T * commdata_space;    //通信数据空间
-	UINT8_T * prtc_buff_space;   //规约缓存空间
-	pthread_t thread_sever;      //单模式使用/混合模式下服务器模式
 }PRM_MAIN_T,*pM_MAIN_T;
 
 
 typedef struct user_comm_prm_t
 {
-	UINT8_T   slaver_run_mode;       //分解后运行模式
-	UINT8_T   slaver_run_ip_index;   //分解后运行ip索引
 	PRM_MAIN_T comm_prm_info;
+	UINT8_T * commdata_space;    //通信数据空间
+	UINT8_T * prtc_buff_space;   //规约缓存空间
+	pthread_t thread_sever;      //单模式使用/混合模式下服务器模式
 }USER_COMM_PRM_T,*pUSER_COMM_PRM_T;
 
 

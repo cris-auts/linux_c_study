@@ -69,6 +69,8 @@ typedef struct ch_port_map_t {
 
 
 CH_PORT_MAP_T ch_port_map[CH_PORT_MAP_SIZE];
+PORT_DEV_CFG_T *p_dev_cfg_map;
+
 
 
 
@@ -86,12 +88,30 @@ CH_PORT_MAP_T ch_port_map[CH_PORT_MAP_SIZE];
 *
 *
 ******************************************************************************/
-INT32_T MSG_ChkSameItemCfgs(MSG_T* p_msg, PORT_T 		*p_port)
+INT32_T MSG_ChkSameItemCfgs(MSG_T *p_msg, PORT_T *p_port)
 {
 	/*
 		除了规约类型不判，其他的都要判
 	*/
-	return 0;
+
+	PRTC_TYPE_T usr_port_prtc;
+	PORT_USR_CFG_T* p_usr_cfg=(PORT_USR_CFG_T*)p_msg->msg_text;
+
+	
+	usr_port_prtc = p_usr_cfg->comm_prm.prtc_type;
+	p_usr_cfg->comm_prm.prtc_type = p_port->port_cfg.usr_cfg.comm_prm.prtc_type;
+
+	
+	if(memcmp(p_usr_cfg,&(p_port->port_cfg.usr_cfg),sizeof(PORT_USR_CFG_T)) == 0)
+	{
+		p_usr_cfg->comm_prm.prtc_type=usr_port_prtc;
+		return 1;
+	}
+	else
+	{
+		p_usr_cfg->comm_prm.prtc_type=usr_port_prtc;
+		return 0;
+	}
 }
 
 
@@ -106,8 +126,12 @@ INT32_T MSG_ChkSameItemCfgs(MSG_T* p_msg, PORT_T 		*p_port)
 ******************************************************************************/
 INT32_T MSG_ChkSameItemPrtcCfgs(MSG_T* p_msg, PORT_T 		*p_port)
 {
-	  /*检测规约是否相同*/
-	return 0;
+	/*检测规约是否相同*/
+	PORT_USR_CFG_T* p_usr_cfg=(PORT_USR_CFG_T*)p_msg->msg_text;
+	if(p_usr_cfg->comm_prm.prtc_type == p_port->port_cfg.usr_cfg.comm_prm.prtc_type)
+		return 1;
+	else
+		return 0;
 }
 
 
@@ -131,7 +155,7 @@ INT32_T MSG_ChkSameMapTabItems(MSG_T* p_msg,INT32_T *p_map_tab_idx)
 			if(MSG_ChkSameItemCfgs(p_msg, ch_port_map[i].p_port))
 			{
 				*p_map_tab_idx=i;
-				return 0;
+				return 1;
 			}
 		}
 	}
@@ -217,17 +241,12 @@ INT32_T MSG_GenMapTabId(INT32_T*p_map_tab_idx)
 ******************************************************************************/
 INT32_T MSG_HandleNewMsg(MSG_T* p_msg,INT32_T *p_ch_id)
 {
-/*
-	1.创建对应的管道
-	2.更新MAP表格
-	3.创建端口线程
-*/
 	INT32_T i=0;
 	INT32_T err=0;
 	INT32_T map_tab_idx;
 	INT32_T map_tab_new_idx;
 	PORT_T  *p_port=NULL;
-	USER_COMM_PRM_T *p_comm_prm=(USER_COMM_PRM_T*)p_msg->msg_text;
+	PORT_USR_CFG_T *p_usr_cfg=(PORT_USR_CFG_T*)p_msg->msg_text;
 
 	if(MSG_ChkSameMapTabItems(p_msg,&map_tab_idx))
 	{// 存在相同的参数
@@ -243,11 +262,11 @@ INT32_T MSG_HandleNewMsg(MSG_T* p_msg,INT32_T *p_ch_id)
 			{
 				for(i=0;i<PORT_MULTI_CH_MAX;i++)
 				{
-					if(ch_port_map[map_tab_idx].p_port->prtc_cfg[i].valid_flg != VALID_FLG)
+					if(ch_port_map[map_tab_idx].p_port->prtc_tab[i].valid_flg != VALID_FLG)
 					{
-						ch_port_map[map_tab_idx].p_port->prtc_cfg[i].valid_flg = VALID_FLG;
-						ch_port_map[map_tab_idx].p_port->prtc_cfg[i].prtc=(UINT32_T)p_comm_prm->comm_prm_info.comm_prm.prtc_type;
-						ch_port_map[map_tab_idx].p_port->prtc_cfg[i].ch_id=map_tab_new_idx;
+						ch_port_map[map_tab_idx].p_port->prtc_tab[i].valid_flg = VALID_FLG;
+						ch_port_map[map_tab_idx].p_port->prtc_tab[i].prtc=(UINT32_T)p_usr_cfg->comm_prm.prtc_type;
+						ch_port_map[map_tab_idx].p_port->prtc_tab[i].ch_id=map_tab_new_idx;
 						MSG_InsertMapTabItem(map_tab_new_idx,ch_port_map[map_tab_idx].p_port);
 						*p_ch_id=map_tab_new_idx;
 						return 0;
@@ -255,44 +274,61 @@ INT32_T MSG_HandleNewMsg(MSG_T* p_msg,INT32_T *p_ch_id)
 				}
 				return -1;
 			}
+			return -1;
 		}	
 	}
 	else
 	{//除规约外，存在不同参数，需要创建新的线程和通道ID
-		p_port=(PORT_T *)malloc(sizeof(PORT_T));
-		if(p_port == NULL)
-		{
-			printf("Malloc PORT failed!\r\n");
-		}
-		
-		PORT_InitPortInfo(p_port);
-		if(PORT_CreatePortThread(p_port))
-		{
-			printf("Create port thread failed!\r\n");
-			free(p_port);
-			return -1;
-		}
-		
+	
 		err=MSG_GenMapTabId(&map_tab_new_idx);
 		if(err==0)
 		{
-			for(i=0;i<PORT_MULTI_CH_MAX;i++)
+			p_port=(PORT_T *)malloc(sizeof(PORT_T));
+			if(p_port == NULL)
 			{
-				if(ch_port_map[map_tab_new_idx].p_port->prtc_cfg[i].valid_flg != VALID_FLG)
+				printf("Malloc PORT failed!\r\n");
+			}
+			memset(p_port,0,sizeof(PORT_T));
+			if(PORT_InitPortInfo(p_port,map_tab_new_idx,p_dev_cfg_map,p_usr_cfg)==0)
+			{
+				if(PORT_CreatePortThread(p_port))
 				{
-					ch_port_map[map_tab_new_idx].p_port->prtc_cfg[i].valid_flg = VALID_FLG;
-					ch_port_map[map_tab_new_idx].p_port->prtc_cfg[i].prtc=p_comm_prm->comm_prm_info.comm_prm.prtc_type;
-					ch_port_map[map_tab_new_idx].p_port->prtc_cfg[i].ch_id=map_tab_new_idx;
-					MSG_InsertMapTabItem(map_tab_new_idx,p_port);
-					*p_ch_id=map_tab_new_idx;
-					return 0;
+					printf("Create port thread failed!\r\n");
+					free(p_port);
+					p_port=NULL;
+					return -1;
 				}
 			}
-			return -1;
-		}
-	}
+			else
+			{
+				printf("PORT_InitPortInfo failed!\r\n");
+				if(p_port->p_port_rx_buf != NULL)
+				{
+					free(p_port->p_port_rx_buf);
+					p_port->p_port_rx_buf=NULL;
+				}
+				if(p_port->p_port_tx_buf != NULL)
+				{
+					free(p_port->p_port_tx_buf);
+					p_port->p_port_tx_buf=NULL;
+				}
+				free(p_port);
+				p_port=NULL;
+				return -1;
+			}
 
-	return 0;
+			if(MSG_InsertMapTabItem(map_tab_new_idx,p_port))
+			{
+				printf("MSG_InsertMapTabItem failed!\r\n");
+				return -1;
+			}else
+			{
+				*p_ch_id=map_tab_new_idx;
+				return 0;
+			}
+		}
+		return -1;
+	}
 }
 
 

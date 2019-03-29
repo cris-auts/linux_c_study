@@ -74,9 +74,77 @@
 *
 *
 ******************************************************************************/
-INT32_T PORT_InitPortInfo(PORT_T *p_port)
+INT32_T PORT_InitPortInfo(PORT_T *p_port,UINT32_T ch_id,PORT_DEV_CFG_T *p_dev_cfg,PORT_USR_CFG_T *p_usr_cfg)
 {
-	return 0;
+	INT32_T err=0;
+	//INT32_T ret=0;
+
+	switch (p_usr_cfg->comm_prm.comm_port)
+		{
+			case COMM_RS485_1:
+				p_port->port_id=PORT_ID_RS485_1;
+				p_port->port_type=PORT_TYPE_RS485;
+				memcpy(&(p_port->port_cfg.dev_cfg),p_dev_cfg,sizeof(PORT_DEV_CFG_T));
+				memcpy(&(p_port->port_cfg.usr_cfg),p_usr_cfg,sizeof(PORT_USR_CFG_T));
+				memset(p_port->prtc_tab,0,PORT_MULTI_CH_MAX);
+				p_port->prtc_tab[0].ch_id=ch_id;
+				p_port->prtc_tab[0].prtc=p_usr_cfg->comm_prm.prtc_type;
+				p_port->prtc_tab[0].valid_flg=VALID_FLG;
+		
+				p_port->p_port_rx_buf = malloc(PORT_RS485_BUF_SIZE);
+				if(p_port->p_port_rx_buf == NULL)
+				{
+					err=-1;
+					p_port->port_rx_bufsize=0;
+				}
+				else
+					p_port->port_rx_bufsize=PORT_RS485_BUF_SIZE;
+				
+				p_port->p_port_tx_buf = malloc(PORT_RS485_BUF_SIZE);
+				if(p_port->p_port_tx_buf == NULL)
+				{
+					err=-1;
+					p_port->port_tx_bufsize=0;
+				}
+				else
+					p_port->port_tx_bufsize=PORT_RS485_BUF_SIZE;
+				break;
+
+			
+			case COMM_RS485_2:
+
+				break;
+				
+			case COMM_RS232_1:
+
+				break;
+				
+			case COMM_RS232_2:
+
+				break;
+
+			case COMM_ETH_1:
+
+				break;
+				
+			case COMM_ETH_2:
+
+				break;
+				
+			case COMM_WIFI_1:
+				break;
+
+			
+			case COMM_GPRS_1:
+
+				break;
+
+			default:
+				err=-1;
+				break;
+		}
+
+	return err;
 }
 
 /******************************************************************************
