@@ -104,7 +104,7 @@ INT32_T GetNewMsg(INT32_T qid, MSG_T* pmsg, INT32_T wait_ms)
 	while(wait_cnt--)
 	{
 		usleep(1000);
-		if (msgrcv(qid, (void*)pmsg, sizeof(MSG_T), pmsg->msg_type, IPC_NOWAIT) < 0) 
+		if (msgrcv(qid, (void*)pmsg, sizeof(MSG_TEXT_T), pmsg->msg_type, IPC_NOWAIT) < 0) 
 		{
 			//perror("msgrcv");
 			return -1;
@@ -124,7 +124,7 @@ INT32_T GetNewMsg(INT32_T qid, MSG_T* pmsg, INT32_T wait_ms)
 
 INT32_T PutNewMsg(INT32_T qid, MSG_T* pmsg)
 {
-	if ((msgsnd(qid, pmsg, sizeof(MSG_T), 0)) < 0)
+	if ((msgsnd(qid, pmsg, sizeof(MSG_TEXT_T), 0)) < 0)
 	{
 		perror("message posted");
 		return -1;
@@ -152,12 +152,12 @@ INT32_T OpenPipe(char* pname, int*ppipe_fd, int mode)
 	*ppipe_fd = open(pname, open_mode);
 	if(*ppipe_fd > 0)
 	{
-		//printf("Process %d fd:%d,err:%d\n", getpid(), *ppipe_fd,err);
+		printf("Process %d fd:%d,err:%d\n", getpid(), *ppipe_fd,err);
 		return 0;
 	}
 	else
 	{
-		//printf("Process %d open %s fail,fd:%d!\n", getpid(), pname,*ppipe_fd);
+		printf("Process %d open %s fail,fd:%d!\n", getpid(), pname,*ppipe_fd);
 		return -1;
 	}
 }
@@ -176,9 +176,9 @@ INT32_T ReadPipe(char* pname,char* pbuf, INT32_T rlen)
 	int err=-1;
 	
 	int len=0;
-	static int pipe_fd = -1;
+ 	int pipe_fd = -1;
 	
-	//printf("%s:%d\r\n",__func__,__LINE__);
+	printf("%s:%d,pipe_fd=%d\r\n",__func__,__LINE__,pipe_fd);
 	if(pipe_fd != -1)
 	{
 		//printf("%s:%d\r\n",__func__,__LINE__);
@@ -211,7 +211,7 @@ INT32_T WritePipe(char* pname,char* pbuf,INT32_T wlen)
 	
 	if(OpenPipe(pname, &pipe_fd,O_WRONLY|O_NONBLOCK)==0)
 	{
-		//printf("%s:%d\r\n",__func__,__LINE__);
+		printf("%s:%d,pipe_fd=%d\r\n",__func__,__LINE__,pipe_fd);
 		len = write(pipe_fd, pbuf, wlen);
 		if((len > 0)&&(len==wlen))
 		{
@@ -244,12 +244,12 @@ INT32_T  COMM_InterfaceRegister(void *p_usr_cfg,INT32_T len,INT32_T wait_ms)
 {
 	int qid;
 	key_t key;
-	MSG_T msg;
+	static MSG_T msg;
 	int msg_wait_cnt=0;
 	INT32_T comm_id=-1;
 	
 
-	if ((key = ftok("/", 'a')) == -1)
+	if ((key = ftok("/", 'b')) == -1)
 	{
 		perror("ftok");
 		return -1;
@@ -267,7 +267,7 @@ INT32_T  COMM_InterfaceRegister(void *p_usr_cfg,INT32_T len,INT32_T wait_ms)
 	memcpy(&msg.msg_text.reg_text.tips[0],"Please Register Port RS485-1\r\n",MSG_TIPS_SIZE);
 	
 	printf("Snd message[%ld]: %s\r\n", msg.msg_type, msg.msg_text.reg_text.tips);	
-	if ((msgsnd(qid, &msg, sizeof(MSG_T), 0)) < 0)
+	if ((msgsnd(qid, &msg, sizeof(MSG_TEXT_T), 0)) < 0)
 	{
 		perror("message posted");
 		return -1;
@@ -280,14 +280,14 @@ INT32_T  COMM_InterfaceRegister(void *p_usr_cfg,INT32_T len,INT32_T wait_ms)
 		memset(&msg, 0, sizeof(MSG_T));
 		msg.msg_type=MSG_TYPE_ACK;
 		usleep(MSG_RCV_WAIT_CYC);
-		if (msgrcv(qid, (void*)&msg, sizeof(MSG_T), MSG_TYPE_ACK, IPC_NOWAIT) < 0) 
+		if (msgrcv(qid, (void*)&msg, sizeof(MSG_TEXT_T), MSG_TYPE_ACK, IPC_NOWAIT) < 0) 
 		{
 			//perror("msgrcv");
 			comm_id=-1;
 		}
 		else
 		{
-			printf("RCV message[%ld]: %s\r\n", msg.msg_type, msg.msg_text.ack_text.tips);
+			printf("RCV message[%ld]: %sch_id=%d\r\n", msg.msg_type, msg.msg_text.ack_text.tips,msg.msg_text.ack_text.ch_id);
 			comm_id=msg.msg_text.ack_text.ch_id;
 			break;
 		}
@@ -329,12 +329,24 @@ INT32_T  COMM_ReadRxFrRxPipe(INT32_T if_id,void *pbuf,INT32_T rlen)
 {
 	INT32_T len=0;
 	char fifo_name[64];
-
+	int pipe_wfd=-1;
+	int pipe_rfd=-1;
 	memset(fifo_name,0,sizeof(fifo_name));
 	sprintf(fifo_name,"/pipe/rx%05d",if_id);
-	//printf("fifo_name:%s\r\n",fifo_name);
-	len=ReadPipe(fifo_name, pbuf, rlen);
-	return len;
+	if(OpenPipe(fifo_name, &pipe_rfd,O_RDONLY|O_NONBLOCK)==0)
+	{
+		if(OpenPipe(fifo_name, &pipe_wfd,O_WRONLY|O_NONBLOCK)==0)
+		{
+			len = read(pipe_rfd, pbuf, rlen);
+			ClosePipe(pipe_rfd);
+		}
+		ClosePipe(pipe_wfd);
+	}
+	
+	if(len >0)
+		return len;
+	else
+		return 0;
 }
 
 
@@ -351,11 +363,24 @@ INT32_T  COMM_WriteTxToTxPipe(INT32_T if_id,void *pbuf,INT32_T wlen)
 {
 	INT32_T len=0;
 	char fifo_name[64];
+	int pipe_rfd=-1;
+	int pipe_wfd=-1;
 	memset(fifo_name,0,sizeof(fifo_name));
 	sprintf(fifo_name,"/pipe/tx%05d",if_id);
-	//printf("fifo_name:%s\r\n",fifo_name);
-	len=WritePipe(fifo_name, pbuf, wlen);
-	return len;
+	printf("%s:%d,fifo_name=%s\r\n",fifo_name);
+	if(OpenPipe(fifo_name, &pipe_rfd,O_RDONLY|O_NONBLOCK)==0)
+	{	
+		if(OpenPipe(fifo_name, &pipe_wfd,O_WRONLY|O_NONBLOCK)==0)
+		{
+			len = write(pipe_wfd, pbuf, wlen);
+			ClosePipe(pipe_wfd);
+		}
+		ClosePipe(pipe_rfd);
+	}
+	if(len >0)
+		return len;
+	else
+		return 0;
 }
 
 /******************************************************************************
@@ -371,12 +396,23 @@ INT32_T  COMM_WriteRxToRxPipe(INT32_T if_id,void *pbuf,INT32_T wlen)
 {
 	INT32_T len=0;
 	char fifo_name[64];
-
+	int pipe_rfd=-1;
+	int pipe_wfd=-1;
 	memset(fifo_name,0,sizeof(fifo_name));
 	sprintf(fifo_name,"/pipe/rx%05d",if_id);
-	//printf("fifo_name:%s\r\n",fifo_name);
-	len=WritePipe(fifo_name, pbuf, wlen);
-	return len;
+	if(OpenPipe(fifo_name, &pipe_rfd,O_RDONLY|O_NONBLOCK)==0)
+	{
+		if(OpenPipe(fifo_name, &pipe_wfd,O_WRONLY|O_NONBLOCK)==0)
+		{
+			len = write(pipe_wfd, pbuf, wlen);
+			ClosePipe(pipe_wfd);
+		}
+		ClosePipe(pipe_rfd);
+	}
+	if(len >0)
+		return len;
+	else
+		return 0;
 }
 
 
@@ -393,11 +429,29 @@ INT32_T  COMM_ReadTxFrTxPipe(INT32_T if_id,void *pbuf,INT32_T rlen)
 {
 	INT32_T len=0;
 	char fifo_name[64];
+	int pipe_wfd=-1;
+	int pipe_rfd=-1;
 	memset(fifo_name,0,sizeof(fifo_name));
 	sprintf(fifo_name,"/pipe/tx%05d",if_id);
-	//printf("fifo_name:%s\r\n",fifo_name);
-	len=ReadPipe(fifo_name, pbuf, rlen);
-	return len;
+	
+	printf("1func:%s:%d.fifo_name=%s\r\n",__func__,__LINE__,fifo_name);
+	if(OpenPipe(fifo_name, &pipe_rfd,O_RDONLY|O_NONBLOCK)==0)
+	{
+		printf("open write ok\r\n");
+		if(OpenPipe(fifo_name, &pipe_wfd,O_WRONLY|O_NONBLOCK)==0)
+		{
+			printf("open read ok\r\n");
+			len = read(pipe_rfd, pbuf, rlen);
+			ClosePipe(pipe_rfd);
+		}
+		ClosePipe(pipe_wfd);
+	}
+	
+	printf("2func:%s:%d.fifo_name=%s\r\n",__func__,__LINE__,fifo_name);
+	if(len >0)
+		return len;
+	else
+		return 0;
 }
 
 
@@ -421,7 +475,6 @@ INT32_T  COMM_CommWriteDat(INT32_T if_id,void *pbuf,INT32_T wlen)
 {
 	return COMM_WriteRxToRxPipe(if_id, pbuf, wlen);
 }
-
 
 #endif//#if __XXX_xxx__
 

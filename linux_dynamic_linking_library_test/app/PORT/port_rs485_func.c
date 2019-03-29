@@ -511,7 +511,9 @@ void* PORT_Rs485Thread(void *p_arg)
 	//char interface[1024];
 	PORT_T *p_port= p_arg;
 
-	printf("p_port->prtc_tab[0].ch_id=%d\r\n",p_port->prtc_tab[0].ch_id);
+	printf("p_port->prtc_tab[0].ch_id=%d,valid_flg=0x%x\r\n",p_port->prtc_tab[0].ch_id,p_port->prtc_tab[0].valid_flg);
+	printf("p_port->prtc_tab[1].ch_id=%d,valid_flg=0x%x\r\n",p_port->prtc_tab[1].ch_id,p_port->prtc_tab[1].valid_flg);
+	printf("p_port->prtc_tab[2].ch_id=%d,valid_flg=0x%x\r\n",p_port->prtc_tab[2].ch_id,p_port->prtc_tab[2].valid_flg);
 	#if 1
 		
 	while (1)
@@ -533,25 +535,30 @@ void* PORT_Rs485Thread(void *p_arg)
 		}
 
 		#endif
+		//printf("p_port->prtc_tab[0].ch_id=%d,valid_flg=0x%x\r\n",p_port->prtc_tab[0].ch_id,p_port->prtc_tab[0].valid_flg);
+		//printf("p_port->prtc_tab[1].ch_id=%d,valid_flg=0x%x\r\n",p_port->prtc_tab[1].ch_id,p_port->prtc_tab[1].valid_flg);
+		//printf("p_port->prtc_tab[2].ch_id=%d,valid_flg=0x%x\r\n",p_port->prtc_tab[2].ch_id,p_port->prtc_tab[2].valid_flg);
 		for(i=0;i<PORT_MULTI_CH_MAX;i++)
 		{
 			if(p_port->prtc_tab[i].valid_flg==VALID_FLG)
 			{
-				wlen=COMM_CommWriteDat(p_port->prtc_tab[i].ch_id,pipe_wbuf,128);
-				if(wlen == 128)
-					printf("=============ch_id=%d,COM SND[%d]:%s\r\n",p_port->prtc_tab[i].ch_id,wlen,pipe_wbuf);
-			}
-		}
-		sleep(1);
-		
-		for(i=0;i<PORT_MULTI_CH_MAX;i++)
-		{
-			if(p_port->prtc_tab[i].valid_flg==VALID_FLG)
-			{
+				printf("read:i=%d\r\n",i);
 				memset(pipe_rbuf,0,128);
 				rlen=COMM_CommReadDat(p_port->prtc_tab[i].ch_id,pipe_rbuf,128);
 				if(rlen)
-					printf("&&&&&&&&&&&&&ch_id=%dCOM RCV[%d]:%s\r\n",p_port->prtc_tab[i].ch_id,rlen,pipe_rbuf);
+					printf("&&&&&&&&&&&&&ch_id=%d,COM RCV[%d]:%s\r\n",p_port->prtc_tab[i].ch_id,rlen,pipe_rbuf);
+			}
+		}
+		
+		sleep(1);
+		for(i=0;i<PORT_MULTI_CH_MAX;i++)
+		{
+			if(p_port->prtc_tab[i].valid_flg==VALID_FLG)
+			{
+				printf("write:i=%d\r\n",i);
+				wlen=COMM_CommWriteDat(p_port->prtc_tab[i].ch_id,pipe_wbuf,128);
+				if(wlen == 128)
+					printf("=============ch_id=%d,COM SND[%d]:%s\r\n",p_port->prtc_tab[i].ch_id,wlen,pipe_wbuf);
 			}
 		}
 

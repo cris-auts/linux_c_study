@@ -245,7 +245,6 @@ INT32_T MSG_HandleNewMsg(MSG_T* p_msg,INT32_T *p_ch_id)
 	static INT32_T prtc_cnt=0;
 	PORT_USR_CFG_T *p_usr_cfg=(PORT_USR_CFG_T*)&(p_msg->msg_text.reg_text.usr_cfg);
 	#if 1//²âÊÔ´úÂë
-	
 	p_usr_cfg->comm_prm.comm_port=COMM_RS485_1;
 	p_usr_cfg->comm_prm.prtc_type=prtc_cnt++;
 	#endif
@@ -347,9 +346,9 @@ INT32_T MSG_HandleNewMsg(MSG_T* p_msg,INT32_T *p_ch_id)
 INT32_T MSG_MonitorHandle(void)
 {
 	int qid;
-	MSG_T msg;
+	static MSG_T msg;
 	INT32_T ch_id;
-	if(OpenMsgQ(&qid, "/", 'a')==0)
+	if(OpenMsgQ(&qid, "/", 'b')==0)
 	{
 		memset(&msg,0,sizeof(msg));
 		msg.msg_type=MSG_TYPE_REG;
@@ -365,7 +364,7 @@ INT32_T MSG_MonitorHandle(void)
 					msg.msg_text.ack_text.ch_id=ch_id;
 					memcpy(msg.msg_text.ack_text.tips,"Register Port RS485-1 Sucessful\r\n",sizeof("Register Port RS485-1 Successful\r\n"));
 					PutNewMsg(qid, &msg);
-					printf("PutNewMsg[%ld]:%s\r\n", msg.msg_type, msg.msg_text.ack_text.tips); 
+					printf("PutNewMsg[%ld]:%sch_id=%d\r\n", msg.msg_type, msg.msg_text.ack_text.tips,ch_id); 
 
 				}
 				else

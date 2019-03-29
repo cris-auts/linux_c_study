@@ -31,25 +31,44 @@ int main(int argc, char** argv)
 	char pipe_wbuf[128]={"APP:1234567890!\r\n"};
 	char pipe_rbuf[128];
 	INT32_T ch_id=0;
+	
+	INT32_T ch_id1=0;
 	PRM_MAIN_T usr_cfg;
 
 	
 	ch_id=COMM_InterfaceRegister(&usr_cfg,sizeof(usr_cfg),5000);
 	printf("$$$$$$$$$$$$$$$$$$ch_id=%d\r\n",ch_id);
-	sleep(1);
-	if(ch_id<0)
-		return 0;
+	sleep(5);
+	
+	//ch_id1=COMM_InterfaceRegister(&usr_cfg,sizeof(usr_cfg),5000);
+	//printf("$$$$$$$$$$$$$$$$$$ch_id=%d\r\n",ch_id1);
+	//if((ch_id<0)||(ch_id1<0))
+		//return 0;
+	
 	while(1)
 	{
+		#if 1
 		memset(pipe_rbuf,0,128);
 		rlen=COMM_AppReadDat(ch_id,pipe_rbuf,128);
 		if(rlen)
-			printf("@@@@@@@@@@APP RCV[%d]:%s\r\n",rlen,pipe_rbuf);
+			printf("ch_id=%d@@@@@@@@@@APP RCV[%d]:%s\r\n",ch_id,rlen,pipe_rbuf);
 		sleep(1);
 		
 		wlen=COMM_AppWriteDat(ch_id,pipe_wbuf,128);
 		if(wlen == 128)
-			printf("**********APP SND[%d]:%s\r\n",wlen,pipe_wbuf);
+			printf("ch_id=%d**********APP SND[%d]:%s\r\n",ch_id,wlen,pipe_wbuf);
+
+		#else
+		memset(pipe_rbuf,0,128);
+		rlen=COMM_AppReadDat(ch_id1,pipe_rbuf,128);
+		if(rlen)
+			printf("ch_id1=%d@@@@@@@@@@APP RCV[%d]:%s\r\n",ch_id1,rlen,pipe_rbuf);
+		sleep(1);
+		
+		wlen=COMM_AppWriteDat(ch_id1,pipe_wbuf,128);
+		if(wlen == 128)
+			printf("ch_id1=%d**********APP SND[%d]:%s\r\n",ch_id1,wlen,pipe_wbuf);
+		#endif
 	}
 
 	return 0;

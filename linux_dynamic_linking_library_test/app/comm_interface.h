@@ -59,7 +59,7 @@ extern "C" {
 #define  MSG_TYPE_REG 			(1)
 #define  MSG_TYPE_ACK 			(2)
 
-#define  MSG_TIPS_SIZE 			(128)
+#define  MSG_TIPS_SIZE 			(68)
 
 /*----------------------公共类定义----------------------------*/
 typedef union msg_text_t
@@ -69,9 +69,11 @@ typedef union msg_text_t
 		char tips[MSG_TIPS_SIZE];
 	}reg_text;
 	struct ack_text_t{
-		INT32_T ch_id;
 		char tips[MSG_TIPS_SIZE];
+		INT32_T ch_id;
 	}ack_text;
+
+	UINT8_T buf[1024];
 }MSG_TEXT_T;
 
 
