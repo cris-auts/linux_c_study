@@ -57,8 +57,6 @@ extern "C" {
 
 
 /*----------------------公共宏定义----------------------------*/
-#define	PORT_RS485_1_PATH              "/dev/ttyUSB0"
-#define PORT_RS485_2_PATH              "/dev/ttyUSB1"
 #define PORT_RS232_1_PATH              "/dev/ttyUSB2"
 #define PORT_RS232_2_PATH              "/dev/ttyUSB3"
 

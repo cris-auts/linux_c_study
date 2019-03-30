@@ -191,16 +191,16 @@ extern "C" {
 
 #if __SYS_RS485_LOG_ENABLE__
 #define RS485_PrintLog(fmt,arg...)          do{\
-	if(g_dev_prm.nvram.debug_log_st.rs485_log)\
+	if(g_dev_prm.nvram.debug_log_st.rs485_log|1)\
 	PrintLog("[RS485]:"fmt,##arg);\
 }while(0)
 #define RS485_PrintHex(pdat,dat_len)          do{\
-	if(g_dev_prm.nvram.debug_log_st.rs485_log)\
+	if(g_dev_prm.nvram.debug_log_st.rs485_log|1)\
 				{DEBUG_Print("[RS485]:HEX:");DEBUG_PrintHex(pdat,dat_len);}\
 		}while(0)
 		
 #define RS485_PrintChar(pdat,dat_len)          do{\
-	if(g_dev_prm.nvram.debug_log_st.rs485_log)\
+	if(g_dev_prm.nvram.debug_log_st.rs485_log|1)\
 				{DEBUG_Print("[RS485]:CHAR:");DEBUG_PrintChar(pdat,dat_len);}\
 		}while(0)
 #else

@@ -464,7 +464,7 @@ INT32_T  COMM_ReadTxFrTxPipe(INT32_T if_id,void *pbuf,INT32_T rlen)
 	memset(fifo_name,0,sizeof(fifo_name));
 	sprintf(fifo_name,"/pipe/tx%05d",if_id);
 	
-	printf("1func:%s:%d.fifo_name=%s\r\n",__func__,__LINE__,fifo_name);
+	//printf("1func:%s:%d.fifo_name=%s\r\n",__func__,__LINE__,fifo_name);
 
 	if(ch_fd_tab[if_id].valid_flg != VALID_FLG)
 	{

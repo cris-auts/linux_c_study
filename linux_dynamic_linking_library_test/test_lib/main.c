@@ -29,6 +29,8 @@ int main(int argc, char** argv)
 	UINT32_T rlen=0;
 	UINT32_T wlen=0;
 	char pipe_wbuf[128]={"APP:1234567890!\r\n"};
+	
+	char pipe_wbuf1[128]={"APP:ABCDEFGHIJ!\r\n"};
 	char pipe_rbuf[128];
 	INT32_T ch_id=0;
 	
@@ -46,6 +48,8 @@ int main(int argc, char** argv)
 	printf("$$$$$$$$$$$$$$$$$$ch_id=%d\r\n",ch_id1);
 	if((ch_id<0)||(ch_id1<0))
 		return 0;
+	//if(ch_id<0)
+		//return 0;
 	
 	while(1)
 	{
@@ -60,16 +64,19 @@ int main(int argc, char** argv)
 		if(wlen == 128)
 			printf("ch_id=%d**********APP SND[%d]:%s\r\n",ch_id,wlen,pipe_wbuf);
 
-		//#else
+		printf("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\r\n");
 		memset(pipe_rbuf,0,128);
 		rlen=COMM_AppReadDat(ch_id1,pipe_rbuf,128);
 		if(rlen)
-			printf("ch_id1=%d@@@@@@@@@@APP RCV[%d]:%s\r\n",ch_id1,rlen,pipe_rbuf);
+			printf("ch_id1=%d$$$$$$$$$APP RCV[%d]:%s\r\n",ch_id1,rlen,pipe_rbuf);
 		sleep(1);
 		
-		wlen=COMM_AppWriteDat(ch_id1,pipe_wbuf,128);
+		wlen=COMM_AppWriteDat(ch_id1,pipe_wbuf1,128);
 		if(wlen == 128)
-			printf("ch_id1=%d**********APP SND[%d]:%s\r\n",ch_id1,wlen,pipe_wbuf);
+			printf("ch_id1=%d+++++++++APP SND[%d]:%s\r\n",ch_id1,wlen,pipe_wbuf1);
+
+		
+		printf("###########################################################\r\n\r\n\r\n");
 		#endif
 	}
 

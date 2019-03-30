@@ -50,7 +50,7 @@ extern "C" {
 
 
 /*----------------------公共头文件----------------------------*/
-//#include "std_globals.h"
+#include "std_globals.h"
 #if 1
 
 

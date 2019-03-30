@@ -44,8 +44,11 @@
 #include "std_globals.h"
 #if __SYS_RS485_ENABLE__
 #include "port_rs485_func.h"
-
+#include "dbase.h"
 #include "port.h"
+
+#define	PORT_RS485_1_PATH              "/dev/ttyUSB0"
+#define PORT_RS485_2_PATH              "/dev/ttyUSB1"
 
 
 /*-----------------------模块内宏定义-------------------------*/
@@ -220,27 +223,19 @@ int PORT_Rs485Cfg(int fd,int band_rate,int flow_ctrl,int data_bits,int stop_bits
 	//设置校验位  
 	switch (parity)  
 	{	 
-		case 'n':  
-		case 'N': //无奇偶校验位。  
+		case 0: //无奇偶校验位。  
 				 options.c_cflag &= ~PARENB;   
 				 options.c_iflag &= ~INPCK; 	 
 				 break;   
-		case 'o':	 
-		case 'O'://设置为奇校验	   
+		case 1://设置为奇校验	   
 				 options.c_cflag |= (PARODD | PARENB);	 
 				 options.c_iflag |= INPCK;				 
 				 break;   
-		case 'e':	
-		case 'E'://设置为偶校验	 
+		case 2://设置为偶校验	 
 				 options.c_cflag |= PARENB; 		
 				 options.c_cflag &= ~PARODD;		 
 				 options.c_iflag |= INPCK;		  
 				 break;  
-		case 's':  
-		case 'S': //设置为空格   
-				 options.c_cflag &= ~PARENB;  
-				 options.c_cflag &= ~CSTOPB;  
-				 break;   
 		default:	
 				 fprintf(stderr,"Unsupported parity\n");	  
 				 return (FALSE);   
@@ -500,91 +495,76 @@ UINT32_T PORT_Rs485RdRxBuf(UINT8_T *pbuf, UINT32_T rlen)
 void* PORT_Rs485Thread(void *p_arg)
 {
 	UINT32_T i;
-	//UINT32_T rcv_len=0;
-	//UINT32_T	snd_len=0;
-	//UINT8_T rcv_buf[RS485_RX_DAT_BUF_SIZE];
-	//UINT8_T snd_buf[RS485_TX_DAT_BUF_SIZE];
-	UINT32_T rlen=0;
-	UINT32_T wlen=0;
-	char pipe_wbuf[128]={"COM:ABCDEFGHIJ!\r\n"};
-	char pipe_rbuf[128];
-	//char interface[1024];
+	UINT32_T snd_len;
+	UINT32_T rcv_len;
+	int fd=-1;
 	PORT_T *p_port= p_arg;
 
-	printf("p_port->prtc_tab[0].ch_id=%d,valid_flg=0x%x\r\n",p_port->prtc_tab[0].ch_id,p_port->prtc_tab[0].valid_flg);
-	printf("p_port->prtc_tab[1].ch_id=%d,valid_flg=0x%x\r\n",p_port->prtc_tab[1].ch_id,p_port->prtc_tab[1].valid_flg);
-	printf("p_port->prtc_tab[2].ch_id=%d,valid_flg=0x%x\r\n",p_port->prtc_tab[2].ch_id,p_port->prtc_tab[2].valid_flg);
-	#if 1
+	if(p_port->port_id==PORT_ID_RS485_1)
+		fd=PORT_Rs485Init(PORT_RS485_1_PATH);
+	else if(p_port->port_id==PORT_ID_RS485_2)
+		fd=PORT_Rs485Init(PORT_RS485_1_PATH);
+	else
+		return NULL;
+	
+	if(fd<0)
+	{
+		RS485_PrintLog("PORT RS485 Init failed!\r\n");
+		pthread_exit(NULL); 
+	}
+	#if 1 //for test
+	p_port->port_cfg.dev_cfg.port_cfg.uart_cfg.bps = 115200;
+	p_port->port_cfg.dev_cfg.port_cfg.uart_cfg.data_bit=8;
+	p_port->port_cfg.dev_cfg.port_cfg.uart_cfg.stop_bit=1;
+	p_port->port_cfg.dev_cfg.port_cfg.uart_cfg.check_bit=0;
+	#endif
+	if(PORT_Rs485Cfg(	fd,
+						p_port->port_cfg.dev_cfg.port_cfg.uart_cfg.bps,
+						0,
+						p_port->port_cfg.dev_cfg.port_cfg.uart_cfg.data_bit,
+						p_port->port_cfg.dev_cfg.port_cfg.uart_cfg.stop_bit,
+						p_port->port_cfg.dev_cfg.port_cfg.uart_cfg.check_bit) == FALSE)
+	{
+		RS485_PrintLog("PORT RS485 Cfg failed!\r\n");
+		pthread_exit(NULL); 
+	}
+
 		
 	while (1)
 	{
-		//RS485_PrintLog("Hello,APP_Rs485Thread!\r\n");
-		#if 0
-		snd_len=PORT_Rs485Write(fd,snd_buf,snd_len);
-		if(snd_len)
-		{
-			RS485_PrintLog("********************Snd New Dat:%d\r\n",snd_len);
-			RS485_PrintHex((unsigned char*)snd_buf,snd_len);
-		}
+		//printf("Hello,APP_Rs485Thread!\r\n");
 		sleep(1);
-		rcv_len=PORT_Rs485Read(fd, rcv_buf,300);
-		if(rcv_len)
-		{
-			RS485_PrintLog("=====================Rcv New Dat:%d\r\n",rcv_len);
-			RS485_PrintHex((unsigned char*)rcv_buf,rcv_len);
-		}
-
-		#endif
-		//printf("p_port->prtc_tab[0].ch_id=%d,valid_flg=0x%x\r\n",p_port->prtc_tab[0].ch_id,p_port->prtc_tab[0].valid_flg);
-		//printf("p_port->prtc_tab[1].ch_id=%d,valid_flg=0x%x\r\n",p_port->prtc_tab[1].ch_id,p_port->prtc_tab[1].valid_flg);
-		//printf("p_port->prtc_tab[2].ch_id=%d,valid_flg=0x%x\r\n",p_port->prtc_tab[2].ch_id,p_port->prtc_tab[2].valid_flg);
 		for(i=0;i<PORT_MULTI_CH_MAX;i++)
 		{
 			if(p_port->prtc_tab[i].valid_flg==VALID_FLG)
 			{
-				printf("read:i=%d\r\n",i);
-				memset(pipe_rbuf,0,128);
-				rlen=COMM_CommReadDat(p_port->prtc_tab[i].ch_id,pipe_rbuf,128);
-				if(rlen)
-					printf("&&&&&&&&&&&&&ch_id=%d,COM RCV[%d]:%s\r\n",p_port->prtc_tab[i].ch_id,rlen,pipe_rbuf);
+				memset(p_port->p_port_tx_buf,0,p_port->port_tx_bufsize);
+				snd_len=COMM_CommReadDat(p_port->prtc_tab[i].ch_id,p_port->p_port_tx_buf,p_port->port_tx_bufsize);
+				if(snd_len)
+				{
+					snd_len=PORT_Rs485Write(fd,p_port->p_port_tx_buf,snd_len);
+					RS485_PrintLog("ch_id=%d*****Snd New Dat[%d]:%s\r\n",p_port->prtc_tab[i].ch_id,snd_len,p_port->p_port_tx_buf);
+				}
+			}
+		}
+		printf("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\r\n");
+
+		memset(p_port->p_port_rx_buf,0,p_port->port_rx_bufsize);
+		rcv_len=PORT_Rs485Read(fd, p_port->p_port_rx_buf,p_port->port_rx_bufsize);
+		if(rcv_len)
+		{
+			for(i=0;i<PORT_MULTI_CH_MAX;i++)
+			{
+				if(p_port->prtc_tab[i].valid_flg==VALID_FLG)
+				{
+					RS485_PrintLog("ch_id=%d=====Rcv New Dat[%d]%s\r\n",p_port->prtc_tab[i].ch_id,rcv_len,p_port->p_port_rx_buf);
+					COMM_CommWriteDat(p_port->prtc_tab[i].ch_id,p_port->p_port_rx_buf,rcv_len);
+				}
 			}
 		}
 		
-		sleep(1);
-		for(i=0;i<PORT_MULTI_CH_MAX;i++)
-		{
-			if(p_port->prtc_tab[i].valid_flg==VALID_FLG)
-			{
-				printf("write:i=%d\r\n",i);
-				wlen=COMM_CommWriteDat(p_port->prtc_tab[i].ch_id,pipe_wbuf,128);
-				if(wlen == 128)
-					printf("=============ch_id=%d,COM SND[%d]:%s\r\n",p_port->prtc_tab[i].ch_id,wlen,pipe_wbuf);
-			}
-		}
-
+		printf("###########################################################\r\n\r\n\r\n");
 	}
-	#else
-	while(1)
-	{
-	
-		snd_len=RS485_RdTxBufToSnd(snd_buf,RS485_TX_DAT_BUF_SIZE);
-		snd_len=PORT_Rs485Write(fd,snd_buf,snd_len);
-		if(snd_len)
-		{
-			printf("Snd New Dat:%d\r\n",snd_len);
-			//RS485_PrintHex(snd_buf,snd_len);
-		}
-		rcv_len=PORT_Rs485Read(fd,rcv_buf,RS485_RX_DAT_BUF_SIZE);
-		rcv_len=RS485_WrRcvToRxBuf(rcv_buf,rcv_len);
-		if(rcv_len)
-		{
-			printf("Rcv New Dat:%d\r\n",rcv_len);
-			//RS485_PrintHex(rcv_buf,rcv_len);
-		}
-
-
-	}
-	#endif
 	return NULL;
 }
 
