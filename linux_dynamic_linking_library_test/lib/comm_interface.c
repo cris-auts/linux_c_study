@@ -120,12 +120,10 @@ INT32_T GetNewMsg(INT32_T qid, MSG_T* pmsg, INT32_T wait_ms)
 		}
 		else
 		{
-			
 			return 0;
 		}
 	}
 	return -1;
-
 }
 
 
@@ -150,7 +148,7 @@ INT32_T OpenPipe(char* pname, int*ppipe_fd, int mode)
 	
     if(access(pname, F_OK) == -1)
     {
-        printf ("Create the fifo pipe.\n");
+        //printf ("Create the fifo pipe.\n");
         err = mkfifo(pname, 0777);
         if(err != 0)
         {
@@ -161,7 +159,7 @@ INT32_T OpenPipe(char* pname, int*ppipe_fd, int mode)
 	*ppipe_fd = open(pname, open_mode);
 	if(*ppipe_fd > 0)
 	{
-		printf("Process %d fd:%d,err:%d\n", getpid(), *ppipe_fd,err);
+		//printf("Process %d fd:%d,err:%d\n", getpid(), *ppipe_fd,err);
 		return 0;
 	}
 	else
@@ -187,25 +185,17 @@ INT32_T ReadPipe(char* pname,char* pbuf, INT32_T rlen)
 	int len=0;
  	int pipe_fd = -1;
 	
-	printf("%s:%d,pipe_fd=%d\r\n",__func__,__LINE__,pipe_fd);
 	if(pipe_fd != -1)
 	{
-		//printf("%s:%d\r\n",__func__,__LINE__);
 		len = read(pipe_fd, pbuf, rlen);
-		//printf("pipe_fd=%d,read len=%d\r\n",pipe_fd,len);
 		return len;
 	}
 	else
 	{
 		if(OpenPipe(pname, &pipe_fd,O_RDONLY|O_NONBLOCK)==0)
 		{
-		
-			//printf("%s:%d\r\n",__func__,__LINE__);
 			len = read(pipe_fd, pbuf, rlen);
-			//printf("pipe_fd=%d,read len=%d\r\n",pipe_fd,len);
-			//ClosePipe(pipe_fd);
 		}
-		//ClosePipe(pipe_fd);
 		return len;
 	}
 }
@@ -220,17 +210,14 @@ INT32_T WritePipe(char* pname,char* pbuf,INT32_T wlen)
 	
 	if(OpenPipe(pname, &pipe_fd,O_WRONLY|O_NONBLOCK)==0)
 	{
-		printf("%s:%d,pipe_fd=%d\r\n",__func__,__LINE__,pipe_fd);
 		len = write(pipe_fd, pbuf, wlen);
 		if((len > 0)&&(len==wlen))
 		{
-			//printf("WritePipe %d sucess, %d bytes writed\r\n",pipe_fd,len);
 			ClosePipe(pipe_fd);
 			return len;
 		}
 	}
 	ClosePipe(pipe_fd);
-	//printf("WritePipe %d fail, %d bytes writed\r\n",pipe_fd,len);
 	return len;
 }
 
@@ -286,7 +273,7 @@ INT32_T  COMM_InterfaceRegister(void *p_usr_cfg,INT32_T len,INT32_T wait_ms)
 	
 	msg.msg_type=MSG_TYPE_REG;
 	memcpy(&msg.msg_text.reg_text.usr_cfg,p_usr_cfg,len);
-	memcpy(&msg.msg_text.reg_text.tips[0],"Please Register Port RS485-1\r\n",MSG_TIPS_SIZE);
+	memcpy(&msg.msg_text.reg_text.tips[0],"Please Register Port\r\n",MSG_TIPS_SIZE);
 	
 	printf("Snd message[%ld]: %s\r\n", msg.msg_type, msg.msg_text.reg_text.tips);	
 	if ((msgsnd(qid, &msg, sizeof(MSG_TEXT_T), 0)) < 0)
@@ -296,7 +283,7 @@ INT32_T  COMM_InterfaceRegister(void *p_usr_cfg,INT32_T len,INT32_T wait_ms)
 	}
 
 
-	msg_wait_cnt=wait_ms;
+	msg_wait_cnt=wait_ms+1;
 	while(msg_wait_cnt--)
 	{
 		memset(&msg, 0, sizeof(MSG_T));
@@ -309,15 +296,11 @@ INT32_T  COMM_InterfaceRegister(void *p_usr_cfg,INT32_T len,INT32_T wait_ms)
 		}
 		else
 		{
-			printf("RCV message[%ld]: %sch_id=%d\r\n", msg.msg_type, msg.msg_text.ack_text.tips,msg.msg_text.ack_text.ch_id);
+			printf("RCV message[%ld]:ch_id=%d,%s\r\n", msg.msg_type, msg.msg_text.ack_text.ch_id,msg.msg_text.ack_text.tips);
 			comm_id=msg.msg_text.ack_text.ch_id;
 			break;
 		}
 	}
-	/*
-	1.更新映射表格
-	2.创建对应管道
-	*/ 
 	return comm_id;
 
 }
@@ -356,7 +339,7 @@ INT32_T  COMM_ReadRxFrRxPipe(INT32_T if_id,void *pbuf,INT32_T rlen)
 	memset(fifo_name,0,sizeof(fifo_name));
 	sprintf(fifo_name,"/pipe/rx%05d",if_id);
 	
-	printf("1func:%s:%d.fifo_name=%s\r\n",__func__,__LINE__,fifo_name);
+	//printf("1func:%s:%d.fifo_name=%s\r\n",__func__,__LINE__,fifo_name);
 
 	if(ch_fd_tab[if_id].valid_flg != VALID_FLG)
 	{
@@ -364,6 +347,7 @@ INT32_T  COMM_ReadRxFrRxPipe(INT32_T if_id,void *pbuf,INT32_T rlen)
 		{
 			ch_fd_tab[if_id].valid_flg=VALID_FLG;
 			ch_fd_tab[if_id].fd=pipe_rfd;
+			len = read(ch_fd_tab[if_id].fd, pbuf, rlen);
 		}
 	}
 	else
@@ -472,6 +456,7 @@ INT32_T  COMM_ReadTxFrTxPipe(INT32_T if_id,void *pbuf,INT32_T rlen)
 		{
 			ch_fd_tab[if_id].valid_flg=VALID_FLG;
 			ch_fd_tab[if_id].fd=pipe_rfd;
+			len = read(ch_fd_tab[if_id].fd, pbuf, rlen);
 		}
 	}
 	else
