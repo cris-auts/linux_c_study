@@ -303,7 +303,7 @@ UINT32_T PORT_Rs485Read(int fd, UINT8_T *rcv_buf,UINT32_T data_len)
 	if(fs_sel)	
 	{  
 		len = read(fd,rcv_buf,data_len);  
-		printf("I am right!(len = %d fs_sel = %d\n",len,fs_sel);  
+		//printf("I am right!(len = %d fs_sel = %d\n",len,fs_sel);  
 		return len;  
 	}  
 	else  
@@ -543,11 +543,11 @@ void* PORT_Rs485Thread(void *p_arg)
 				if(snd_len)
 				{
 					snd_len=PORT_Rs485Write(fd,p_port->p_port_tx_buf,snd_len);
-					RS485_PrintLog("ch_id=%d*****Snd New Dat[%d]:%s\r\n",p_port->prtc_tab[i].ch_id,snd_len,p_port->p_port_tx_buf);
+					//RS485_PrintLog("ch_id=%d*****Snd New Dat[%d]:%s\r\n",p_port->prtc_tab[i].ch_id,snd_len,p_port->p_port_tx_buf);
 				}
 			}
 		}
-		printf("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\r\n");
+		//printf("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\r\n");
 
 		memset(p_port->p_port_rx_buf,0,p_port->port_rx_bufsize);
 		rcv_len=PORT_Rs485Read(fd, p_port->p_port_rx_buf,p_port->port_rx_bufsize);
@@ -557,13 +557,13 @@ void* PORT_Rs485Thread(void *p_arg)
 			{
 				if(p_port->prtc_tab[i].valid_flg==VALID_FLG)
 				{
-					RS485_PrintLog("ch_id=%d=====Rcv New Dat[%d]%s\r\n",p_port->prtc_tab[i].ch_id,rcv_len,p_port->p_port_rx_buf);
+					//RS485_PrintLog("ch_id=%d=====Rcv New Dat[%d]%s\r\n",p_port->prtc_tab[i].ch_id,rcv_len,p_port->p_port_rx_buf);
 					COMM_CommWriteDat(p_port->prtc_tab[i].ch_id,p_port->p_port_rx_buf,rcv_len);
 				}
 			}
 		}
 		
-		printf("###########################################################\r\n\r\n\r\n");
+		//printf("###########################################################\r\n\r\n\r\n");
 	}
 	return NULL;
 }

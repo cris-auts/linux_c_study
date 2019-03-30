@@ -242,9 +242,9 @@ INT32_T MSG_HandleNewMsg(MSG_T* p_msg,INT32_T *p_ch_id)
 	INT32_T map_tab_idx;
 	INT32_T map_tab_new_idx;
 	PORT_T  *p_port=NULL;
-	static INT32_T prtc_cnt=0;
+	//static INT32_T prtc_cnt=0;
 	PORT_USR_CFG_T *p_usr_cfg=(PORT_USR_CFG_T*)&(p_msg->msg_text.reg_text.usr_cfg);
-	#if 1//²âÊÔ´úÂë
+	#if 0//²âÊÔ´úÂë
 	p_usr_cfg->comm_prm.comm_port=COMM_RS485_1;
 	p_usr_cfg->comm_prm.prtc_type=prtc_cnt++;
 	#endif
@@ -355,14 +355,14 @@ INT32_T MSG_MonitorHandle(void)
 		if(GetNewMsg(qid, &msg, 5000)==0)
 		{
 			printf("GetNewMsg[%ld]:%s\r\n", msg.msg_type, msg.msg_text.reg_text.tips);	
-			if(strncmp(msg.msg_text.reg_text.tips, "Please Register Port RS485-1\r\n", strlen("Please Register Port RS485-1\r\n"))==0)
+			if(strncmp(msg.msg_text.reg_text.tips, "Please Register Port\r\n", strlen("Please Register Port\r\n"))==0)
 			{
 				if(MSG_HandleNewMsg(&msg,&ch_id)==0)
 				{
 					sleep(1);
 					msg.msg_type=MSG_TYPE_ACK;
 					msg.msg_text.ack_text.ch_id=ch_id;
-					memcpy(msg.msg_text.ack_text.tips,"Register Port RS485-1 Sucessful\r\n",sizeof("Register Port RS485-1 Successful\r\n"));
+					memcpy(msg.msg_text.ack_text.tips,"Register Port Sucessful\r\n",sizeof("Register Port Sucessful\r\n"));
 					PutNewMsg(qid, &msg);
 					printf("PutNewMsg[%ld]:%sch_id=%d\r\n", msg.msg_type, msg.msg_text.ack_text.tips,ch_id); 
 
