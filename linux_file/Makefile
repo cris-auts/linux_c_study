@@ -1,4 +1,4 @@
-SRC_PATH = ./
+SRC_PATH = .
 DIRS = $(shell find $(SRC_PATH) -maxdepth 5 -type d)
 
 
@@ -13,7 +13,7 @@ CC = gcc
 CFLAGS = -O2 
 CFLAGS += $(patsubst %,-I%,$(DIRS))
 
-LDFLAGS := -l sqlite3 -l pthread -lpaho-mqtt3c
+LDFLAGS := -l pthread 
 
 FILES = $(foreach dir, $(DIRS), $(wildcard $(dir)/*.c))
 OBJS = $(patsubst %.c, %.o, $(FILES))
