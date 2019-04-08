@@ -25,9 +25,12 @@ int main(INT_T argc, CHAR_T *argv[])
 	}
 	
 	printf("Open queue %d\n",qid);
- 
+ 	printf("sizeof(MSG_TEXT_T)=%ld\r\n",sizeof(MSG_TEXT_T));
+	
+	sleep(3);
 	while(1)
 	{
+		printf ("\r\nRCV....................................................................\r\n");
 		memset(&msg.msg_text, 0, sizeof(MSG_TEXT_T));
 		msg.msg_type = MSG_TYPE_REG_CH_REQ;
 		
@@ -44,6 +47,51 @@ int main(INT_T argc, CHAR_T *argv[])
 		{
 			printf ("OKOKOK:msg rcv success,msg_type=%ld,text_type=%d\r\n",msg.msg_type,msg.msg_text.reg_ch_if_text.text_type);
 			printf ("tips=%s\r\n",msg.msg_text.reg_ch_if_text.tips);
+
+			
+			#if 1
+			printf ("\r\nSND-------------------------------------------------------------------\r\n");
+
+			if(msg.msg_text.reg_ch_if_text.text_type == TEXT_TYPE_REG_CH_IF)
+			{
+				memset(&msg.msg_text, 0, sizeof(MSG_TEXT_T));
+				msg.msg_type = MSG_TYPE_REG_CH_RSP;
+				msg.msg_text.rsp_ch_id_text.text_type = TEXT_TYPE_RSP_CH_ID;
+				msg.msg_text.rsp_ch_id_text.ch_id = 9;
+				sprintf(msg.msg_text.rsp_ch_id_text.tips,"REG OK!!REG ID=%d\r\n",msg.msg_text.rsp_ch_id_text.ch_id);
+				err = msgsnd(qid, &msg, sizeof(MSG_TEXT_T), IPC_NOWAIT);
+				if(err < 0)
+				{
+					printf ("ERRERRERR:msgsnd error,err=%d\r\n",err);
+					perror("message posted");
+				}
+				else
+				{
+					printf ("YYYYYYYYY:REG OK,msg_type=%ld,text_type=%d\r\n",msg.msg_type,msg.msg_text.rsp_ch_id_text.text_type);
+					printf ("tips=%s\r\n",msg.msg_text.rsp_ch_id_text.tips);
+				}
+			}
+			else
+			{
+				memset(&msg.msg_text, 0, sizeof(MSG_TEXT_T));
+				msg.msg_type = MSG_TYPE_REG_CH_RSP;
+				msg.msg_text.rsp_ch_id_text.text_type = TEXT_TYPE_RSP_CH_ID;
+				msg.msg_text.rsp_ch_id_text.ch_id = 0xff;
+				sprintf(msg.msg_text.rsp_ch_id_text.tips,"REG ID=%d\r\n",msg.msg_text.rsp_ch_id_text.ch_id);
+				
+				err = msgsnd(qid, &msg, sizeof(msg.msg_text), IPC_NOWAIT);
+				if(err < 0)
+				{
+					printf ("ERRERRERR:msgsnd error,err=%d\r\n",err);
+					perror("message posted");
+				}
+				else
+				{
+					printf ("XXXXXXXXXXX:REG ERR,msg_type=%ld,text_type=%d\r\n",msg.msg_type,msg.msg_text.rsp_ch_id_text.text_type);
+					printf ("tips=%s\r\n",msg.msg_text.rsp_ch_id_text.tips);
+				}
+			}
+			#endif 
 		}
 		//sleep(1);
 	 

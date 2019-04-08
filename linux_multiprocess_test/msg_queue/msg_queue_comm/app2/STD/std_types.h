@@ -214,6 +214,7 @@ typedef struct reg_ch_if_text_t{
 }REG_CH_IF_TEXT_T;
 typedef struct rsp_ch_id_text_t{
 	UINT32_T  text_type;
+	UINT32_T  ch_id;
 	UCHAR_T   tips[MSG_TIPS_SIZE];
 }RSP_CH_ID_TEXT_T;
 
