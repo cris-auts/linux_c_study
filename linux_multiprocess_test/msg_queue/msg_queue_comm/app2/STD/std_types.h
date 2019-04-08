@@ -188,13 +188,61 @@ typedef enum demo_enum_t {
 } DEMO_ENUM_T; 
 
 
-#define  BUFFER_SIZE 512
+
+#define  MSG_TIPS_SIZE 512
 
 
 
-typedef struct msg_t{
-    LONG_T msg_type;
-    CHAR_T msg_text[BUFFER_SIZE];
+//消息类型--------------------------------------------
+#define  MSG_TYPE_REG_CH_REQ 		(0x01)		//注册通道请求
+#define  MSG_TYPE_REG_CH_RSP 		(0x02)		//注册通道响应
+#define  MSG_TYPE_GET_ST_REQ 		(0x03)		//获取状态请求
+#define  MSG_TYPE_GET_ST_RSP 		(0x04)		//获取状态响应
+
+//请求/响应类型--------------------------------------------
+
+#define  TEXT_TYPE_REG_CH_IF 		(0x81)		//注册通道信息
+#define  TEXT_TYPE_RSP_CH_ID 		(0x82)		//响应通道编号
+#define  TEXT_TYPE_GET_CH_ST 		(0x83)		//获取通道状态
+#define  TEXT_TYPE_RSP_CH_ST 		(0x84)		//响应通道状态
+
+
+
+typedef struct reg_ch_if_text_t{
+	UINT32_T  text_type;
+	UCHAR_T   tips[MSG_TIPS_SIZE];
+}REG_CH_IF_TEXT_T;
+typedef struct rsp_ch_id_text_t{
+	UINT32_T  text_type;
+	UCHAR_T   tips[MSG_TIPS_SIZE];
+}RSP_CH_ID_TEXT_T;
+
+
+typedef struct get_ch_st_text_t{
+	UINT32_T text_type;
+	CHAR_T   tips[MSG_TIPS_SIZE];
+}GET_CH_ST_TEXT_T;
+typedef struct rsp_ch_st_text_t{
+	UINT32_T text_type;
+	CHAR_T   tips[MSG_TIPS_SIZE];
+}RSP_CH_ST_TEXT_T;
+
+
+
+typedef union msg_text_t
+{
+	REG_CH_IF_TEXT_T reg_ch_if_text;
+	RSP_CH_ID_TEXT_T rsp_ch_id_text;
+	GET_CH_ST_TEXT_T get_ch_st_text;
+	RSP_CH_ST_TEXT_T rsp_ch_st_text;
+}MSG_TEXT_T;
+
+
+
+typedef struct msg_t
+{
+    LONG_T 		msg_type;
+    MSG_TEXT_T 	msg_text;
 }MSG_T;
 #endif//#ifndef __STD_TYPES_H__
 

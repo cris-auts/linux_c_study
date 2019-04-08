@@ -10,6 +10,7 @@ int main(INT_T argc, CHAR_T *argv[])
 	INT_T qid;
 	key_t key;
 	MSG_T msg;
+	INT_T err=0;
  
 	if ((key = ftok("/tmp", 'a')) == -1)
 	{
@@ -27,24 +28,25 @@ int main(INT_T argc, CHAR_T *argv[])
  
 	while(1)
 	{
-	   printf("Enter some message to the queue(enter 'quit' to exit):");
-	    if ((fgets(msg.msg_text, BUFFER_SIZE, stdin)) == NULL)
-	    {
-	        puts("no message");
-	        exit(1);
-	    }
-	 
-		msg.msg_type = getpid();
-		if ((msgsnd(qid, &msg, strlen(msg.msg_text), 0)) < 0)
+		memset(&msg.msg_text, 0, sizeof(MSG_TEXT_T));
+		msg.msg_type = MSG_TYPE_REG_CH_REQ;
+		
+		err = msgrcv(qid, (void*)&msg, sizeof(MSG_TEXT_T), msg.msg_type, IPC_NOWAIT) ;
+		if (err < 0)
 		{
-			perror("message posted");
-			exit(1);
+			printf ("ERRERRERR:msgrcv error,err=%d\r\n",err);
+			perror("msgrcv");
+			
+			sleep(1);
+			//exit(1);
 		}
-	 
-		if (strncmp(msg.msg_text, "quit", 4) == 0)
+		else
 		{
-			break;
+			printf ("OKOKOK:msg rcv success,msg_type=%ld,text_type=%d\r\n",msg.msg_type,msg.msg_text.reg_ch_if_text.text_type);
+			printf ("tips=%s\r\n",msg.msg_text.reg_ch_if_text.tips);
 		}
+		//sleep(1);
+	 
 	}
 	exit(0);
 }
