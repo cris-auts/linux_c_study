@@ -189,7 +189,7 @@ typedef enum demo_enum_t {
 
 
 
-#define  MSG_TIPS_SIZE 512
+#define  MSG_TIPS_SIZE 128
 
 
 
@@ -221,11 +221,11 @@ typedef struct rsp_ch_id_text_t{
 
 typedef struct get_ch_st_text_t{
 	UINT32_T text_type;
-	CHAR_T   tips[MSG_TIPS_SIZE];
+	UCHAR_T   tips[MSG_TIPS_SIZE];
 }GET_CH_ST_TEXT_T;
 typedef struct rsp_ch_st_text_t{
 	UINT32_T text_type;
-	CHAR_T   tips[MSG_TIPS_SIZE];
+	UCHAR_T   tips[MSG_TIPS_SIZE];
 }RSP_CH_ST_TEXT_T;
 
 

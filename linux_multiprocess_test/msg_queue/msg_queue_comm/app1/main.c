@@ -1,11 +1,19 @@
 #include "std_globals.h"
 
 
+int remove_queue( int qid )
+{
+if( msgctl( qid, IPC_RMID, 0) == -1)
+{
+return(-1);
+}
+return(0);
+}
 
 
 
  
-int main(INT_T argc, CHAR_T *argv[])
+INT_T main(INT_T argc, CHAR_T *argv[])
 {
 	INT_T qid;
 	key_t key;
@@ -41,7 +49,22 @@ int main(INT_T argc, CHAR_T *argv[])
 		{
 			printf ("ERRERRERR:msgsnd error,err=%d\r\n",err);
 			perror("message posted");
-			sleep(1);
+			sleep(5);
+			remove_queue(qid);
+			if ((key = ftok("/tmp", 'a')) == -1)
+			{
+				perror("ftok");
+				exit(1);
+			}
+			
+			if ((qid = msgget(key, IPC_CREAT|0666)) == -1)
+			{
+				perror("msgget");
+				exit(1);
+			}
+			
+			printf("ReOpen queue %d---------------------------------------\n",qid);
+			printf("sizeof(MSG_TEXT_T)=%ld\r\n",sizeof(MSG_TEXT_T));
 		}
 		else
 		{

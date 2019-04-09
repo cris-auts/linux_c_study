@@ -5,7 +5,7 @@
 
 
  
-int main(INT_T argc, CHAR_T *argv[])
+INT_T main(INT_T argc, CHAR_T *argv[])
 {
 	INT_T qid;
 	key_t key;
@@ -30,6 +30,7 @@ int main(INT_T argc, CHAR_T *argv[])
 	sleep(3);
 	while(1)
 	{
+		sleep(10);
 		printf ("\r\nRCV....................................................................\r\n");
 		memset(&msg.msg_text, 0, sizeof(MSG_TEXT_T));
 		msg.msg_type = MSG_TYPE_REG_CH_REQ;
@@ -42,6 +43,21 @@ int main(INT_T argc, CHAR_T *argv[])
 			
 			sleep(1);
 			//exit(1);
+			
+			if ((key = ftok("/tmp", 'a')) == -1)
+			{
+				perror("ftok");
+				exit(1);
+			}
+			
+			if ((qid = msgget(key, IPC_CREAT|0666)) == -1)
+			{
+				perror("msgget");
+				exit(1);
+			}
+			
+			printf("reOpen queue@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ %d\n",qid);
+			printf("sizeof(MSG_TEXT_T)=%ld\r\n",sizeof(MSG_TEXT_T));
 		}
 		else
 		{
