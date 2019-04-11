@@ -150,7 +150,7 @@ extern INT32_T IPC_PutMsg(INT_T qid, MSG_T *p_msg, UINT32_T wait_ms);
 extern void    IPC_Init(void);
 extern INT32_T IPC_ChRegister(void *p_usr_cfg,INT32_T len,INT32_T wait_ms,UINT32_T *p_ch_id);
 extern INT32_T IPC_ChUnRegister(UINT32_T ch_id);
-extern INT32_T IPC_GetChStatus(UINT32_T ch_id, UINT32_T *p_ch_st);
+extern INT32_T IPC_GetChStatus(UINT32_T ch_id, UINT32_T *p_ch_st,UINT32_T wait_ms);
 extern INT32_T IPC_AppReadDat(UINT32_T ch_id, void *pbuf, UINT32_T rlen);
 extern INT32_T IPC_AppWriteDat(UINT32_T ch_id, void *pbuf, UINT32_T wlen);
 extern INT32_T IPC_CommReadDat(UINT32_T ch_id, void *pbuf, UINT32_T rlen);

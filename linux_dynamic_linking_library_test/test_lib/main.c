@@ -27,18 +27,28 @@ int main(int argc, char** argv)
 {   
 	UINT32_T rlen=0;
 	UINT32_T wlen=0;
-	char pipe_wbuf[128]={"APP:1234567890!\r\n"};
-	
+	char pipe_wbuf[128]={"APP:0123456789!\r\n"};
 	char pipe_wbuf1[128]={"APP:ABCDEFGHIJ!\r\n"};
+	char pipe_wbuf2[128]={"APP:QRSTUVWXYZ!\r\n"};
+	char pipe_wbuf3[128]={"APP:98765432d10!\r\n"};
+
+	
 	char pipe_rbuf[128];
 	UINT32_T ch_id=0;
 	UINT32_T ch_id1=0;
 	UINT32_T ch_id2=0;
 	UINT32_T ch_id3=0;
+
+	
+	UINT32_T ch_st=0;
+	UINT32_T ch_st1=0;
+	UINT32_T ch_st2=0;
+	UINT32_T ch_st3=0;
 	USR_CFG_T usr_cfg;
 	
 	IPC_Init();
 	sleep(1);
+	#if 1
 	//注册通道1==================================================
 	usr_cfg.slaver_run_mode=RUN_MODE_CLIENT;//分解后运行模式
 	usr_cfg.slaver_run_ip_index=CLIENT_IP_NUM1;//分解后运行ip索引
@@ -111,8 +121,8 @@ int main(int argc, char** argv)
 	else
 		printf("1IPC_ChRegister failed!\r\n");
 	sleep(1);
-
-	#if 0
+	#endif
+	#if 1
 	//注册通道2==================================================
 	//usr_cfg.slaver_run_mode=RUN_MODE_CLIENT;//分解后运行模式
 	//usr_cfg.slaver_run_ip_index=CLIENT_IP_NUM1;//分解后运行ip索引
@@ -126,7 +136,7 @@ int main(int argc, char** argv)
 	usr_cfg.comm_prm.comm_port=COMM_RS485_1;//物理通道
 	usr_cfg.comm_prm.run_mode=RUN_MODE_CLIENT;//运行模式   混合模式(0)、客户端(1)、服务器(2)
 	usr_cfg.comm_prm.link_mode=0;//连接模式   TCP(0)、UDP(1)
-	usr_cfg.comm_prm.link_app_mode=0;//连接应用模式  主备模式(0)、多连接模式(1)
+	usr_cfg.comm_prm.link_app_mode=1;//连接应用模式  主备模式(0)、多连接模式(1)
 
 	usr_cfg.comm_prm.port_prm.uart_prm.resend_count=3;		//重发次数
 	usr_cfg.comm_prm.port_prm.uart_prm.timeout=5;			//超时时间，单位：s
@@ -142,7 +152,7 @@ int main(int argc, char** argv)
 
 	//注册通道3==================================================
 	usr_cfg.slaver_run_mode=RUN_MODE_CLIENT;//分解后运行模式
-	usr_cfg.slaver_run_ip_index=CLIENT_IP_NUM1;//分解后运行ip索引
+	usr_cfg.slaver_run_ip_index=CLIENT_IP_NUM0;//分解后运行ip索引
 
 	usr_cfg.comm_prm.cs=0;//校验
 	usr_cfg.comm_prm.enable=1;//失能(0)、使能(1)
@@ -163,19 +173,18 @@ int main(int argc, char** argv)
 	usr_cfg.comm_prm.port_prm.eth_prm.ip[3]=6;				//ip地址
 	usr_cfg.comm_prm.port_prm.eth_prm.ip[4]=0;				//ip地址
 	usr_cfg.comm_prm.port_prm.eth_prm.ip[5]=0;				//ip地址
-
+	usr_cfg.comm_prm.port_prm.eth_prm.port_num=8002;		//端口号
 	
-	usr_cfg.comm_prm.port_prm.eth_prm.port_num=8000;		   //端口号
 	usr_cfg.comm_prm.port_prm.eth_prm.ip_backup_type=0;    //备用ip类型IPV4(0) IPV6(1)
 	
 	usr_cfg.comm_prm.port_prm.eth_prm.ip_backup [0]=192;		//备用ip地址
 	usr_cfg.comm_prm.port_prm.eth_prm.ip_backup [1]=168;		//备用ip地址
 	usr_cfg.comm_prm.port_prm.eth_prm.ip_backup [2]=2;			//备用ip地址
-	usr_cfg.comm_prm.port_prm.eth_prm.ip_backup [3]=7;			//备用ip地址
+	usr_cfg.comm_prm.port_prm.eth_prm.ip_backup [3]=6;			//备用ip地址
 	usr_cfg.comm_prm.port_prm.eth_prm.ip_backup [4]=0;			//备用ip地址
 	usr_cfg.comm_prm.port_prm.eth_prm.ip_backup [5]=0;			//备用ip地址
 	
-	usr_cfg.comm_prm.port_prm.eth_prm.port_backup_num=8001;  //备用端口号
+	usr_cfg.comm_prm.port_prm.eth_prm.port_backup_num=8003;  //备用端口号
 	usr_cfg.comm_prm.port_prm.eth_prm.port_list_num=2; 	//侦听端口列表有效数据长度
 	
 	usr_cfg.comm_prm.port_prm.eth_prm.port_list[0]=9000;	//侦听端口列表,最大10个
@@ -241,35 +250,76 @@ int main(int argc, char** argv)
 		printf("2IPC_ChRegister failed!\r\n");
 	sleep(1);
 
-
+	IPC_GetChStatus(ch_id, &ch_st,500);
 	
+	//sleep(1);
+	IPC_GetChStatus(ch_id1, &ch_st1,500);
+	
+	//sleep(1);
+	IPC_GetChStatus(ch_id2, &ch_st2,500);
+	//sleep(1);
+	IPC_GetChStatus(ch_id3, &ch_st3,500);
+	printf("ch_st=%d,ch_st1=%d,ch_st2=%d,ch_st3=%d,\r\n",ch_st,ch_st1,ch_st2,ch_st3);
 	sleep(2);
 	while(1)
 	{
 		#if 1
-		memset(pipe_rbuf,0,128);
-		rlen=IPC_AppReadDat(ch_id,pipe_rbuf,128);
-		if(rlen)
-			printf("ch_id=%d@@@@@@@@@@APP RCV[%d]:%s\r\n",ch_id,rlen,pipe_rbuf);
-		sleep(1);
+		if(ch_st)
+		{
+			printf("\r\n\r\n\r\nCH0CH0CH0CH0CH0CH0CH0CH0CH0CH0CH0CH0CH0CH0CH0CH0CH0CH0CH0CH0\r\n");
+			memset(pipe_rbuf,0,128);
+			rlen=IPC_AppReadDat(ch_id,pipe_rbuf,128);
+			if(rlen)
+				printf("ch_id=%d000000000000APP RCV[%d]:%s\r\n",ch_id,rlen,pipe_rbuf);
+			sleep(1);
+			
+			wlen=IPC_AppWriteDat(ch_id,pipe_wbuf,128);
+			if(wlen == 128)
+				printf("ch_id=%d00000000000APP SND[%d]:%s\r\n",ch_id,wlen,pipe_wbuf);
+		}
 		
-		wlen=IPC_AppWriteDat(ch_id,pipe_wbuf,128);
-		if(wlen == 128)
-			printf("ch_id=%d**********APP SND[%d]:%s\r\n",ch_id,wlen,pipe_wbuf);
+		if(ch_st1)
+		{
+			printf("\r\n\r\n\r\nCH1CH1CH1CH1CH1CH1CH1CH1CH1CH1CH1CH1CH1CH1CH1CH1CH1CH1CH1CH1\r\n");
+			memset(pipe_rbuf,0,128);
+			rlen=IPC_AppReadDat(ch_id1,pipe_rbuf,128);
+			if(rlen)
+				printf("ch_id1=%d1111111111APP RCV[%d]:%s\r\n",ch_id1,rlen,pipe_rbuf);
+			usleep(50000);
+			
+			wlen=IPC_AppWriteDat(ch_id1,pipe_wbuf1,128);
+			if(wlen == 128)
+				printf("ch_id1=%d1111111111APP SND[%d]:%s\r\n",ch_id1,wlen,pipe_wbuf1);
+		}
+		
+		if(ch_st2)
+		{
+			printf("\r\n\r\n\r\nCH2CH2CH2CH2CH2CH2CH2CH2CH2CH2CH2CH2CH2CH2CH2CH2CH2CH2CH2CH2\r\n");
+			memset(pipe_rbuf,0,128);
+			rlen=IPC_AppReadDat(ch_id2,pipe_rbuf,128);
+			if(rlen)
+				printf("ch_id1=%d2222222222APP RCV[%d]:%s\r\n",ch_id2,rlen,pipe_rbuf);
+			usleep(50000);
+			
+			wlen=IPC_AppWriteDat(ch_id2,pipe_wbuf2,128);
+			if(wlen == 128)
+				printf("ch_id1=%d2222222222APP SND[%d]:%s\r\n",ch_id2,wlen,pipe_wbuf2);
 
-		printf("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\r\n");
-		memset(pipe_rbuf,0,128);
-		rlen=IPC_AppReadDat(ch_id1,pipe_rbuf,128);
-		if(rlen)
-			printf("ch_id1=%d$$$$$$$$$APP RCV[%d]:%s\r\n",ch_id1,rlen,pipe_rbuf);
-		sleep(1);
-		
-		wlen=IPC_AppWriteDat(ch_id1,pipe_wbuf1,128);
-		if(wlen == 128)
-			printf("ch_id1=%d+++++++++APP SND[%d]:%s\r\n",ch_id1,wlen,pipe_wbuf1);
+		}
 
-		
-		printf("###########################################################\r\n\r\n\r\n");
+		if(ch_st3)
+		{
+			printf("\r\n\r\n\r\nCH3CH3CH3CH3CH3CH3CH3CH3CH3CH3CH3CH3CH3CH3CH3CH3CH3CH3CH3CH3\r\n");
+			memset(pipe_rbuf,0,128);
+			rlen=IPC_AppReadDat(ch_id3,pipe_rbuf,128);
+			if(rlen)
+				printf("ch_id1=%d333333333333APP RCV[%d]:%s\r\n",ch_id3,rlen,pipe_rbuf);
+			usleep(50000);
+			wlen=IPC_AppWriteDat(ch_id3,pipe_wbuf1,128);
+			if(wlen == 128)
+				printf("ch_id1=%d33333333333APP SND[%d]:%s\r\n",ch_id3,wlen,pipe_wbuf3);
+
+		}
 		#endif
 	}
 
