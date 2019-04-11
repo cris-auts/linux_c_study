@@ -230,6 +230,27 @@ extern "C" {
 #endif
 
 
+#if __SYS_COMM_INTERFACE_ENABLE__
+#define IPC_PrintLog(fmt,arg...)          do{\
+	if(__SYS_COMM_INTERFACE_ENABLE__)\
+	PrintLog("[IPC]:"fmt,##arg);\
+}while(0)
+#define IPC_PrintHex(pdat,dat_len)          do{\
+	if(__SYS_COMM_INTERFACE_ENABLE__)\
+				{DEBUG_Print("[IPC]:HEX:");DEBUG_PrintHex(pdat,dat_len);}\
+		}while(0)
+		
+#define IPC_PrintChar(pdat,dat_len)          do{\
+	if(__SYS_COMM_INTERFACE_ENABLE__)\
+				{DEBUG_Print("[IPC]:CHAR:");DEBUG_PrintChar(pdat,dat_len);}\
+		}while(0)
+#else
+#define IPC_PrintLog(fmt,arg...)
+#define IPC_PrintHex(pdat,dat_len)
+#define IPC_PrintChar(pdat,dat_len)
+#endif
+
+
 /*---------------------------------模块类定义--------------------------------*/
 typedef struct debug_log_st_t{
 	UINT8_T debug_log;

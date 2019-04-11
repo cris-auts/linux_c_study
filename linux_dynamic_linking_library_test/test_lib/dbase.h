@@ -50,11 +50,12 @@ extern "C" {
 
 
 /*----------------------公共头文件----------------------------*/
-//#include "std_globals.h"
-#if 1
+#include "std_globals.h"
+#if __SYS_DBASE_ENABLE__
 
 
 /*----------------------接口头文件----------------------------*/
+//#include "xxx_xxx.h"
 
 
 /*----------------------公共宏定义----------------------------*/
@@ -65,32 +66,34 @@ extern "C" {
 #define MOBILE_COMM_PRM_MAX 10	//移动通信参数最大个数
 
 /*----------------------公共类定义----------------------------*/
-typedef enum sql_err
-{
-	SQL_OK,
-	SQL_TABLE_EXIST,//表已存在
-	SQL_TABLE_ID_ERR,//表号错误
-	SQL_CMD_OVERFLOW,//SQL指令超出既定缓存长度
-	SQL_FAIL
-}SQL_ERR_T;
-
-typedef enum sql_select
-{
-	SQL_SELECT_NUM,
-	SQL_SELECT_DATA
-}SQL_SELECT_T;
-
-typedef enum sql_screen
-{
-	SQL_SCREEN_TABLE1_ID,
-	SQL_SCREEN_TABLE2_ID
-}SQL_SCREEN_T;
-
 typedef enum dbase_err
 {
-	DBASE_OK,
-	DBASE_FAIL
+	DBASE_OK,//成功
+	DBASE_NO_RECORD,//无该记录
+	DBASE_MULTI_CFGSN,//配置序号重复(不唯一)
+	DBASE_CHECK_ERR,//校验出错
+	DBASE_FAIL//失败
 }DBASE_ERR_T;
+
+typedef enum table_id_t
+{
+	DBASE_TABLE_COMM_CFG,
+	DBASE_TABLE_COMM_PRM,
+	DBASE_TABLE_MAX
+}DBASE_TABLE_ID_T;
+
+typedef enum client_ip_index_t
+{
+	CLIENT_IP_NUM0=0,	 	//客户端下取主备任意可用ID
+	CLIENT_IP_NUM1=1,       //客户端下取主IP1
+	CLIENT_IP_NUM2=2	       //客户端下取备用IP2
+}CLIENT_IP_INDEX_T;
+
+typedef enum prm_stat_t
+{
+	PRM_DISABLE = 0,	//参数无效
+	PRM_ENABLE = 1 	//参数有效
+}PRM_STAT_T;//参数状态
 
 typedef enum comm_port
 {
@@ -110,6 +113,12 @@ typedef enum prtc_type
 	PRTC_MAINT	  //maint维护规约
 }PRTC_TYPE_T;//规约类型
 
+typedef enum prtc_level
+{
+	PRTC_LEVEL_0,//最高级
+	PRTC_LEVEL_1
+}PRTC_LEVEL_T;//规约权限等级
+
 typedef enum mobile_comm_port
 {
   MCP_MOBILE_2G,//移动2G
@@ -124,12 +133,31 @@ typedef enum mobile_comm_port
   MCP_CUSTOMIZE_NET//专网
 }MOBILE_COMM_PORT_T;//移动通信通道(运营商)
 
+typedef enum run_mode_t
+{
+	RUN_MODE_MIX = 0,   //混合模式(0)
+	RUN_MODE_CLIENT = 1,  //客户端(1)
+	RUN_MODE_SEVER = 2   //服务器(2)
+}RUN_MODE_T;//运行模式
+
+typedef enum link_mode_t
+{
+	LINK_MODE_TCP = 0, //TCP
+	LINK_MODE_UDP = 1 //UDP
+}LINK_MODE_T;//连接模式
+
+typedef enum link_app_mode_t
+{
+	LINK_APP_MODE_BACKUP = 0, //主备模式
+	LINK_APP_MODE_ALL = 1		//多连接
+}LINK_APP_MODE_T;//连接应用模式
+
 /*----------------------------------------------通道配置表----------------------------------------------*/
 typedef struct table_comm_cfg
 {
 	UINT16_T          cs;//校验
-	UINT8_T           enable;//失能(0)、使能(1)
-	UINT16_T		  cfg_sn;//配置序号
+	PRM_STAT_T       enable;//失能(0)、使能(1)
+	UINT16_T			 cfg_sn;//配置序号
 	COMM_PORT_T     comm_port;//物理通道
 	union
 	{
@@ -179,14 +207,15 @@ typedef struct table_comm_cfg
 typedef struct table_comm_prm
 {
 	UINT16_T          cs;//校验
-	UINT8_T            enable;//失能(0)、使能(1)
+	PRM_STAT_T        enable;//失能(0)、使能(1)
 	UINT16_T			  cfg_sn;//配置序号
 	PRTC_TYPE_T      prtc_type;//规约类型
-	UINT8_T			  prtc_level;//规约权限等级 	从(0)、主(1)
+	PRTC_LEVEL_T	 prtc_level;//规约权限等级
+	UINT32_T          prtc_buff_size;//规约占用缓冲区尺寸
 	COMM_PORT_T      comm_port;//物理通道
-	UINT8_T run_mode;//运行模式   客户端(0)、服务器(1)、混合模式(2)
-	UINT8_T link_mode;//连接模式   TCP(0)、UDP(1)
-	UINT8_T link_app_mode;//连接应用模式  主备模式(0)、多连接模式(1)
+	RUN_MODE_T 		  run_mode;//运行模式   混合模式(0)、客户端(1)、服务器(2)
+	LINK_MODE_T 	  link_mode;//连接模式   TCP(0)、UDP(1)
+	LINK_APP_MODE_T link_app_mode;//连接应用模式  主备模式(0)、多连接模式(1)
 	union
 	{
 		/*串行接口参数*/
@@ -201,15 +230,15 @@ typedef struct table_comm_prm
 		{
 			UINT8_T ip_type;           //ip类型 IPV4(0) IPV6(1)
 			UINT8_T ip[6];				//ip地址
-			UINT32_T port_num;         //端口号
+			UINT16_T port_num;         //端口号
 			UINT8_T ip_backup_type;    //备用ip类型
 			UINT8_T ip_backup [6];		//备用ip地址
-			UINT32_T port_backup_num;  //备用端口号
+			UINT16_T port_backup_num;  //备用端口号
 			UINT32_T port_list_num;     //侦听端口列表有效数据长度
-			UINT32_T port_list[PORT_LIST_MAX];          //侦听端口列表
+			UINT16_T port_list[PORT_LIST_MAX];          //侦听端口列表
 			UINT8_T ip_proxy_type;     //代理ip类型
 			UINT8_T ip_proxy [6];		//代理ip地址
-			UINT32_T port_proxy_num;    //代理端口号
+			UINT16_T port_proxy_num;    //代理端口号
 			UINT32_T resend_count;       //重发次数
 			UINT32_T timeout;            //超时时间
 			UINT32_T time_wait;          //发送等待间隔时间
@@ -255,59 +284,14 @@ typedef struct table_comm_prm
 		}mobile_prm[MOBILE_COMM_PRM_MAX];
 	}port_prm;
 }TABLE_COMM_PRM_T,*P_TABLE_COMM_PRM_T;
-/*----------------------------------------------总表----------------------------------------------*/
-typedef enum table_id_t
-{
-	SQL_TABLE_COMM_CFG,
-	SQL_TABLE_COMM_PRM,
-	SQL_TABLE_MAX
-}SQL_TABLE_ID_T;
-
 /*-----------------模块对外接口变量声明-----------------------*/
-//extern    xxxxx;
 
-
-/*-----------------模块对外接口函数声明-----------------------*/
-extern DBASE_ERR_T DBASE_OpenDataBase(const char *db_name);
-extern DBASE_ERR_T DBASE_CloseDataBase();
-
-/*-----------------通道配置表接口函数声明-----------------------*/
-//查询表记录总数
-extern DBASE_ERR_T DBASE_QueryCommCfgRecordNum(UINT32_T *total_num);
-//查询表所有配置序号
-extern DBASE_ERR_T DBASE_QueryCommCfgRecordCfgSn(UINT16_T *cfg_sn);
-//根据配置序号查询配置参数
-extern DBASE_ERR_T DBASE_SelectCommCfgAccordCfgSn(P_TABLE_COMM_CFG_T p_comm_cfg);
-//根据配置序号添加配置参数
-extern DBASE_ERR_T DBASE_InsertCommCfgAccordCfgSn(P_TABLE_COMM_CFG_T p_comm_cfg);
-//根据配置序号更新配置参数
-extern DBASE_ERR_T DBASE_UpdateCommCfgAccordCfgSn(P_TABLE_COMM_CFG_T p_comm_cfg);
-//根据配置序号删除配置参数
-extern DBASE_ERR_T DBASE_DelectCommCfgAccordCfgSn(UINT16_T cfg_sn);
-//清空表
-extern DBASE_ERR_T DBASE_ClearCommCfgRecord();
-
-/*-----------------通新参数表接口函数声明-----------------------*/
-//查询表记录总数
-extern DBASE_ERR_T DBASE_QueryCommPrmRecordNum(UINT32_T *total_num);
-//查询表所有配置序号
-extern DBASE_ERR_T DBASE_QueryCommPrmRecordCfgSn(UINT16_T *cfg_sn);
-//根据配置序号查询配置参数
-extern DBASE_ERR_T DBASE_SelectCommPrmAccordCfgSn(P_TABLE_COMM_PRM_T p_comm_cfg);
-//根据配置序号添加配置参数
-extern DBASE_ERR_T DBASE_InsertCommPrmAccordCfgSn(P_TABLE_COMM_PRM_T p_comm_cfg);
-//根据配置序号更新配置参数
-extern DBASE_ERR_T DBASE_UpdateCommPrmAccordCfgSn(P_TABLE_COMM_PRM_T p_comm_cfg);
-//根据配置序号删除配置参数
-extern DBASE_ERR_T DBASE_DelectCommPrmAccordCfgSn(UINT16_T cfg_sn);
-//清空表
-extern DBASE_ERR_T DBASE_ClearCommPrmRecord();
 
 #endif//#if __SYS_DBASE_ENABLE__
 #ifdef __cplusplus
 }
 #endif
-#endif //#ifndef __DB_H__
+#endif //#ifndef __DBASE_H__
 
 
 

@@ -92,6 +92,8 @@
 #define    __SYS_RS485_SUPPORT__                       	(1)	//Added By Cris@20190218
 #define    __SYS_RS232_SUPPORT__                       	(1)	//Added By Cris@20190218
 
+#define    __SYS_COMM_IF_SUPPORT__                      (1)	//Added By Cris@20190409
+
 
 /****************************************************************************************
                                Middleware Feature  Control
@@ -144,7 +146,9 @@
 #define    __SYS_RS232_LOG_ENABLE__                		(1)	//Added By Cris@20190218
 #endif
 
-
+#if __SYS_RS232_SUPPORT__
+#define    __SYS_COMM_INTERFACE_ENABLE__                (1)	//Added By Cris@20190409
+#endif
 
 /*************************************************************************************************/
 #endif//#ifndef __STD_CONFIG_H__

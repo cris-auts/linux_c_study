@@ -48,12 +48,19 @@
 #include <stdint.h>
 #include <stdarg.h>
 #include <unistd.h>
+#include <stdlib.h>
 #include <pthread.h>
 #include <fcntl.h>      /*文件控制定义*/  
 #include <termios.h>    /*PPSIX 终端控制定义*/  
 #include <errno.h>      /*错误号定义*/  
 #include <sys/types.h>   
 #include <sys/stat.h>     
+#include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/msg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <signal.h>
 
 
 /*-------------------公共头文件----------------*/
@@ -64,7 +71,8 @@
 #include "std_debug.h"
 
 /*--------------自定义公共头文件-------------*/
-
+#include "comm_interface.h"
+#include "dbase_api.h"
 
 /*------------------- 接口头文件----------------*/
 

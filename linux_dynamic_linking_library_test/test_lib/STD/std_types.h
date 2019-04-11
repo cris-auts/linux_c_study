@@ -41,26 +41,45 @@
 #define __STD_TYPES_H__
 
 #if (__DEBUG_IN_32BIT_SYSTEM__)
-typedef int                        SINT_T;                /* Signed  int         */
-typedef unsigned int               UINT_T;                /* Unsigned int       */
+typedef char               		   CHAR_T;               /* Signed    8 bit quantity           */
+typedef signed char                SCHAR_T;              /* Signed    8 bit quantity           */
+typedef unsigned char              UCHAR_T;              /* Unsigned  8 bit quantity           */
 
-typedef signed char                INT8_T;                 /* Signed    8 bit quantity           */
-typedef unsigned char              UINT8_T;                /* Unsigned  8 bit quantity           */
+typedef short                      SHORT_T;               /* Signed   16 bit quantity           */
+typedef short                      SSHORT_T;              /* Signed   16 bit quantity           */
+typedef unsigned short             USHORT_T;              /* Unsigned   16 bit quantity           */
+
+typedef int                        INT_T;                /* Signed  int         */
+typedef int                        SINT_T;               /* Signed  int         */
+typedef unsigned int               UINT_T;               /* Unsigned int       */
+
+typedef long                   	   LONG_T;              /* Signed   32 bit quantity           */
+typedef long                       SLONG_T;             /* Signed   32 bit quantity           */
+typedef unsigned long              ULONG_T;             /* Unsigned   32 bit quantity           */
+
+typedef long long                  LLONG_T;              /* Signed   64 bit quantity           */
+typedef long long                  SLLONG_T;             /* Signed   64 bit quantity           */
+typedef unsigned long long         ULLONG_T;             /* Unsigned   64 bit quantity           */
+
+typedef float                      FLOAT_T;              /* Single precision floating point    */
+typedef double                     DOUBLE_T;             /* Double precision floating point    */
+
+
+typedef char                	   INT8_T;                 /* Signed    8 bit quantity           */
 typedef signed char                SINT8_T;                /* Signed    8 bit quantity           */
-typedef signed char                CHAR_T;                /* Signed    8 bit quantity           */
-typedef unsigned char              UCHAR_T;                /* Unsigned  8 bit quantity           */
-typedef signed char                SCHAR_T;                /* Signed    8 bit quantity           */
+typedef unsigned char              UINT8_T;                /* Unsigned  8 bit quantity           */
 typedef unsigned char              BYTE_T;                 /* Unsigned  8 bit quantity           */
 
+
 typedef short                      INT16_T;                /* Signed   16 bit quantity           */
-typedef unsigned short             UINT16_T;               /* Unsigned 16 bit quantity           */
 typedef signed short               SINT16_T;               /* Signed   16 bit quantity           */
+typedef unsigned short             UINT16_T;               /* Unsigned 16 bit quantity           */
 typedef unsigned short             WORD_T;                 /* Unsigned 16 bit quantity           */
 typedef unsigned short             WCHAR_T;                /* Unsigned 16 bit quantity           */
 
 typedef int                        INT32_T;                /* Signed   32 bit quantity           */
-typedef unsigned int               UINT32_T;               /* Unsigned 32 bit quantity           */
 typedef signed int                 SINT32_T;               /* Signed   32 bit quantity           */
+typedef unsigned int               UINT32_T;               /* Unsigned 32 bit quantity           */
 typedef unsigned int               DWORD_T;                /* Unsigned 32 bit quantity           */
 
 typedef long long                  INT64_T;                /* Signed   64 bit quantity           */
@@ -74,6 +93,7 @@ typedef double                     FP64_T;                 /* Double precision f
 #else//default
 #warning "No compiler define, use default compiler type config!"
 //#error "No compiler define, use default compiler type config!"
+typedef int                        INT_T;                /* Signed  int         */
 typedef int                        SINT_T;                /* Signed  int         */
 typedef unsigned int               UINT_T;                /* Unsigned int       */
 
@@ -104,6 +124,7 @@ typedef float                      FP32_T;                 /* Single precision f
 typedef double                     FP64_T;                 /* Double precision floating point    */
 //typedef long double                FP64_T;                   /* Double precision floating point    */
 
+typedef int                        int_t;                /* Signed  int         */
 typedef int                        sint_t;                /* Signed  int         */
 typedef unsigned int               uint_t;                  /* Unsigned int       */
 
