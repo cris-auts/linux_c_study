@@ -13,7 +13,7 @@ CC = gcc
 CFLAGS = -O2 
 CFLAGS += $(patsubst %,-I%,$(DIRS))
 
-LDFLAGS := -l sqlite3 -l pthread -lpaho-mqtt3c
+LDFLAGS := -l sqlite3 -l pthread -lpaho-mqtt3c -Wl,-Map,$(TARGET).map
 
 FILES = $(foreach dir, $(DIRS), $(wildcard $(dir)/*.c))
 OBJS = $(patsubst %.c, %.o, $(FILES))
